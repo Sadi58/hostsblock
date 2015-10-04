@@ -1,0 +1,80 @@
+#!/bin/bash
+
+# GET OPTIONS
+while getopts "v:f:h" _option; do
+    case "$_option" in
+        f)  [ "$OPTARG" != "" ] && _configfile="$OPTARG";;
+        v)  [ "$OPTARG" != "" ] && _verbosity_override=$OPTARG;;
+        *)
+            cat << EOF
+Usage:
+  $0 [ -f CONFIGFILE ] [ -v VERBOSITY ] - update the HOSTS file with block and redirection lists
+
+Help Options:
+  -h                            Show help options
+
+Application Options:
+  -f CONFIGFILE                 Specify an alternative configuration file (instead of /etc/hostsblock/hostsblock.conf)
+  -v VERBOSITY                  Specify how much information hostsblock provides (0=only fatal errors to 5=the kitchen sink)
+EOF
+            exit 1
+        ;;
+    esac
+done
+
+# SOURCE DEFAULT SETTINGS AND SUBROUTINES
+if [ -f /usr/lib/hostsblock-common.sh ]; then
+    source /usr/lib/hostsblock-common.sh
+elif [ -f /usr/local/lib/hostsblock-common.sh ]; then
+    source /usr/local/lib/hostsblock-common.sh
+elif [ -f ./hostsblock-common.sh ]; then
+    source ./hostsblock-common.sh
+else
+    echo "hostsblock-common.sh NOT FOUND. INSTALL IT TO /usr/lib/ OR /usr/local/lib/. EXITING..."
+    exit 1
+fi
+
+_source_configfile
+_verbosity_check
+_set_subprocess_verbosity
+_check_depends curl sed tr file grep
+
+# DOWNLOAD BLOCKLISTS
+_changed=0
+_notify 3 "Checking blocklists for updates..."
+for _url in ${blocklists[*]}; do
+    _outfile=$(echo $_url | sed "s|http:\/\/||g" | tr '/%&+?=' '.')
+    if [ -f "$cachedir"/"$_outfile".url ]; then
+        _notify 4 "Url file for $cachedir/$_outfile present."
+    else
+        _notify 4 "Url file for $cachedir/$_outfile not present. Creating it..."
+        echo "$_url" > "$cachedir"/"$_outfile".url
+    fi
+    if [ -f "$cachedir"/"$_outfile" ]; then
+        _notify 4 "Cache file $cachedir/$_outfile for blocklist $_url exists. Noting its modification time."
+        _old_ls=$(ls -l "$cachedir"/"$_outfile")
+    else
+        _notify 4 "Cache file $cachedir/$_outfile for blocklist $_url not found. It will be downloaded."
+    fi
+    _notify 4 "Checking and, if needed, downloading blocklist $_url to $cachedir/$_outfile"
+    if curl $_v_curl --compressed -L --connect-timeout $connect_timeout --retry $retry -z "$cachedir"/"$_outfile" "$_url" -o "$cachedir"/"$_outfile"; then
+        _notify 3 "Refreshed blocklist $_url."
+        _new_ls=$(ls -l "$cachedir"/"$_outfile")
+        if [ "$_old_ls" != "$_new_ls" ]; then
+            _changed=1
+            _notify 2 "CHANGES FOUND for blocklist $_url."
+        else
+            _notify 4 "No changes for blocklist $_url."
+        fi
+    else
+        _notify 1 "FAILED to refresh/download blocklist $_url."
+    fi
+done
+
+# IF THERE ARE CHANGES...
+if [ $_changed != 0 ]; then
+    _notify 3 "Changes found among blocklists..."
+   else
+       _notify 4 "No changes found among blocklists..."
+   fi
+exit 0
