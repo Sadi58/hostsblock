@@ -1,10 +1,21 @@
 #!/bin/bash
-cuser="${SUDO_USER:-$USER}"
-last_update="$(cat /home/"$cuser"/.hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
-# confirmation
-zenity --question --text "Hostsblock was last updated at <b><i>$last_update</i></b>.\n\n<big>Would you like to check online sources and apply any updates now?</big>"
-if [ $? = 0 ];
-then
+# notify
+notify-send "Hostsblock is checking if there are any updates..." -i gtk-dialog-info -t 1000 -u normal &
+# check updates
+/usr/local/hostsblock-gui/hostsblock-check-updates -v 3 &>/home/$USER/.hostsblock-check-updates.log
+# append date and time stamp to log
+cat <<EOF >> /home/$USER/.hostsblock-check-updates.log
+Hostsblock checked updates at `date +'%d/%m/%Y %H:%M'`
+EOF
+# changes
+cat "/home/$USER/.hostsblock-check-updates.log" | \
+grep "\[WARN\] FAILED to refresh\/download blocklist " | \
+sed -e 's/^\[WARN\] FAILED to refresh\/download blocklist //g' -e 's/\?hostformat=hosts&mimetype=plaintext//g' -e 's/\.$//g' -e 's/^http/• http/g' > "/home/$USER/.hostsblock-updates.log"
+changes="$(cat /home/$USER/.hostsblock-updates.log | grep http)"
+if [ "$changes" = http ]; then
+	zenity --question --text "Changes found in\n\n<i>$changes</i>\n\nWould you like to update Hostsblock now?"
+		if [ $? = 0 ];
+		then
 # password
 sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
 # check for null entry or cancellation
@@ -17,16 +28,19 @@ then
     exit 4
 fi
 # notify
-sudo -Sp '' sudo -H -u "$cuser" notify-send "Checking and applying any updates to Hostsblock, please wait..." -i gtk-dialog-info -t 3 -u normal <<<"${sudo_password}" &
+notify-send "Hostsblock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
 # proceed to update
-sudo -Sp '' sudo hostsblock-launcher <<<"${sudo_password}"
+cuser="${SUDO_USER:-$USER}"
+sudo -Sp '' sudo /usr/local/hostsblock-gui/hostsblock-launcher <<<"${sudo_password}"
 # option to view log
 new_update="$(cat /home/"$cuser"/.hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
-sudo -Sp '' sudo -H -u "$cuser" zenity --question --text "Hostsblock completed at <b><i>$new_update</i></b>\n\n<big>Would you like to view the log file now?</big>" <<<"${sudo_password}"
+zenity --question --text "Hostsblock updated at <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
 if [ $? = 0 ];
 then
 # display log
-sudo -Sp '' sudo -H -u "$cuser" zenity --text-info --filename=/home/"$cuser"/.hostsblock.log --width 680 --height 680 <<<"${sudo_password}"
+zenity --text-info --filename=/home/"$cuser"/.hostsblock.log --width 680 --height 680
 fi
 fi
-exit 0
+else
+notify-send "Hostsblock found no updates..." -i gtk-dialog-info -t 1000 -u normal &
+fi
