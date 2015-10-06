@@ -1,5 +1,5 @@
 #!/bin/bash
-
+# copied from hostsblock.sh by gaenserich
 # GET OPTIONS
 while getopts "v:f:h" _option; do
     case "$_option" in
