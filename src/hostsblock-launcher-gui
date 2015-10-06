@@ -11,10 +11,15 @@ EOF
 cat "/home/$USER/.hostsblock-check-updates.log" | \
 grep "\[WARN\] FAILED to refresh\/download blocklist " | \
 sed -e 's/^\[WARN\] FAILED to refresh\/download blocklist //g' -e 's/\?hostformat=hosts&mimetype=plaintext//g' -e 's/\.$//g' -e 's/^http/• http/g' > "/home/$USER/.hostsblock-updates.log"
-changes="$(cat /home/$USER/.hostsblock-updates.log | grep http)"
-if [ "$changes" = http ]; then
-	zenity --question --text "Changes found in\n\n<i>$changes</i>\n\nWould you like to update Hostsblock now?"
-		if [ $? = 0 ];
+changes=$(grep http /home/$USER/.hostsblock-updates.log)
+# no changes
+if [ -z "$changes" ]
+then
+	notify-send "Hostsblock found no updates; exiting..." -i gtk-dialog-info -t 1000 -u normal &
+	exit
+else
+	zenity --question --text "Changes found in:\n<i>$changes</i>\n\nWould you like to update Hostsblock now?"
+		if [ $? = 0 ]
 		then
 # password
 sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
@@ -31,16 +36,19 @@ fi
 notify-send "Hostsblock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
 # proceed to update
 cuser="${SUDO_USER:-$USER}"
-sudo -Sp '' sudo /usr/local/hostsblock-gui/hostsblock-launcher <<<"${sudo_password}"
+sudo -Sp '' sudo /etc/hostsblock/hostsblock.sh -v 3 &>/home/"$cuser"/.hostsblock.log  <<<"${sudo_password}"
+# append date and time stamp to log
+cat <<EOF >> /home/$USER/.hostsblock.log
+Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
+EOF
 # option to view log
-new_update="$(cat /home/"$cuser"/.hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
+new_update="$(cat /home/$USER/.hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
 zenity --question --text "Hostsblock updated at <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
-if [ $? = 0 ];
+if [ $? = 0 ]
 then
 # display log
-zenity --text-info --filename=/home/"$cuser"/.hostsblock.log --width 680 --height 680
+zenity --text-info --filename=/home/$USER/.hostsblock.log --width 680 --height 680
 fi
 fi
-else
-notify-send "Hostsblock found no updates..." -i gtk-dialog-info -t 1000 -u normal &
 fi
+exit
