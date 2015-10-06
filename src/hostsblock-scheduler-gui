@@ -38,7 +38,7 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 	fi
 	if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
 	then
-    		exit 4
+		exit 4
 	fi
 else
 	exit 4
