@@ -1,4 +1,5 @@
 #!/bin/bash
+# launch hostsblock with verbosity level 3, and create log for user
 cuser="${SUDO_USER:-$USER}"
 /etc/hostsblock/hostsblock.sh -v 3 &>/home/"$cuser"/.hostsblock.log
 # append date and time stamp to log
