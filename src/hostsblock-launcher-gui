@@ -11,7 +11,7 @@ EOF
 cat "/home/$USER/.hostsblock-check-updates.log" | \
 grep "\[WARN\] FAILED to refresh\/download blocklist " | \
 sed -e 's/^\[WARN\] FAILED to refresh\/download blocklist //g' -e 's/\?hostformat=hosts&mimetype=plaintext//g' -e 's/\.$//g' -e 's/^http/• http/g' > "/home/$USER/.hostsblock-updates.log"
-changes="$(grep http /home/$USER/.hostsblock-updates.log)"
+changes=$(grep http /home/$USER/.hostsblock-updates.log)
 # no changes
 if [ -z "$changes" ]
 then
@@ -51,4 +51,3 @@ new_update="$(cat /home/$USER/.hostsblock.log | grep 'Hostsblock completed at ' 
 			fi
 	fi
 fi
-exit
