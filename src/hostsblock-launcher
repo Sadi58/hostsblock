@@ -6,3 +6,11 @@ cuser="${SUDO_USER:-$USER}"
 cat <<EOF >> /home/"$cuser"/.hostsblock.log
 Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
 EOF
+# notify user
+changes=$(grep -c "CHANGES FOUND" /home/"$cuser"/.hostsblock.log)
+if [ "$changes" -gt 0 ]
+then
+DISPLAY=:0 XAUTHORITY=/home/"$cuser"/.Xauthority su "$cuser" -c "notify-send 'Hostsblock updated $changes blocklists'"
+else
+DISPLAY=:0 XAUTHORITY=/home/"$cuser"/.Xauthority su "$cuser" -c "notify-send 'Hostsblock found no updates'"
+fi
