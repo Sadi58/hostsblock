@@ -2,10 +2,10 @@ I've simply added 2 zenity-based GUI scripts ("hostsblock-launcher-gui" and "hos
 
 These 4 files (all amateur work by someone who's just a beginner in bash scripting) are intended to be copied to a folder named "/usr/local/hostsblock-gui" while most other (original) script files are meant to be at "/etc/hostsblock".
 
-1. The file "hostsblock-launcher" merely launches "/etc/hostsblock/hostsblock.sh" with verbosity level 3, creates a hidden log file under user's home directory, and sends a graphical notification of the result ("no updates" or "x updates")
+1. The file "hostsblock-launcher" merely launches "/etc/hostsblock/hostsblock.sh" with verbosity level 3, creates a log file, and sends a graphical notification of the result ("no updates" or "x updates") to user(s).
 
-2. The file "hostsblock-check-updates" is actually a clipping of the original "hostsblock.sh" script that checks the blocklists and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, which then lets me merely replace such failure messages with a "change found" statement in "hostsblock-launcher-gui".
+2. The file "hostsblock-check-updates" is actually a clipping of the original "hostsblock.sh" script that checks the blocklists and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, which then allows replacing such failure messages with a "change found" statement in "hostsblock-launcher-gui".
 
-3. The file "hostsblock-launcher-gui" starts the "hostsblock-check-updates" script, informs the user when there are updates and asks if they would like to update hostsblock. If Yes, the user is required to enter their password, hostblock is launched similar to "hostsblock-launcher" and at the the user is asked if they would like to view the log file.
+3. The file "hostsblock-launcher-gui" starts the "hostsblock-check-updates" script, informs the user when there are updates and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, hostblock is launched similar to "hostsblock-launcher", and the the user is asked if they would like to view the log file.
 
-4. The file "hostsblock-scheduler-gui" is another simple zenity-based script that checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher", and then informs the user how hostsblock is scheduled to run, and asks if they would like to change it, presenting those 4 options, and implementing user's choice.
+4. The file "hostsblock-scheduler-gui" is another simple zenity-based script that checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher", and then informs the user how hostsblock is scheduled to run, and asks if they would like to change it, presenting those 4 options, and then implementing user's choice.
