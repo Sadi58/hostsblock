@@ -38,9 +38,9 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 		sudo -Sp '' sudo /etc/hostsblock/hostsblock.sh -v 3 &>/tmp/hostsblock.log  <<<"${sudo_password}"
 		sudo -Sp '' sudo chmod a+w /tmp/hostsblock.log  <<<"${sudo_password}"
 # append date and time stamp to log
-		cat <<EOF >> /tmp/hostsblock.log
-		Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
-		EOF
+cat <<EOF >> /tmp/hostsblock.log
+Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
+EOF
 # option to view log
 new_update="$(cat /tmp/hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
 		zenity --question --text "Hostsblock updated at <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
