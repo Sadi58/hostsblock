@@ -6,6 +6,6 @@ These 4 files (all amateur work by someone who's just a beginner in bash scripti
 
 2. The file "hostsblock-check-updates" is actually a clipping of the original "hostsblock.sh" script that checks the blocklists and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, which then allows replacing such failure messages with a "change found" statement in "hostsblock-launcher-gui".
 
-3. The file "hostsblock-launcher-gui" starts the "hostsblock-check-updates" script, informs the user when there are updates and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, hostblock is launched similar to "hostsblock-launcher", and the the user is asked if they would like to view the log file.
+3. The file "hostsblock-launcher-gui" starts the "hostsblock-check-updates" script, informs the user when there are updates and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, hostsblock is launched similar to "hostsblock-launcher", and the the user is asked if they would like to view the log file.
 
 4. The file "hostsblock-scheduler-gui" is another simple zenity-based script that checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher", and then informs the user how hostsblock is scheduled to run, and asks if they would like to change it, presenting those 4 options, and then implementing user's choice.
