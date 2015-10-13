@@ -34,13 +34,15 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 		fi
 # notify
 		notify-send "Hostsblock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
-# proceed to update
-		sudo -Sp '' sudo /etc/hostsblock/hostsblock.sh -v 3 &>/tmp/hostsblock.log  <<<"${sudo_password}"
-		sudo -Sp '' sudo chmod a+w /tmp/hostsblock.log  <<<"${sudo_password}"
+# proceed to update and make log file open for all
+		sudo -Sp '' sudo /etc/hostsblock/hostsblock.sh -v 3 &>/tmp/hostsblock.log <<<"${sudo_password}"
+		sudo -Sp '' sudo chmod a+w /tmp/hostsblock.log <<<"${sudo_password}"
 # append date and time stamp to log
 cat <<EOF >> /tmp/hostsblock.log
 Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
 EOF
+# backup log
+		sudo -Sp '' sudo cp /tmp/hostsblock.log /var/log/hostsblock.log <<<"${sudo_password}"
 # option to view log
 new_update="$(cat /tmp/hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
 		zenity --question --text "Hostsblock updated at <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
