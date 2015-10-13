@@ -5,8 +5,10 @@
 cat <<EOF >> /tmp/hostsblock.log
 Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
 EOF
-# give write access to all
+# make log file open for all
 chmod a+w /tmp/hostsblock.log
+# backup log
+cp /tmp/hostsblock.log /var/log/hostsblock.log
 # create message
 changes=$(grep -c "CHANGES FOUND" /tmp/hostsblock.log)
 if [ "$changes" -gt 0 ]
@@ -15,8 +17,6 @@ echo "Hostsblock has just checked and updated $changes blocklist(s)" > /tmp/host
 else
 echo "Hostsblock has just checked and found no updates" > /tmp/hostsblock-launcher-message.txt
 fi
-# give write access to all
-chmod a+w /tmp/hostsblock-launcher-message.txt
 # notify user(s)
 nusers=$(who | grep -c ' \:[0-9]')
 xuser=$(who | grep ' \:[0-9]' | awk '{print $1}')
@@ -33,7 +33,4 @@ echo "$xdisplay" > /tmp/xdisplays.txt
 while read -r -u3 xuser; read -r -u4 xdisplay; do 
 DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
 done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
-# give write access to all
-chmod a+w /tmp/xusers.txt
-chmod a+w /tmp/xdisplays.txt
 fi
