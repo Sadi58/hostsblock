@@ -2,7 +2,7 @@
 # notify
 notify-send "Hostsblock is checking if there are any updates..." -i gtk-dialog-info -t 1000 -u normal &
 # check updates
-/usr/local/hostsblock-gui/hostsblock-check-updates -v 3 &>/tmp/hostsblock-check-updates.log
+/usr/local/indicator-hostsblock/hostsblock-check-updates -v 3 &>/tmp/hostsblock-check-updates.log
 # append date and time stamp to log
 cat <<EOF >> /tmp/hostsblock-check-updates.log
 Hostsblock checked updates at `date +'%d/%m/%Y %H:%M'`
