@@ -1,11 +1,60 @@
-I've simply added 2 zenity-based GUI scripts ("hostsblock-launcher-gui" and "hostsblock-scheduler-gui") and 2 other bash scripts ("hostsblock-launcher" and "hostsblock-check-updates") to the original files.
+indicator-hostsblock
+===============
 
-These 4 files (all amateur work by someone who's just a beginner in bash scripting) are intended to be copied to a folder named "/usr/local/hostsblock-gui" while most other (original) script files are meant to be at "/etc/hostsblock".
+A very simple and lightweight indicator applet to manage hostsblock: https://github.com/gaenserich/hostsblock
 
-1. The file "hostsblock-launcher" merely launches "/etc/hostsblock/hostsblock.sh" with verbosity level 3, creates a log file, and sends a graphical notification of the result ("no updates" or "x updates") to user(s).
+Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 
-2. The file "hostsblock-check-updates" is actually a clipping of the original "hostsblock.sh" script that checks the blocklists and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, which then allows replacing such failure messages with a "change found" statement in "hostsblock-launcher-gui".
+![screenshot](indicator-hostsblock-screenshot.png)
 
-3. The file "hostsblock-launcher-gui" starts the "hostsblock-check-updates" script, informs the user when there are updates and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, hostsblock is launched similar to "hostsblock-launcher", and the the user is asked if they would like to view the log file.
+Prerequisites
+===============
 
-4. The file "hostsblock-scheduler-gui" is another simple zenity-based script that checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher", and then informs the user how hostsblock is scheduled to run, and asks if they would like to change it, presenting those 4 options, and then implementing user's choice.
+Install "python-appindicator" and "zenity" in addition to any other hostsblock dependencies.
+
+Installation
+===============
+
+1. Install "hostsblock" as required - for example:
+```
+	/usr/local/lib/hostsblock-common.sh
+	/etc/hostsblock/black.list
+	/etc/hostsblock/hostsblock.conf
+	/etc/hostsblock/hostsblock.sh
+	/etc/hostsblock/hostsblock-urlcheck.sh
+	/etc/hostsblock/white.list
+```
+2. Then copy "hostsblock-indicator" files like this:
+```
+	/etc/sudoers.d/indicator-hostsblock-sudoers
+	/etc/xdg/autostart/hostsblock-indicator.desktop
+	/usr/local/indicator-hostsblock/check-updates
+	/usr/local/indicator-hostsblock/hostsblock.png
+	/usr/local/indicator-hostsblock/hostsblock-color.png
+	/usr/local/indicator-hostsblock/hostsblock-dark.png
+	/usr/local/indicator-hostsblock/hostsblock-light.png
+	/usr/local/indicator-hostsblock/icon4colortheme
+	/usr/local/indicator-hostsblock/icon4darktheme
+	/usr/local/indicator-hostsblock/icon4lighttheme
+	/usr/local/indicator-hostsblock/indicator-hostsblock
+	/usr/local/indicator-hostsblock/launcher
+	/usr/local/indicator-hostsblock/launcher-gui
+	/usr/local/indicator-hostsblock/restart
+	/usr/local/indicator-hostsblock/scheduler-gui
+	/usr/local/indicator-hostsblock/status_auto-update
+	/usr/local/indicator-hostsblock/status_last-update
+```
+Caution: Be aware that copying a file under the system directory "/etc/sudoers.d" might make it impossible to use the "sudo" command if there's something wrong with the file. Therefore, it might be a good idea to keep this folder open in a Root Nautilus or Root Terminal window so that you can remove this file to remedy such a problem.
+
+Info about some files
+=====================
+
+1. The file "indicator-hostsblock" is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) the adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility using several scripts added here. 
+
+2. The file "launcher" merely launches "/etc/hostsblock/hostsblock.sh" with verbosity level 3, creates a log file, and sends a graphical notification of the result ("no updates" or "x updates") to user(s).
+
+3. The file "check-updates" is actually a clipping of the original "hostsblock.sh" script that checks the blocklists and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, which then allows replacing such failure messages with a "change found" statement in "launcher-gui".
+
+4. The file "launcher-gui" is a simple zenity-based script that starts the "check-updates" script, informs the user when there are updates and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, hostsblock is launched similar to "launcher", and the user is asked if they would like to view the log file.
+
+5. The file "scheduler-gui" is another simple zenity-based script, which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher" (aka "launcher") to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implementing user's choice.
