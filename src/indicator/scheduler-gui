@@ -5,29 +5,26 @@ check_weekly="$(ls /etc/cron.weekly | grep hostsblock-launcher)"
 check_monthly="$(ls /etc/cron.monthly | grep hostsblock-launcher)"
 if [ "$check_hourly" = hostsblock-launcher ]
 then
-	echo "HostsBlock is auto-updated hourly." > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Updates Hourly" > "/tmp/hostsblock-scheduler.txt"
 else
 if [ "$check_daily" = hostsblock-launcher ]
 then
-	echo "HostsBlock is auto-updated daily." > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Updates Daily" > "/tmp/hostsblock-scheduler.txt"
 else
 if [ "$check_weekly" = hostsblock-launcher ]
 then
-	echo "HostsBlock is auto-updated weekly." > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Updates Weekly" > "/tmp/hostsblock-scheduler.txt"
 else
 if [ "$check_monthly" = hostsblock-launcher ]
 then
-	echo "HostsBlock is auto-updated monthly." > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Updates Monthly" > "/tmp/hostsblock-scheduler.txt"
 else
-	echo "HostsBlock is NOT auto-updated." > "/tmp/hostsblock-scheduler.txt"
+	echo "Does Not Auto-Update" > "/tmp/hostsblock-scheduler.txt"
 fi
 fi
 fi
 fi
 auto_update="$(cat /tmp/hostsblock-scheduler.txt)"
-zenity --question --text "$auto_update\n\nWould you like to change it?"
-if [ $? = 0 ];
-then
 # password
 sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
 # check for null entry or cancellation
@@ -39,49 +36,46 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 	then
 		exit 4
 	fi
-else
-	exit 4
-fi
 # options
 menu(){
-im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --width 400 --height 210"
-im=$im" --column=\" \" --column \"Options\" --column \"Description\" "
-im=$im"FALSE \"Hourly\" \"HostsBlock auto-updates every hour\" "
-im=$im"FALSE \"Daily\" \"HostsBlock auto-updates every day\" "
-im=$im"TRUE \"Weekly\" \"HostsBlock auto-updates every week\" "
-im=$im"FALSE \"Monthly\" \"HostsBlock auto-updates every month\" "
-im=$im"FALSE \"None\" \"HostsBlock DOES NOT auto-update\" "
+im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"HostsBlock Currently $auto_update\nSelect one of the options to change this:\" --width 400 --height 240"
+im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
+im=$im"FALSE \"Hourly\" \"HostsBlock will auto-update every hour\" "
+im=$im"FALSE \"Daily\" \"HostsBlock will auto-update every day\" "
+im=$im"FALSE \"Weekly\" \"HostsBlock will auto-update every week\" "
+im=$im"FALSE \"Monthly\" \"HostsBlock will auto-update every month\" "
+im=$im"FALSE \"None\" \"HostsBlock will not auto-update\" "
 }
 option(){
 choice=`echo $im | sh -`
 if echo $choice | grep "Hourly" > /dev/null
 then
 	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/hostsblock-gui/hostsblock-launcher" "/etc/cron.hourly/hostsblock-launcher" <<<"${sudo_password}"
-	notify-send "HostsBlock will now be automatically updated every hour" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.hourly/hostsblock-launcher" <<<"${sudo_password}"
+	notify-send "HostsBlock will update automatically every hour from now on" -i gtk-dialog-info -t 1000 -u normal &
 fi
 if echo $choice | grep "Daily" > /dev/null
 then
 	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/hostsblock-gui/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" <<<"${sudo_password}"
-	notify-send "HostsBlock will now be automatically updated every day" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.daily/hostsblock-launcher" <<<"${sudo_password}"
+	notify-send "HostsBlock will update automatically every day from now on" -i gtk-dialog-info -t 1000 -u normal &
 fi
 if echo $choice | grep "Weekly" > /dev/null
 then
 	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/hostsblock-gui/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" <<<"${sudo_password}"
-	notify-send "HostsBlock will now be automatically updated every week" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.weekly/hostsblock-launcher" <<<"${sudo_password}"
+	notify-send "HostsBlock will update automatically every week from now on" -i gtk-dialog-info -t 1000 -u normal &
 fi
 if echo $choice | grep "Monthly" > /dev/null
 then
 	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/hostsblock-gui/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	notify-send "HostsBlock will now be automatically updated every month" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	notify-send "HostsBlock will update automatically every month from now on" -i gtk-dialog-info -t 1000 -u normal &
 fi
 if echo $choice | grep "None" > /dev/null
 then
 	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	notify-send "HostsBlock will not be automatically updated from now on." -i gtk-dialog-info -t 1000 -u normal &
+	notify-send "HostsBlock will not update automatically from now on" -i gtk-dialog-info -t 1000 -u normal &
 fi
 }
 menu
