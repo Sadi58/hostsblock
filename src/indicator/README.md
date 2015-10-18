@@ -5,7 +5,7 @@ A very simple and lightweight indicator applet to manage hostsblock: https://git
 
 Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 
-![screenshot](indicator-hostsblock-screenshot.png)
+![screenshot](hostsblock-indicator-screenshot.png)
 
 Prerequisites
 ===============
