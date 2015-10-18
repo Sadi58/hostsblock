@@ -39,6 +39,10 @@ class HostsBlockIndicator:
         self.Schedule_item.connect("activate", self.setSchedule)
         self.Schedule_item.show()
 
+	self.Log_item = gtk.MenuItem("View Log")
+        self.Log_item.connect("activate", self.viewLog)
+        self.Log_item.show()
+
 	self.seperator2_item = gtk.SeparatorMenuItem()
 	self.seperator2_item.show()
 
@@ -59,6 +63,7 @@ class HostsBlockIndicator:
 	self.menu.append(self.seperator1_item)
 	self.menu.append(self.Launch_item)
 	self.menu.append(self.Schedule_item)
+	self.menu.append(self.Log_item)
 	self.menu.append(self.seperator2_item)
 	self.menu.append(self.LightTheme_item)
 	self.menu.append(self.DarkTheme_item)
@@ -79,6 +84,9 @@ class HostsBlockIndicator:
 
     def setSchedule(self, dude):
 	os.system("/usr/local/indicator-hostsblock/scheduler-gui")
+
+    def viewLog(self, dude):
+	os.system("zenity --text-info --filename=/var/log/hostsblock.log --width 500 --height 300")
 
     def setLightTheme(self, dude):
 	os.system("sudo /usr/local/indicator-hostsblock/icon4lighttheme && /usr/local/indicator-hostsblock/restart")
