@@ -5,7 +5,7 @@ A very simple and lightweight indicator applet to manage hostsblock: https://git
 
 Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 
-![screenshot](hostsblock-indicator-screenshot.png)
+![screenshot](indicator-hostsblock-screenshot.png)
 
 Prerequisites
 ===============
@@ -27,7 +27,7 @@ Installation
 2. Then copy "hostsblock-indicator" files like this:
 ```
 	/etc/sudoers.d/indicator-hostsblock-sudoers
-	/etc/xdg/autostart/hostsblock-indicator.desktop
+	/etc/xdg/autostart/indicator-hostsblock.desktop
 	/usr/local/indicator-hostsblock/check-updates
 	/usr/local/indicator-hostsblock/hostsblock.png
 	/usr/local/indicator-hostsblock/hostsblock-color.png
