@@ -1,0 +1,2 @@
+#!/bin/bash
+cp -f /usr/local/indicator-hostsblock/hostsblock-color.png /usr/local/indicator-hostsblock/hostsblock.png

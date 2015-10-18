@@ -1,0 +1,27 @@
+#!/bin/bash
+check_hourly="$(ls /etc/cron.hourly | grep hostsblock-launcher)"
+check_daily="$(ls /etc/cron.daily | grep hostsblock-launcher)"
+check_weekly="$(ls /etc/cron.weekly | grep hostsblock-launcher)"
+check_monthly="$(ls /etc/cron.monthly | grep hostsblock-launcher)"
+if [ "$check_hourly" = hostsblock-launcher ]
+then
+	echo "Auto-Updates Hourly" > "/tmp/hostsblock-scheduler.txt"
+else
+if [ "$check_daily" = hostsblock-launcher ]
+then
+	echo "Auto-Updates Daily" > "/tmp/hostsblock-scheduler.txt"
+else
+if [ "$check_weekly" = hostsblock-launcher ]
+then
+	echo "Auto-Updates Weekly" > "/tmp/hostsblock-scheduler.txt"
+else
+if [ "$check_monthly" = hostsblock-launcher ]
+then
+	echo "Auto-Updates Monthly" > "/tmp/hostsblock-scheduler.txt"
+else
+	echo "No Auto-Update" > "/tmp/hostsblock-scheduler.txt"
+fi
+fi
+fi
+fi
+echo `cat "/tmp/hostsblock-scheduler.txt"`

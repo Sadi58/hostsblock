@@ -1,0 +1,2 @@
+#!/bin/bash
+echo "Last: `cat "/var/log/hostsblock.log" | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}'`"

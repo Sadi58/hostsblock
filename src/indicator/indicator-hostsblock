@@ -1,0 +1,100 @@
+#!/usr/bin/env python
+import gtk
+import appindicator
+import os
+import commands
+import gtk
+import sys
+
+class HostsBlockIndicator:
+    def __init__(self):
+	self.ind = appindicator.Indicator("HostsBlockIndicator",
+                                           "indicator-messages",
+                                           appindicator.CATEGORY_APPLICATION_STATUS)
+	self.ind.set_status(appindicator.STATUS_ACTIVE)
+	self.ind.set_attention_icon("indicator-messages-new")
+	self.ind.set_icon_theme_path("/usr/local/indicator-hostsblock/")
+	self.ind.set_icon('hostsblock')
+        self.menu_setup()
+        self.ind.set_menu(self.menu)
+    def menu_setup(self):
+        self.menu = gtk.Menu()
+
+	self.infoHostsBlockAuto_item = gtk.MenuItem(self.infoHostsBlockAuto())
+	self.infoHostsBlockAuto_item.set_sensitive(False)
+	self.infoHostsBlockAuto_item.show()
+
+	self.infoHostsBlockLast_item = gtk.MenuItem(self.infoHostsBlockLast())
+	self.infoHostsBlockLast_item.set_sensitive(False)
+	self.infoHostsBlockLast_item.show()
+
+	self.seperator1_item = gtk.SeparatorMenuItem()
+	self.seperator1_item.show()
+
+	self.Launch_item = gtk.MenuItem("Launch HostsBlock")
+        self.Launch_item.connect("activate", self.doLaunch)
+        self.Launch_item.show()
+
+	self.Schedule_item = gtk.MenuItem("Manage Updates")
+        self.Schedule_item.connect("activate", self.setSchedule)
+        self.Schedule_item.show()
+
+	self.seperator2_item = gtk.SeparatorMenuItem()
+	self.seperator2_item.show()
+
+	self.LightTheme_item = gtk.MenuItem("Use light theme icon")
+        self.LightTheme_item.connect("activate", self.setLightTheme)
+        self.LightTheme_item.show()
+
+	self.DarkTheme_item = gtk.MenuItem("Use dark theme icon")
+        self.DarkTheme_item.connect("activate", self.setDarkTheme)
+        self.DarkTheme_item.show()
+
+	self.ColorTheme_item = gtk.MenuItem("Use color theme icon")
+        self.ColorTheme_item.connect("activate", self.setColorTheme)
+        self.ColorTheme_item.show()
+
+	self.menu.append(self.infoHostsBlockAuto_item)
+	self.menu.append(self.infoHostsBlockLast_item)
+	self.menu.append(self.seperator1_item)
+	self.menu.append(self.Launch_item)
+	self.menu.append(self.Schedule_item)
+	self.menu.append(self.seperator2_item)
+	self.menu.append(self.LightTheme_item)
+	self.menu.append(self.DarkTheme_item)
+	self.menu.append(self.ColorTheme_item)
+
+    def infoHostsBlockAuto(self):
+	os.system("/usr/local/indicator-hostsblock/status_auto-update")
+	stat, out = commands.getstatusoutput("/usr/local/indicator-hostsblock/status_auto-update")
+	return out
+
+    def infoHostsBlockLast(self):
+	os.system("/usr/local/indicator-hostsblock/status_last-update")
+	stat, out = commands.getstatusoutput("/usr/local/indicator-hostsblock/status_last-update")
+	return out
+
+    def doLaunch(self, dude):
+	os.system("/usr/local/indicator-hostsblock/launcher-gui")
+
+    def setSchedule(self, dude):
+	os.system("/usr/local/indicator-hostsblock/scheduler-gui")
+
+    def setLightTheme(self, dude):
+	os.system("sudo /usr/local/indicator-hostsblock/icon4lighttheme && /usr/local/indicator-hostsblock/restart")
+
+    def setDarkTheme(self, dude):
+	os.system("sudo /usr/local/indicator-hostsblock/icon4darktheme && /usr/local/indicator-hostsblock/restart")
+
+    def setColorTheme(self, dude):
+	os.system("sudo /usr/local/indicator-hostsblock/icon4colortheme && /usr/local/indicator-hostsblock/restart")
+
+    def ignore(*args):
+	return gtk.TRUE
+
+    def main(self):
+        gtk.main()
+
+if __name__ == "__main__":
+    indicator = HostsBlockIndicator()
+    indicator.main()
