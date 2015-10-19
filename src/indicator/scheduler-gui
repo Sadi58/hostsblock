@@ -5,21 +5,21 @@ check_weekly="$(ls /etc/cron.weekly | grep hostsblock-launcher)"
 check_monthly="$(ls /etc/cron.monthly | grep hostsblock-launcher)"
 if [ "$check_hourly" = hostsblock-launcher ]
 then
-	echo "Auto-Updates Hourly" > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Update: Hourly" > "/tmp/hostsblock-scheduler.txt"
 else
 if [ "$check_daily" = hostsblock-launcher ]
 then
-	echo "Auto-Updates Daily" > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Update: Daily" > "/tmp/hostsblock-scheduler.txt"
 else
 if [ "$check_weekly" = hostsblock-launcher ]
 then
-	echo "Auto-Updates Weekly" > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Update: Weekly" > "/tmp/hostsblock-scheduler.txt"
 else
 if [ "$check_monthly" = hostsblock-launcher ]
 then
-	echo "Auto-Updates Monthly" > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Update: Monthly" > "/tmp/hostsblock-scheduler.txt"
 else
-	echo "Does Not Auto-Update" > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Update: None" > "/tmp/hostsblock-scheduler.txt"
 fi
 fi
 fi
@@ -38,7 +38,7 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 	fi
 # options
 menu(){
-im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"HostsBlock Currently $auto_update\nSelect one of the options to change this:\" --width 400 --height 240"
+im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"HostsBlock $auto_update\nSelect one of the options to change this:\" --width 400 --height 240"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Hourly\" \"HostsBlock will auto-update every hour\" "
 im=$im"FALSE \"Daily\" \"HostsBlock will auto-update every day\" "
