@@ -15,7 +15,7 @@ Install "python-appindicator" and "zenity" in addition to any other hostsblock d
 Installation
 ===============
 
-1. Install "hostsblock" as required - for example:
+Install "hostsblock" as required - for example:
 ```
 	/usr/local/lib/hostsblock-common.sh
 	/etc/hostsblock/black.list
@@ -24,7 +24,7 @@ Installation
 	/etc/hostsblock/hostsblock-urlcheck.sh
 	/etc/hostsblock/white.list
 ```
-2. Then copy "hostsblock-indicator" files like this:
+Then copy "hostsblock-indicator" files like this:
 ```
 	/etc/sudoers.d/indicator-hostsblock-sudoers
 	/etc/xdg/autostart/indicator-hostsblock.desktop
