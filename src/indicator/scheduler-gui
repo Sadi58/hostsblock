@@ -50,32 +50,37 @@ option(){
 choice=`echo $im | sh -`
 if echo $choice | grep "Hourly" > /dev/null
 then
-	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.hourly/hostsblock-launcher" <<<"${sudo_password}"
 	notify-send "HostsBlock will update automatically every hour from now on" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	sudo -Sp '' ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.hourly/hostsblock-launcher" <<<"${sudo_password}"
+	/usr/local/indicator-hostsblock/restart-indicator
 fi
 if echo $choice | grep "Daily" > /dev/null
 then
-	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.daily/hostsblock-launcher" <<<"${sudo_password}"
 	notify-send "HostsBlock will update automatically every day from now on" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	sudo -Sp '' ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.daily/hostsblock-launcher" <<<"${sudo_password}"
+	/usr/local/indicator-hostsblock/restart-indicator
 fi
 if echo $choice | grep "Weekly" > /dev/null
 then
-	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.weekly/hostsblock-launcher" <<<"${sudo_password}"
 	notify-send "HostsBlock will update automatically every week from now on" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	sudo -Sp '' ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.weekly/hostsblock-launcher" <<<"${sudo_password}"
+	/usr/local/indicator-hostsblock/restart-indicator
 fi
 if echo $choice | grep "Monthly" > /dev/null
 then
-	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
-	sudo -Sp '' sudo ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
 	notify-send "HostsBlock will update automatically every month from now on" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	sudo -Sp '' ln -sf "/usr/local/indicator-hostsblock/launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	/usr/local/indicator-hostsblock/restart-indicator
 fi
 if echo $choice | grep "None" > /dev/null
 then
-	sudo -Sp '' sudo rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
 	notify-send "HostsBlock will not update automatically from now on" -i gtk-dialog-info -t 1000 -u normal &
+	sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+	/usr/local/indicator-hostsblock/restart-indicator
 fi
 }
 menu
