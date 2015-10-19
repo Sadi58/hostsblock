@@ -39,12 +39,31 @@ class HostsBlockIndicator:
         self.Schedule_item.connect("activate", self.setSchedule)
         self.Schedule_item.show()
 
-	self.Log_item = gtk.MenuItem("View Log")
-        self.Log_item.connect("activate", self.viewLog)
-        self.Log_item.show()
+	self.View_item = gtk.MenuItem("View Files")
+        self.View_item.connect("activate", self.doView)
+        self.View_item.show()
+
+	self.Edit_item = gtk.MenuItem("Edit Files")
+        self.Edit_item.connect("activate", self.doEdit)
+        self.Edit_item.show()
 
 	self.seperator2_item = gtk.SeparatorMenuItem()
 	self.seperator2_item.show()
+
+	self.Disable_item = gtk.MenuItem("Disable HostsBlock")
+        self.Disable_item.connect("activate", self.doDisable)
+        self.Disable_item.show()
+
+	self.Enable_item = gtk.MenuItem("Re-enable HostsBlock")
+        self.Enable_item.connect("activate", self.doEnable)
+        self.Enable_item.show()
+
+	self.Restart_item = gtk.MenuItem("Restart DNSmasq")
+        self.Restart_item.connect("activate", self.doRestart)
+        self.Restart_item.show()
+
+	self.seperator3_item = gtk.SeparatorMenuItem()
+	self.seperator3_item.show()
 
 	self.LightTheme_item = gtk.MenuItem("Use light theme icon")
         self.LightTheme_item.connect("activate", self.setLightTheme)
@@ -58,16 +77,30 @@ class HostsBlockIndicator:
         self.ColorTheme_item.connect("activate", self.setColorTheme)
         self.ColorTheme_item.show()
 
+	self.seperator4_item = gtk.SeparatorMenuItem()
+	self.seperator4_item.show()
+
+	self.Refresh_item = gtk.MenuItem("Refresh indicator")
+        self.Refresh_item.connect("activate", self.doRefresh)
+        self.Refresh_item.show()
+
 	self.menu.append(self.infoHostsBlockAuto_item)
 	self.menu.append(self.infoHostsBlockLast_item)
 	self.menu.append(self.seperator1_item)
 	self.menu.append(self.Launch_item)
 	self.menu.append(self.Schedule_item)
-	self.menu.append(self.Log_item)
+	self.menu.append(self.View_item)
+	self.menu.append(self.Edit_item)
 	self.menu.append(self.seperator2_item)
+	self.menu.append(self.Disable_item)
+	self.menu.append(self.Enable_item)
+	self.menu.append(self.Restart_item)
+	self.menu.append(self.seperator3_item)
 	self.menu.append(self.LightTheme_item)
 	self.menu.append(self.DarkTheme_item)
 	self.menu.append(self.ColorTheme_item)
+	self.menu.append(self.seperator4_item)
+	self.menu.append(self.Refresh_item)
 
     def infoHostsBlockAuto(self):
 	os.system("/usr/local/indicator-hostsblock/status_auto-update")
@@ -85,17 +118,32 @@ class HostsBlockIndicator:
     def setSchedule(self, dude):
 	os.system("/usr/local/indicator-hostsblock/scheduler-gui")
 
-    def viewLog(self, dude):
-	os.system("zenity --text-info --filename=/var/log/hostsblock.log --width 500 --height 300")
+    def doView(self, dude):
+	os.system("/usr/local/indicator-hostsblock/viewer-gui")
+
+    def doEdit(self, dude):
+	os.system("/usr/local/indicator-hostsblock/editor-gui")
+
+    def doDisable(self, dude):
+	os.system("/usr/local/indicator-hostsblock/disable-hostsblock")
+
+    def doEnable(self, dude):
+	os.system("/usr/local/indicator-hostsblock/enable-hostsblock")
+
+    def doRestart(self, dude):
+	os.system("/usr/local/indicator-hostsblock/restart-dnsmasq")
 
     def setLightTheme(self, dude):
-	os.system("sudo /usr/local/indicator-hostsblock/icon4lighttheme && /usr/local/indicator-hostsblock/restart")
+	os.system("sudo /usr/local/indicator-hostsblock/icon4lighttheme && /usr/local/indicator-hostsblock/restart-indicator")
 
     def setDarkTheme(self, dude):
-	os.system("sudo /usr/local/indicator-hostsblock/icon4darktheme && /usr/local/indicator-hostsblock/restart")
+	os.system("sudo /usr/local/indicator-hostsblock/icon4darktheme && /usr/local/indicator-hostsblock/restart-indicator")
 
     def setColorTheme(self, dude):
-	os.system("sudo /usr/local/indicator-hostsblock/icon4colortheme && /usr/local/indicator-hostsblock/restart")
+	os.system("sudo /usr/local/indicator-hostsblock/icon4colortheme && /usr/local/indicator-hostsblock/restart-indicator")
+
+    def doRefresh(self, dude):
+	os.system("/usr/local/indicator-hostsblock/restart-indicator")
 
     def ignore(*args):
 	return gtk.TRUE

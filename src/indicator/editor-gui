@@ -1,0 +1,46 @@
+#!/bin/bash
+# get password
+sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
+# check for null entry or cancellation
+	if [[ ${?} != 0 || -z ${sudo_password} ]]
+	then
+		exit 4
+	fi
+	if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
+	then
+		exit 4
+	fi
+# options
+menu(){
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"Please select one or more files to edit:\" --width 400 --height 240"
+im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
+im=$im"FALSE \"hosts.block\" \"\\etc\\hosts.block\" "
+im=$im"FALSE \"hostsblock.conf\" \"\\etc\\hosts.block\\hostsblock.conf\" "
+im=$im"FALSE \"black.list\" \"\\etc\\hosts.block\\black.list\" "
+im=$im"FALSE \"white.list\" \"\\etc\\hosts.block\\white.list\" "
+}
+option(){
+choice=`echo $im | sh -`
+if echo $choice | grep "hosts.block" > /dev/null
+then
+	sudo -Sp '' xdg-open "/etc/hosts.block" <<<"${sudo_password}" &
+fi
+if echo $choice | grep "hostsblock.conf" > /dev/null
+then
+	sudo -Sp '' xdg-open "/etc/hostsblock/hostsblock.conf" <<<"${sudo_password}" &
+fi
+if echo $choice | grep "black.list" > /dev/null
+then
+	sudo -Sp '' xdg-open "/etc/hostsblock/black.list" <<<"${sudo_password}" &
+fi
+if echo $choice | grep "white.list" > /dev/null
+then
+	sudo -Sp '' xdg-open "/etc/hostsblock/white.list" <<<"${sudo_password}" &
+fi
+}
+menu
+option
+if test ${#choice} -gt 0
+then
+	echo "Completed"
+fi
