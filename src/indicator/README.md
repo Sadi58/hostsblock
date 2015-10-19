@@ -54,14 +54,14 @@ Caution: Be aware that copying a file under the system directory "/etc/sudoers.d
 Info about some files
 =====================
 
-1. The file "indicator-hostsblock" is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) the adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility using several scripts added here. 
+1. The file "indicator-hostsblock" is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
 
 2. The file "launcher" merely launches "/etc/hostsblock/hostsblock.sh" with verbosity level 3, creates a log file, and sends a graphical notification of the result ("no updates" or "x updates") to user(s).
 
-3. The file "check-updates" is actually a clipping of the original "hostsblock.sh" script that checks the blocklists and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, which then allows replacing such failure messages with a "change found" statement in "launcher-gui".
+3. The file "check-updates" is actually a clipping of the original "hostsblock.sh" script, which merely checks the blocklists, and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, and then allows replacing such failure messages with a "change found" statement in "launcher-gui".
 
-4. The file "launcher-gui" is a simple zenity-based script that starts the "check-updates" script, informs the user when there are updates and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, hostsblock is launched similar to "launcher", and the user is asked if they would like to view the log file.
+4. The file "launcher-gui" is a simple zenity-based script that starts the "check-updates" script, informs the user when there are updates, and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, and hostsblock is launched similar to "launcher", and then the user is asked if they would like to view the log file.
 
-5. The file "scheduler-gui" is a simple zenity-based script, which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher" (aka "launcher") to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implementing user's choice.
+5. The file "scheduler-gui" is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher" (aka "launcher") to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
 
-6. The files "viewer-gui" and "editor-gui" are simple zenity-based scripts, which allows user to view/edit file(s) they choose from a list (/etc/hosts.block; /etc/hostsblock/hostsblock.conf,black.list,white.list; /var/log/hostsblock.log)
+6. The files "viewer-gui" and "editor-gui" are simple zenity-based scripts that allow the user to view/edit file(s) they choose from a list (/etc/hosts.block; /etc/hostsblock/hostsblock.conf,black.list,white.list; /var/log/hostsblock.log).
