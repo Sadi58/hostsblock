@@ -44,7 +44,7 @@ EOF
 # backup log
 		sudo -Sp '' cp /tmp/hostsblock.log /var/log/hostsblock.log <<<"${sudo_password}"
 # refresh indicator (status)
-		/usr/local/indicator-hostsblock/restart
+		/usr/local/indicator-hostsblock/restart-indicator
 # option to view log
 new_update="$(cat /tmp/hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
 		zenity --question --title "Hostsblock updated:" --text "<b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
