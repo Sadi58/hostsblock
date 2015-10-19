@@ -17,7 +17,7 @@ then
 fi
 if echo $choice | grep "hosts.block" > /dev/null
 then
-	zenity --text-info --filename=/etc/hosts.block --title="hosts.block (view only)" --width 300 --height 800 &
+	zenity --text-info --filename=/etc/hosts.block --title="hosts.block (view only)" --width 600 --height 800 &
 fi
 if echo $choice | grep "hostsblock.conf" > /dev/null
 then

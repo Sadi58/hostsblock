@@ -14,4 +14,4 @@ fi
 sudo -Sp '' /etc/init.d/dnsmasq restart <<<"${sudo_password}"
 # notify
 /usr/bin/canberra-gtk-play --id="dialog-information" &
-notify-send -i gtk-dialog-info "DNSMASQ service has been restarted" -i gtk-dialog-info -t 1000 -u normal
+notify-send -i gtk-dialog-info "DNSmasq service has been restarted" -i gtk-dialog-info -t 1000 -u normal
