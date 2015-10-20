@@ -64,4 +64,4 @@ Info about some files
 
 5. The file "scheduler-gui" is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher" (aka "launcher") to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
 
-6. The files "viewer-gui" and "editor-gui" are simple zenity-based scripts that allow the user to view/edit file(s) they choose from a list (/etc/hosts.block; /etc/hostsblock/hostsblock.conf,black.list,white.list; /var/log/hostsblock.log).
+6. The files "viewer-gui" and "editor-gui" are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (/etc/hosts.block; /etc/hostsblock/hostsblock.conf,black.list,white.list).

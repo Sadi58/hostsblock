@@ -39,11 +39,15 @@ class HostsBlockIndicator:
         self.Schedule_item.connect("activate", self.setSchedule)
         self.Schedule_item.show()
 
-	self.View_item = gtk.MenuItem("View Files")
+	self.Log_item = gtk.MenuItem("View Log File")
+        self.Log_item.connect("activate", self.doLog)
+        self.Log_item.show()
+
+	self.View_item = gtk.MenuItem("View Config Files")
         self.View_item.connect("activate", self.doView)
         self.View_item.show()
 
-	self.Edit_item = gtk.MenuItem("Edit Files")
+	self.Edit_item = gtk.MenuItem("Edit Config Files")
         self.Edit_item.connect("activate", self.doEdit)
         self.Edit_item.show()
 
@@ -89,6 +93,7 @@ class HostsBlockIndicator:
 	self.menu.append(self.seperator1_item)
 	self.menu.append(self.Launch_item)
 	self.menu.append(self.Schedule_item)
+	self.menu.append(self.Log_item)
 	self.menu.append(self.View_item)
 	self.menu.append(self.Edit_item)
 	self.menu.append(self.seperator2_item)
@@ -117,6 +122,9 @@ class HostsBlockIndicator:
 
     def setSchedule(self, dude):
 	os.system("/usr/local/indicator-hostsblock/scheduler-gui")
+
+    def doLog(self, dude):
+	os.system("zenity --text-info --filename=/var/log/hostsblock.log --title=\"hostsblock.log (view only)\" --width 680 --height 580")
 
     def doView(self, dude):
 	os.system("/usr/local/indicator-hostsblock/viewer-gui")
