@@ -28,6 +28,7 @@ Then copy "hostsblock-indicator" files like this:
 ```
 	/etc/sudoers.d/indicator-hostsblock-sudoers
 	/etc/xdg/autostart/indicator-hostsblock.desktop
+	/usr/local/indicator-hostsblock/change-icon-gui
 	/usr/local/indicator-hostsblock/check-updates
 	/usr/local/indicator-hostsblock/disable-hostsblock
 	/usr/local/indicator-hostsblock/editor-gui
@@ -36,9 +37,6 @@ Then copy "hostsblock-indicator" files like this:
 	/usr/local/indicator-hostsblock/hostsblock-color.png
 	/usr/local/indicator-hostsblock/hostsblock-dark.png
 	/usr/local/indicator-hostsblock/hostsblock-light.png
-	/usr/local/indicator-hostsblock/icon4colortheme
-	/usr/local/indicator-hostsblock/icon4darktheme
-	/usr/local/indicator-hostsblock/icon4lighttheme
 	/usr/local/indicator-hostsblock/indicator-hostsblock
 	/usr/local/indicator-hostsblock/launcher
 	/usr/local/indicator-hostsblock/launcher-gui
@@ -65,3 +63,5 @@ Info about some files
 5. The file "scheduler-gui" is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher" (aka "launcher") to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
 
 6. The files "viewer-gui" and "editor-gui" are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (/etc/hosts.block; /etc/hostsblock/hostsblock.conf,black.list,white.list).
+
+7. The file "change-icon-gui" is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).

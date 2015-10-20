@@ -69,17 +69,9 @@ class HostsBlockIndicator:
 	self.seperator3_item = gtk.SeparatorMenuItem()
 	self.seperator3_item.show()
 
-	self.LightTheme_item = gtk.MenuItem("Use light theme icon")
-        self.LightTheme_item.connect("activate", self.setLightTheme)
-        self.LightTheme_item.show()
-
-	self.DarkTheme_item = gtk.MenuItem("Use dark theme icon")
-        self.DarkTheme_item.connect("activate", self.setDarkTheme)
-        self.DarkTheme_item.show()
-
-	self.ColorTheme_item = gtk.MenuItem("Use color theme icon")
-        self.ColorTheme_item.connect("activate", self.setColorTheme)
-        self.ColorTheme_item.show()
+	self.Icon_item = gtk.MenuItem("Change indicator icon")
+        self.Icon_item.connect("activate", self.setIcon)
+        self.Icon_item.show()
 
 	self.seperator4_item = gtk.SeparatorMenuItem()
 	self.seperator4_item.show()
@@ -101,9 +93,7 @@ class HostsBlockIndicator:
 	self.menu.append(self.Enable_item)
 	self.menu.append(self.Restart_item)
 	self.menu.append(self.seperator3_item)
-	self.menu.append(self.LightTheme_item)
-	self.menu.append(self.DarkTheme_item)
-	self.menu.append(self.ColorTheme_item)
+	self.menu.append(self.Icon_item)
 	self.menu.append(self.seperator4_item)
 	self.menu.append(self.Refresh_item)
 
@@ -141,14 +131,8 @@ class HostsBlockIndicator:
     def doRestart(self, dude):
 	os.system("/usr/local/indicator-hostsblock/restart-dnsmasq")
 
-    def setLightTheme(self, dude):
-	os.system("sudo /usr/local/indicator-hostsblock/icon4lighttheme && /usr/local/indicator-hostsblock/restart-indicator")
-
-    def setDarkTheme(self, dude):
-	os.system("sudo /usr/local/indicator-hostsblock/icon4darktheme && /usr/local/indicator-hostsblock/restart-indicator")
-
-    def setColorTheme(self, dude):
-	os.system("sudo /usr/local/indicator-hostsblock/icon4colortheme && /usr/local/indicator-hostsblock/restart-indicator")
+    def setIcon(self, dude):
+	os.system("/usr/local/indicator-hostsblock/change-icon-gui")
 
     def doRefresh(self, dude):
 	os.system("/usr/local/indicator-hostsblock/restart-indicator")

@@ -1,0 +1,33 @@
+#!/bin/bash
+# options
+menu(){
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"Select the icon to use:\" --width 400 --height 240"
+im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
+im=$im"FALSE \"Light\" \"Icon for dark GTK themes\" "
+im=$im"FALSE \"Dark\" \"Icon for light GTK themes\" "
+im=$im"FALSE \"Color\" \"Icon for all GTK themes\" "
+}
+option(){
+choice=`echo $im | sh -`
+if echo $choice | grep "Light" > /dev/null
+then
+	cp -f /usr/local/indicator-hostsblock/hostsblock-dark.png /usr/local/indicator-hostsblock/hostsblock.png
+	/usr/local/indicator-hostsblock/restart-indicator
+fi
+if echo $choice | grep "Dark" > /dev/null
+then
+	cp -f /usr/local/indicator-hostsblock/hostsblock-light.png /usr/local/indicator-hostsblock/hostsblock.png
+	/usr/local/indicator-hostsblock/restart-indicator
+fi
+if echo $choice | grep "Color" > /dev/null
+then
+	cp -f /usr/local/indicator-hostsblock/hostsblock-color.png /usr/local/indicator-hostsblock/hostsblock.png
+	/usr/local/indicator-hostsblock/restart-indicator
+fi
+}
+menu
+option
+if test ${#choice} -gt 0
+then
+	echo "Completed"
+fi
