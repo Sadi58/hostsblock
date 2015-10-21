@@ -1,5 +1,5 @@
 indicator-hostsblock
-====================
+=====================
 
 A very simple and lightweight indicator applet to manage hostsblock: https://github.com/gaenserich/hostsblock
 
@@ -8,12 +8,12 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 ![screenshot](indicator-hostsblock-screenshot.png)
 
 Prerequisites
-====================
+----------------------
 
 Install **python-appindicator**, **python-gtk2** and **zenity** in addition to other **hostsblock dependencies**.
 
 Manual installation
-====================
+----------------------
 
 Install **hostsblock** as required - for example:
 ```
@@ -50,12 +50,12 @@ Then copy **hostsblock-indicator** files like this:
 **Caution**: Be aware that copying a file under the system directory `/etc/sudoers.d` might make it impossible to use the `sudo` command if there's something wrong with the file. Therefore, it might be a good idea to *keep this folder open in a Root Nautilus or Root Terminal window so that you can remove this file to remedy such a problem.*
 
 Deb package
-====================
+----------------------
 
 The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been tested under Ubuntu 15.04, is an amateur attempt to provide a proper installation method, and it should install the **indicator** and **hostsblock** with all options including **dnsmaq** and **kwakd** (which is the only *amd64-specific* item in this package), and finally start the indicator.
 
 Info about some files
-====================
+----------------------
 
 1. The file **indicator-hostsblock** is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
 
