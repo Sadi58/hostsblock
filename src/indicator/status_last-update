@@ -1,2 +1,15 @@
 #!/bin/bash
-echo "Last: `cat "/var/log/hostsblock.log" | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}'`"
+log_file="/var/log/hostsblock.log"
+# check if log exists
+if [[ ! -f $log_file ]]
+then
+	if [[ -L $log_file ]]
+	then
+		echo "None"
+	else
+		echo "None"
+	fi
+# if exists
+else
+	echo "Last: `cat "/var/log/hostsblock.log" | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}'`"
+fi
