@@ -10,7 +10,7 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 Prerequisites
 ===============
 
-Install "python-appindicator" and "zenity" in addition to any other hostsblock dependencies.
+Install "python-appindicator", "python-gtk2" and "zenity" in addition to any other hostsblock dependencies.
 
 Installation
 ===============
