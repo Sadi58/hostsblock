@@ -10,12 +10,12 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 Prerequisites
 ====================
 
-Install "python-appindicator", "python-gtk2" and "zenity" in addition to any other hostsblock dependencies.
+Install **python-appindicator**, **python-gtk2** and **zenity** in addition to other **hostsblock dependencies**.
 
 Manual installation
 ====================
 
-Install "hostsblock" as required - for example:
+Install **hostsblock** as required - for example:
 ```
 	/usr/local/lib/hostsblock-common.sh
 	/etc/hostsblock/black.list
@@ -24,7 +24,7 @@ Install "hostsblock" as required - for example:
 	/etc/hostsblock/hostsblock-urlcheck.sh
 	/etc/hostsblock/white.list
 ```
-Then copy "hostsblock-indicator" files like this:
+Then copy **hostsblock-indicator** files like this:
 ```
 	/etc/sudoers.d/indicator-hostsblock-sudoers
 	/etc/xdg/autostart/indicator-hostsblock.desktop
@@ -57,16 +57,16 @@ The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been teste
 Info about some files
 ====================
 
-1. The file "indicator-hostsblock" is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
+1. The file **indicator-hostsblock** is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
 
-2. The file "launcher" merely launches "/etc/hostsblock/hostsblock.sh" with verbosity level 3, creates a log file, and sends a graphical notification of the result ("no updates" or "x updates") to user(s).
+2. The file **launcher** merely launches `/etc/hostsblock/hostsblock.sh` with verbosity level 3, creates a log file, and sends a graphical notification of the result ("**no updates**" or "**x updates**") to user(s).
 
-3. The file "check-updates" is actually a clipping of the original "hostsblock.sh" script, which merely checks the blocklists, and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, and then allows replacing such failure messages with a "change found" statement in "launcher-gui".
+3. The file **check-updates** is actually a clipping of the original **hostsblock.sh** script, which merely checks the blocklists, and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, and then allows replacing such failure messages with a "**change found**" statement in **launcher-gui**.
 
-4. The file "launcher-gui" is a simple zenity-based script that starts the "check-updates" script, informs the user when there are updates, and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, and hostsblock is launched similar to "launcher", and then the user is asked if they would like to view the log file.
+4. The file **launcher-gui** is a simple zenity-based script that starts the **check-updates** script, informs the user when there are updates, and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, and hostsblock is launched similar to **launcher**, and then the user is asked if they would like to view the log file.
 
-5. The file "scheduler-gui" is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) "hostsblock-launcher" (aka "launcher") to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
+5. The file **scheduler-gui** is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) **hostsblock-launcher** (aka **launcher**) to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
 
-6. The files "viewer-gui" and "editor-gui" are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (/etc/hosts.block; /etc/hostsblock/hostsblock.conf,black.list,white.list).
+6. The files **viewer-gui** and **editor-gui** are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (`/etc/hosts.block`; `/etc/hostsblock/hostsblock.conf`,`black.list`,`white.list`).
 
-7. The file "change-icon-gui" is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).
+7. The file **change-icon-gui** is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).
