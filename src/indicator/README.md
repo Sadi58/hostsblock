@@ -57,7 +57,7 @@ The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been teste
 Info about some files
 ----------------------
 
-1. The file **indicator-hostsblock** is a simple pyhton script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
+1. The file **indicator-hostsblock** is a simple python script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
 
 2. The file **launcher** merely launches `/etc/hostsblock/hostsblock.sh` with verbosity level 3, creates a log file, and sends a graphical notification of the result ("**no updates**" or "**x updates**") to user(s).
 
