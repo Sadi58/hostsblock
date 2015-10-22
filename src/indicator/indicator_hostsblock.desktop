@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Encoding=UTF-8
+Type=Application
+Name=HostsBlock Indicator
+Exec=/usr/local/indicator-hostsblock/indicator-hostsblock
+Comment=Simple indicator applet to manage hostsblock
+Icon=/usr/local/indicator-hostsblock/hostsblock-color.png
+Hidden=false
+NoDisplay=false
+Terminal=false
+StartupNotify=true
