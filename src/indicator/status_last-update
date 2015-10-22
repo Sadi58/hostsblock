@@ -1,13 +1,13 @@
 #!/bin/bash
 log_file="/var/log/hostsblock.log"
-# check if log exists
-if [[ ! -f $log_file ]]
+# check if log does not exist
+if [[ ! -f "$log_file" ]]
 then
-	if [[ -L $log_file ]]
+	if [[ -L "$log_file" ]]
 	then
-		echo "None"
+		echo "Last: None"
 	else
-		echo "None"
+		echo "Last: None"
 	fi
 # if exists
 else
