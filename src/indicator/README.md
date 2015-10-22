@@ -52,7 +52,7 @@ Then copy **hostsblock-indicator** files like this:
 Deb package
 ----------------------
 
-The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been tested under Ubuntu 15.04, has been created using `dpkg-deb` to provide a proper installation method, and it should install the **indicator** and **hostsblock** with all options including **dnsmaq** and **kwakd** (which is the only *amd64-specific* item in this package). It first stops the hostsblock-indicator, if running, and deletes the directory `/usr/local/indicator-hostsblock/`, if exists. After copying all necessary files, it adds necessary entries "listen-address=127.0.0.1" and "addn-hosts=/etc/hosts.block" to `/etc/dnsmasq.conf`, and starts **dnsmasq** and **kwakd**, and finally the hostsblock-indicator.
+The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been tested under Ubuntu 15.04, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and *indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64-specific* item in the package). It first stops the hostsblock-indicator, if running, and deletes the directory `/usr/local/indicator-hostsblock/`, if exists. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, and starts **dnsmasq** and **kwakd** services, and finally the **hostsblock-indicator**.
 
 Info about some files
 ----------------------
