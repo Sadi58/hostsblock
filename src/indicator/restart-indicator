@@ -4,6 +4,5 @@ if [ "$process_status" -gt 0 ]
 then
 	pkill -f "python /usr/local/indicator-hostsblock/indicator-hostsblock"
 	python /usr/local/indicator-hostsblock/indicator-hostsblock
-else
-	echo "indicator not running, nothing to do"
 fi
+true
