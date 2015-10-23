@@ -10,7 +10,7 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 Prerequisites
 ----------------------
 
-Install **python-appindicator**, **python-gtk2** and **zenity** in addition to other **hostsblock dependencies**.
+Install **python-appindicator**, **python-gtk2**, **zenity** and **gksu** - in addition to other **hostsblock dependencies**, including **recommended** ones such as **p7zip-full** package.
 
 Manual installation
 ----------------------
@@ -26,7 +26,6 @@ Install **hostsblock** as required - for example:
 ```
 Then copy **hostsblock-indicator** files like this:
 ```
-	/etc/sudoers.d/indicator-hostsblock-sudoers
 	/etc/xdg/autostart/indicator-hostsblock.desktop
 	/usr/local/indicator-hostsblock/change-icon-gui
 	/usr/local/indicator-hostsblock/check-updates
@@ -46,13 +45,13 @@ Then copy **hostsblock-indicator** files like this:
 	/usr/local/indicator-hostsblock/status_auto-update
 	/usr/local/indicator-hostsblock/status_last-update
 	/usr/local/indicator-hostsblock/viewer-gui
+	/usr/share/applications/indicator_hostsblock.desktop
 ```
-**Caution**: Be aware that copying a file under the system directory `/etc/sudoers.d` might make it impossible to use the `sudo` command if there's something wrong with the file. Therefore, it might be a good idea to *keep this folder open in a Root Nautilus or Root Terminal window so that you can remove this file to remedy such a problem.*
 
 Deb package
 ----------------------
 
-The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been tested under Ubuntu 15.04, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and *indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64-specific* item in the package). It first stops the hostsblock-indicator, if running, and deletes the directory `/usr/local/indicator-hostsblock/`, if exists. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **hostsblock-indicator** or choose to start using it after logging off and back in.
+The file **indicator-hostsblock_amd64_0.999.2-1.deb**, which has only been tested under Ubuntu 15.04, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and *indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64-specific* item in the package). It first stops the hostsblock-indicator, if running, and deletes the directory `/usr/local/indicator-hostsblock/`, if exists. After copying all necessary files, it makes a couple of minor modifications in the original /etc/hostsblock/hostsblock.conf` file (i.e. using a separate `/etc/hosts.block` file instead of `/etc/hosts`, using `0.0.0.0` instead of `127.0.0.1` for localhost redirection to produce a smaller file, and commenting out several blocklists for a more modest size), adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
 Info about some files
 ----------------------

@@ -3,6 +3,6 @@ process_status=$(ps x | grep -v grep | grep -c "/usr/local/indicator-hostsblock/
 if [ "$process_status" -gt 0 ]
 then
 	pkill -f "python /usr/local/indicator-hostsblock/indicator-hostsblock"
-	python /usr/local/indicator-hostsblock/indicator-hostsblock
+	python /usr/local/indicator-hostsblock/indicator-hostsblock &
 fi
 true
