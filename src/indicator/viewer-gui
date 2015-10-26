@@ -3,7 +3,6 @@
 menu(){
 im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"Please select one or more files to view:\" --width 400 --height 240"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
-im=$im"FALSE \"hostsblock.log\" \"/var/log/hostsblock.log\" "
 im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
 im=$im"FALSE \"hostsblock.conf\" \"/etc/hosts.block/hostsblock.conf\" "
 im=$im"FALSE \"black.list\" \"/etc/hosts.block/black.list\" "
@@ -11,10 +10,6 @@ im=$im"FALSE \"white.list\" \"/etc/hosts.block/white.list\" "
 }
 option(){
 choice=`echo $im | sh -`
-if echo $choice | grep "hostsblock.log" > /dev/null
-then
-	zenity --text-info --filename=/var/log/hostsblock.log --title="hostsblock.log (view only)" --width 680 --height 580 &
-fi
 if echo $choice | grep "hosts.block" > /dev/null
 then
 	zenity --text-info --filename=/etc/hosts.block --title="hosts.block (view only)" --width 600 --height 800 &
