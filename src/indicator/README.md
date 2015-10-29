@@ -24,6 +24,13 @@ Install **hostsblock** as required - for example:
 	/etc/hostsblock/hostsblock-urlcheck.sh
 	/etc/hostsblock/white.list
 ```
+Install **kwakd** (can be extracted from deb archive file) as follows:
+```
+	/usr/local/bin/kwakd
+	/usr/local/bin/start-kwakd
+	/usr/local/share/man/man1/kwakd.1
+	/etc/init.d/kwakd
+```
 Then copy **hostsblock-indicator** files like this:
 ```
 	/etc/xdg/autostart/indicator-hostsblock.desktop
