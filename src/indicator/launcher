@@ -21,9 +21,23 @@ message=$(cat /tmp/hostsblock-launcher-message.txt)
 	echo "$xuser" > /tmp/xusers.txt
 	echo "$xdisplay" > /tmp/xdisplays.txt
 	while read -r -u3 xuser; read -r -u4 xdisplay; do
-	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "/usr/local/indicator-hostsblock/restart-indicator"
 	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
+	done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
+	while read -r -u3 xuser; read -r -u4 xdisplay; do
+	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "/usr/local/indicator-hostsblock/restart-indicator" &
 	done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
 else
 	echo "Hostsblock has just checked and found no updates" > /tmp/hostsblock-launcher-message.txt
+# notify user(s)
+xuser=$(who | grep ' \:[0-9]' | awk '{print $1}')
+xdisplay=$(who | grep ' \:[0-9]' | awk '{print $5}' | sed 's/[(|)]//g')
+message=$(cat /tmp/hostsblock-launcher-message.txt)
+	echo "$xuser" > /tmp/xusers.txt
+	echo "$xdisplay" > /tmp/xdisplays.txt
+	while read -r -u3 xuser; read -r -u4 xdisplay; do
+	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
+	done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
+	while read -r -u3 xuser; read -r -u4 xdisplay; do
+	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "/usr/local/indicator-hostsblock/restart-indicator" &
+	done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
 fi
