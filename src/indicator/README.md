@@ -80,4 +80,5 @@ Info about some files
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.2-3.deb:** Added kwakd man file
 - **indicator-hostsblock_amd64_0.999.2-2.deb:** Added launcher no update notification
