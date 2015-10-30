@@ -85,11 +85,12 @@ This fork includes several minor modifications in the upstream `hostsblock.conf`
 To do
 ----------------------
 
-- Solving indicator restart failure after launcher performs a cron job
+- Automatically refresh indicator after launcher performs a cron job and last update date and time changes
 
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.3-2.deb:** Fixed indicator restart failure after launcher cron job
 - **indicator-hostsblock_[amd64|i386]_0.999.3-1.deb:** Minor upstream updates, added hostsblock man files
 - **indicator-hostsblock_[amd64|i386]_0.999.2-3.deb:** Added kwakd man file
 - **indicator-hostsblock_amd64_0.999.2-2.deb:** Added launcher no update notification
