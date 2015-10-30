@@ -77,6 +77,11 @@ Info about some files
 
 7. The file **change-icon-gui** is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).
 
+To do
+----------------------
+
+- Solving indicator restart failure after launcher performs a cron job
+
 Change log
 ----------------------
 
