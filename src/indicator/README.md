@@ -41,14 +41,16 @@ Then copy **hostsblock-indicator** files like this:
 	/usr/local/indicator-hostsblock/check-updates
 	/usr/local/indicator-hostsblock/disable-hostsblock
 	/usr/local/indicator-hostsblock/editor-gui
+	/usr/local/indicator-hostsblock/edit-user-gui
 	/usr/local/indicator-hostsblock/enable-hostsblock
-	/usr/local/indicator-hostsblock/hostsblock.png
 	/usr/local/indicator-hostsblock/hostsblock-color.png
 	/usr/local/indicator-hostsblock/hostsblock-dark.png
 	/usr/local/indicator-hostsblock/hostsblock-light.png
+	/usr/local/indicator-hostsblock/hostsblock.png
 	/usr/local/indicator-hostsblock/indicator-hostsblock
 	/usr/local/indicator-hostsblock/launcher
 	/usr/local/indicator-hostsblock/launcher-gui
+	/usr/local/indicator-hostsblock/merge-user-gui
 	/usr/local/indicator-hostsblock/restart-dnsmasq
 	/usr/local/indicator-hostsblock/restart-indicator
 	/usr/local/indicator-hostsblock/scheduler-gui
@@ -61,7 +63,7 @@ Then copy **hostsblock-indicator** files like this:
 Deb package
 ----------------------
 
-The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). It first stops the hostsblock-indicator, if running, and deletes the directory `/usr/local/indicator-hostsblock/`, if exists. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
+The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). It first stops the hostsblock-indicator, if running, and deletes the directories `/etc/hostsblock/` and `/usr/local/indicator-hostsblock/`, if they exist. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
 Info about some files
 ----------------------
@@ -82,6 +84,8 @@ This fork includes several minor modifications in the upstream `hostsblock.conf`
 
 7. The file **change-icon-gui** is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).
 
+8. The **edit-user-gui** is a simple zenity-based script that allows the user to create/edit user-specific lists for **black.list** and **white.list** under subfolder `~/.local/share/indicator-hostsblock/` which can afterwards be used to merge into those corresponding hostsblock configuration files at `/etc/hostsblock/`.
+
 To do
 ----------------------
 
@@ -90,6 +94,7 @@ To do
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.3-3.deb:** Added user black/white lists feature and fixed some bugs
 - **indicator-hostsblock_[amd64|i386]_0.999.3-2.deb:** Fixed indicator restart failure after launcher cron job
 - **indicator-hostsblock_[amd64|i386]_0.999.3-1.deb:** Minor upstream updates, added hostsblock man files
 - **indicator-hostsblock_[amd64|i386]_0.999.2-3.deb:** Added kwakd man file

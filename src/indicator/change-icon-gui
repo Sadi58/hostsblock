@@ -1,11 +1,11 @@
 #!/bin/bash
 # options
 menu(){
-im="zenity --list --radiolist --title=\"Change Icon\" --text=\"Select the icon to use:\" --width 400 --height 240"
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width 270 --height 170"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
-im=$im"FALSE \"Light\" \"Icon for dark GTK themes\" "
-im=$im"FALSE \"Dark\" \"Icon for light GTK themes\" "
-im=$im"FALSE \"Color\" \"Icon for all GTK themes\" "
+im=$im"FALSE \"Light\" \"Icon for dark panels\" "
+im=$im"FALSE \"Dark\" \"Icon for light panels\" "
+im=$im"FALSE \"Color\" \"Icon for all panels\" "
 }
 option(){
 choice=`echo $im | sh -`
@@ -27,7 +27,3 @@ fi
 }
 menu
 option
-if test ${#choice} -gt 0
-then
-	echo "Completed"
-fi

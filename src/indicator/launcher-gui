@@ -1,6 +1,6 @@
 #!/bin/bash
 # notify
-notify-send "Hostsblock is checking if there are any updates..." -i gtk-dialog-info -t 1000 -u normal &
+notify-send "HostsBlock is checking if there are any updates..." -i gtk-dialog-info -t 1000 -u normal &
 # check updates
 /usr/local/indicator-hostsblock/check-updates -v 3 &>/tmp/hostsblock-check-updates.log
 # append date and time stamp to log
@@ -15,10 +15,10 @@ changes=$(grep http /tmp/hostsblock-updates.log)
 # no changes
 if [ -z "$changes" ]
 then
-	notify-send "Hostsblock found no updates; exiting..." -i gtk-dialog-info -t 1000 -u normal &
+	notify-send "HostsBlock found no updates; exiting..." -i gtk-dialog-info -t 1000 -u normal &
 	exit
 else
-	zenity --question --title "Hostsblock found changes:" --text "<i>$changes</i>\n\nWould you like to update now?"
+	zenity --question --title "HostsBlock found the following change(s):" --text "<i>$changes</i>\n\nWould you like to update now?"
 	if [ $? = 0 ]
 	then
 # password
@@ -33,7 +33,7 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 			exit 4
 		fi
 # notify
-		notify-send "Hostsblock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
+		notify-send "HostsBlock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
 # proceed to update and make log file open for all
 		sudo -Sp '' /etc/hostsblock/hostsblock.sh -v 3 &>/tmp/hostsblock.log <<<"${sudo_password}"
 		sudo -Sp '' chmod a+w /tmp/hostsblock.log <<<"${sudo_password}"
@@ -44,14 +44,14 @@ EOF
 # backup log
 		sudo -Sp '' cp /tmp/hostsblock.log /var/log/hostsblock.log <<<"${sudo_password}"
 # refresh indicator (status)
-		/usr/local/indicator-hostsblock/restart-indicator
+		/usr/local/indicator-hostsblock/restart-indicator &
 # option to view log
 new_update="$(cat /tmp/hostsblock.log | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}')"
-		zenity --question --title "Hostsblock updated:" --text "<b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
+		zenity --question --title="HostsBlock Updated" --text="<b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
 			if [ $? = 0 ]
 			then
 # display log
-			zenity --text-info --filename=/tmp/hostsblock.log --width 680 --height 680
+			zenity --text-info --title="hostsblock.log (view only)" --filename="/tmp/hostsblock.log" --width 680 --height 580
 			fi
 	fi
 fi

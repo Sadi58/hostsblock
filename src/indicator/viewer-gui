@@ -1,35 +1,46 @@
 #!/bin/bash
 # options
 menu(){
-im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"Please select one or more files to view:\" --width 400 --height 240"
+im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 450 --height 210"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
-im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
 im=$im"FALSE \"hostsblock.conf\" \"/etc/hosts.block/hostsblock.conf\" "
 im=$im"FALSE \"black.list\" \"/etc/hosts.block/black.list\" "
 im=$im"FALSE \"white.list\" \"/etc/hosts.block/white.list\" "
+im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
+im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
 }
 option(){
 choice=`echo $im | sh -`
-if echo $choice | grep "hosts.block" > /dev/null
-then
-	zenity --text-info --filename=/etc/hosts.block --title="hosts.block (view only)" --width 600 --height 800 &
-fi
 if echo $choice | grep "hostsblock.conf" > /dev/null
 then
-	zenity --text-info --filename=/etc/hostsblock/hostsblock.conf --title="hostsblock.conf (view only)" --width 980 --height 680 &
+	zenity --text-info --filename="/etc/hostsblock/hostsblock.conf" --title="hostsblock.conf (view only)" --width 980 --height 680 &
 fi
 if echo $choice | grep "black.list" > /dev/null
 then
-	zenity --text-info --filename=/etc/hostsblock/black.list --title="black.list (view only)" --width 300 --height 600 &
+	zenity --text-info --filename="/etc/hostsblock/black.list" --title="black.list (view only)" --width 300 --height 600 &
 fi
 if echo $choice | grep "white.list" > /dev/null
 then
-	zenity --text-info --filename=/etc/hostsblock/white.list --title="white.list (view only)" --width 300 --height 500 &
+	zenity --text-info --filename="/etc/hostsblock/white.list" --title="white.list (view only)" --width 300 --height 500 &
+fi
+if echo $choice | grep "user.deny.list" > /dev/null
+then
+	if [ -f $HOME/.local/share/indicator-hostsblock/user.deny.list ]
+	then
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
+	else
+		notify-send "user.deny.list does not exist" -i gtk-dialog-info -t 1000 -u normal &
+	fi
+fi
+if echo $choice | grep "user.allow.list" > /dev/null
+then
+	if [ -f $HOME/.local/share/indicator-hostsblock/user.allow.list ]
+	then
+		zenity --text-info --filename=$HOME/.local/share/indicator-hostsblock/user.allow.list --title="user.allow.list (view only)" --width 300 --height 600 &
+	else
+		notify-send "user.allow.list does not exist" -i gtk-dialog-info -t 1000 -u normal &
+	fi
 fi
 }
 menu
 option
-if test ${#choice} -gt 0
-then
-	echo "Completed"
-fi

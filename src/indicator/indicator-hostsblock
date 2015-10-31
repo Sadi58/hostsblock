@@ -35,21 +35,33 @@ class HostsBlockIndicator:
         self.Launch_item.connect("activate", self.doLaunch)
         self.Launch_item.show()
 
-	self.Schedule_item = gtk.MenuItem("Manage Updates")
+	self.Schedule_item = gtk.MenuItem("Manage Auto-Updates...")
         self.Schedule_item.connect("activate", self.setSchedule)
         self.Schedule_item.show()
+
+	self.Block_item = gtk.MenuItem("View Hosts.Block File")
+        self.Block_item.connect("activate", self.doBlock)
+        self.Block_item.show()
 
 	self.Log_item = gtk.MenuItem("View Log File")
         self.Log_item.connect("activate", self.doLog)
         self.Log_item.show()
 
-	self.View_item = gtk.MenuItem("View Config Files")
+	self.View_item = gtk.MenuItem("View Config Files...")
         self.View_item.connect("activate", self.doView)
         self.View_item.show()
 
-	self.Edit_item = gtk.MenuItem("Edit Config Files")
+	self.Edit_item = gtk.MenuItem("Edit Config Files...")
         self.Edit_item.connect("activate", self.doEdit)
         self.Edit_item.show()
+
+	self.EditUser_item = gtk.MenuItem("Edit User Lists...")
+        self.EditUser_item.connect("activate", self.doEditUser)
+        self.EditUser_item.show()
+
+	self.MergeUser_item = gtk.MenuItem("Merge User Lists...")
+        self.MergeUser_item.connect("activate", self.doMergeUser)
+        self.MergeUser_item.show()
 
 	self.seperator2_item = gtk.SeparatorMenuItem()
 	self.seperator2_item.show()
@@ -58,7 +70,7 @@ class HostsBlockIndicator:
         self.Disable_item.connect("activate", self.doDisable)
         self.Disable_item.show()
 
-	self.Enable_item = gtk.MenuItem("Re-enable HostsBlock")
+	self.Enable_item = gtk.MenuItem("Re-Enable HostsBlock")
         self.Enable_item.connect("activate", self.doEnable)
         self.Enable_item.show()
 
@@ -69,14 +81,14 @@ class HostsBlockIndicator:
 	self.seperator3_item = gtk.SeparatorMenuItem()
 	self.seperator3_item.show()
 
-	self.Icon_item = gtk.MenuItem("Change indicator icon")
+	self.Icon_item = gtk.MenuItem("Change Indicator Icon...")
         self.Icon_item.connect("activate", self.setIcon)
         self.Icon_item.show()
 
 	self.seperator4_item = gtk.SeparatorMenuItem()
 	self.seperator4_item.show()
 
-	self.Refresh_item = gtk.MenuItem("Refresh indicator")
+	self.Refresh_item = gtk.MenuItem("Refresh Indicator")
         self.Refresh_item.connect("activate", self.doRefresh)
         self.Refresh_item.show()
 
@@ -85,9 +97,12 @@ class HostsBlockIndicator:
 	self.menu.append(self.seperator1_item)
 	self.menu.append(self.Launch_item)
 	self.menu.append(self.Schedule_item)
+	self.menu.append(self.Block_item)
 	self.menu.append(self.Log_item)
 	self.menu.append(self.View_item)
 	self.menu.append(self.Edit_item)
+	self.menu.append(self.EditUser_item)
+	self.menu.append(self.MergeUser_item)
 	self.menu.append(self.seperator2_item)
 	self.menu.append(self.Disable_item)
 	self.menu.append(self.Enable_item)
@@ -113,6 +128,9 @@ class HostsBlockIndicator:
     def setSchedule(self, dude):
 	os.system("/usr/local/indicator-hostsblock/scheduler-gui")
 
+    def doBlock(self, dude):
+	os.system("zenity --text-info --filename=/etc/hosts.block --title=\"hosts.block (view only)\" --width 600 --height 800")
+
     def doLog(self, dude):
 	os.system("zenity --text-info --filename=/var/log/hostsblock.log --title=\"hostsblock.log (view only)\" --width 680 --height 580")
 
@@ -121,6 +139,12 @@ class HostsBlockIndicator:
 
     def doEdit(self, dude):
 	os.system("/usr/local/indicator-hostsblock/editor-gui")
+
+    def doEditUser(self, dude):
+	os.system("/usr/local/indicator-hostsblock/edit-user-gui")
+
+    def doMergeUser(self, dude):
+	os.system("/usr/local/indicator-hostsblock/merge-user-gui")
 
     def doDisable(self, dude):
 	os.system("/usr/local/indicator-hostsblock/disable-hostsblock")

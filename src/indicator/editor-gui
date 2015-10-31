@@ -12,12 +12,12 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 	fi
 # options
 menu(){
-im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"Please select one or more files to edit:\" --width 400 --height 240"
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 350 --height 190"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
-im=$im"FALSE \"hosts.block\" \"\\etc\\hosts.block\" "
-im=$im"FALSE \"hostsblock.conf\" \"\\etc\\hosts.block\\hostsblock.conf\" "
-im=$im"FALSE \"black.list\" \"\\etc\\hosts.block\\black.list\" "
-im=$im"FALSE \"white.list\" \"\\etc\\hosts.block\\white.list\" "
+im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
+im=$im"FALSE \"hostsblock.conf\" \"/etc/hostsblock/hostsblock.conf\" "
+im=$im"FALSE \"black.list\" \"/etc/hostsblock/black.list\" "
+im=$im"FALSE \"white.list\" \"/etc/hostsblock/white.list\" "
 }
 option(){
 choice=`echo $im | sh -`
@@ -40,7 +40,3 @@ fi
 }
 menu
 option
-if test ${#choice} -gt 0
-then
-	echo "Completed"
-fi
