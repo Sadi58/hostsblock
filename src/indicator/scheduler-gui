@@ -7,35 +7,35 @@ if [ "$check_hourly" = hostsblock-launcher ]
 then
 	echo "Hourly" > "/tmp/hostsblock-auto-update.txt"
 else
-if [ "$check_daily" = hostsblock-launcher ]
-then
-	echo "Daily" > "/tmp/hostsblock-auto-update.txt"
-else
-if [ "$check_weekly" = hostsblock-launcher ]
-then
-	echo "Weekly" > "/tmp/hostsblock-auto-update.txt"
-else
-if [ "$check_monthly" = hostsblock-launcher ]
-then
-	echo "Monthly" > "/tmp/hostsblock-auto-update.txt"
-else
-	echo "None" > "/tmp/hostsblock-auto-update.txt"
-fi
-fi
-fi
+	if [ "$check_daily" = hostsblock-launcher ]
+	then
+		echo "Daily" > "/tmp/hostsblock-auto-update.txt"
+	else
+		if [ "$check_weekly" = hostsblock-launcher ]
+		then
+			echo "Weekly" > "/tmp/hostsblock-auto-update.txt"
+		else
+			if [ "$check_monthly" = hostsblock-launcher ]
+			then
+				echo "Monthly" > "/tmp/hostsblock-auto-update.txt"
+			else
+				echo "None" > "/tmp/hostsblock-auto-update.txt"
+			fi
+		fi
+	fi
 fi
 auto_update="$(cat /tmp/hostsblock-auto-update.txt)"
 # password
 sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
 # check for null entry or cancellation
-	if [[ ${?} != 0 || -z ${sudo_password} ]]
-	then
-		exit 4
-	fi
-	if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
-	then
-		exit 4
-	fi
+if [[ ${?} != 0 || -z ${sudo_password} ]]
+then
+	exit 4
+fi
+if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
+then
+	exit 4
+fi
 # options
 menu(){
 im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock Auto-Update: <b><i>$auto_update</i></b>\n<b>Select one of the options below to change this:</b>\" --width 400 --height 220"

@@ -20,6 +20,9 @@ class HostsBlockIndicator:
     def menu_setup(self):
         self.menu = gtk.Menu()
 
+	self.AutoRefresh_item = gtk.MenuItem(self.AutoRefresh())
+	self.AutoRefresh_item.set_sensitive(False)
+
 	self.infoHostsBlockAuto_item = gtk.MenuItem(self.infoHostsBlockAuto())
 	self.infoHostsBlockAuto_item.set_sensitive(False)
 	self.infoHostsBlockAuto_item.show()
@@ -112,6 +115,9 @@ class HostsBlockIndicator:
 	self.menu.append(self.seperator4_item)
 	self.menu.append(self.Refresh_item)
 
+    def AutoRefresh(self):
+	os.system("/usr/local/indicator-hostsblock/auto-refresh &")
+
     def infoHostsBlockAuto(self):
 	os.system("/usr/local/indicator-hostsblock/status_auto-update")
 	stat, out = commands.getstatusoutput("/usr/local/indicator-hostsblock/status_auto-update")
@@ -132,7 +138,7 @@ class HostsBlockIndicator:
 	os.system("zenity --text-info --filename=/etc/hosts.block --title=\"hosts.block (view only)\" --width 600 --height 800")
 
     def doLog(self, dude):
-	os.system("zenity --text-info --filename=/var/log/hostsblock.log --title=\"hostsblock.log (view only)\" --width 680 --height 580")
+	os.system("zenity --text-info --filename=/usr/local/indicator-hostsblock/hostsblock.log --title=\"hostsblock.log (view only)\" --width 680 --height 580")
 
     def doView(self, dude):
 	os.system("/usr/local/indicator-hostsblock/viewer-gui")

@@ -15,4 +15,4 @@ sudo -Sp '' mv /etc/hosts.block.disabled /etc/hosts.block <<<"${sudo_password}"
 sudo -Sp '' /etc/init.d/dnsmasq restart <<<"${sudo_password}"
 # notify
 /usr/bin/canberra-gtk-play --id="dialog-information" &
-notify-send "Hostsblock re-enabled, DNSmasq restarted" -i gtk-dialog-info -t 1000 -u normal
+notify-send "HostsBlock re-enabled, DNSmasq restarted" -i gtk-dialog-info -t 1000 -u normal

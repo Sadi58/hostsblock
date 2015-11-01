@@ -1,5 +1,5 @@
 #!/bin/bash
-log_file="/var/log/hostsblock.log"
+log_file="/usr/local/indicator-hostsblock/hostsblock.log"
 # check if log does not exist
 if [[ ! -f "$log_file" ]]
 then
@@ -11,5 +11,5 @@ then
 	fi
 # if exists
 else
-	echo "Last: `cat "/var/log/hostsblock.log" | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}'`"
+	echo "Last: `cat "/usr/local/indicator-hostsblock/hostsblock.log" | grep 'Hostsblock completed at ' | awk -F ' at ' '{print $2}'`"
 fi

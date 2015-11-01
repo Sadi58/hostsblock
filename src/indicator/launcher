@@ -8,7 +8,7 @@ EOF
 # make log file open for all
 chmod a+w /tmp/hostsblock.log
 # backup log
-cp /tmp/hostsblock.log /var/log/hostsblock.log
+cp -f /tmp/hostsblock.log /usr/local/indicator-hostsblock/hostsblock.log
 # create message
 changes=$(grep -c "CHANGES FOUND" /tmp/hostsblock.log)
 if [ "$changes" -gt 0 ]

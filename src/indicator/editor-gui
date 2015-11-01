@@ -2,14 +2,14 @@
 # get password
 sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
 # check for null entry or cancellation
-	if [[ ${?} != 0 || -z ${sudo_password} ]]
-	then
-		exit 4
-	fi
-	if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
-	then
-		exit 4
-	fi
+if [[ ${?} != 0 || -z ${sudo_password} ]]
+then
+	exit 4
+fi
+if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
+then
+	exit 4
+fi
 # options
 menu(){
 im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 350 --height 190"

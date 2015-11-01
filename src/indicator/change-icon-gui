@@ -12,17 +12,14 @@ choice=`echo $im | sh -`
 if echo $choice | grep "Light" > /dev/null
 then
 	cp -f /usr/local/indicator-hostsblock/hostsblock-dark.png /usr/local/indicator-hostsblock/hostsblock.png
-	/usr/local/indicator-hostsblock/restart-indicator
 fi
 if echo $choice | grep "Dark" > /dev/null
 then
 	cp -f /usr/local/indicator-hostsblock/hostsblock-light.png /usr/local/indicator-hostsblock/hostsblock.png
-	/usr/local/indicator-hostsblock/restart-indicator
 fi
 if echo $choice | grep "Color" > /dev/null
 then
 	cp -f /usr/local/indicator-hostsblock/hostsblock-color.png /usr/local/indicator-hostsblock/hostsblock.png
-	/usr/local/indicator-hostsblock/restart-indicator
 fi
 }
 menu

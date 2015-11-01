@@ -7,21 +7,21 @@ if [ "$check_hourly" = hostsblock-launcher ]
 then
 	echo "Auto-Update: Hourly" > "/tmp/hostsblock-scheduler.txt"
 else
-if [ "$check_daily" = hostsblock-launcher ]
-then
-	echo "Auto-Update: Daily" > "/tmp/hostsblock-scheduler.txt"
-else
-if [ "$check_weekly" = hostsblock-launcher ]
-then
-	echo "Auto-Update: Weekly" > "/tmp/hostsblock-scheduler.txt"
-else
-if [ "$check_monthly" = hostsblock-launcher ]
-then
-	echo "Auto-Update: Monthly" > "/tmp/hostsblock-scheduler.txt"
-else
-	echo "Auto-Update: None" > "/tmp/hostsblock-scheduler.txt"
-fi
-fi
-fi
+	if [ "$check_daily" = hostsblock-launcher ]
+	then
+		echo "Auto-Update: Daily" > "/tmp/hostsblock-scheduler.txt"
+	else
+		if [ "$check_weekly" = hostsblock-launcher ]
+		then
+			echo "Auto-Update: Weekly" > "/tmp/hostsblock-scheduler.txt"
+		else
+			if [ "$check_monthly" = hostsblock-launcher ]
+			then
+				echo "Auto-Update: Monthly" > "/tmp/hostsblock-scheduler.txt"
+			else
+				echo "Auto-Update: None" > "/tmp/hostsblock-scheduler.txt"
+			fi
+		fi
+	fi
 fi
 echo `cat "/tmp/hostsblock-scheduler.txt"`
