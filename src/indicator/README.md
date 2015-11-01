@@ -10,7 +10,7 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 Prerequisites
 ----------------------
 
-Install **python-appindicator**, **python-gtk2**, **zenity** and **gksu** - in addition to other **hostsblock dependencies**, including **recommended** ones such as **p7zip-full** package.
+Install **gksu**, **python-appindicator**, **python-gtk2**, **zenity** and **inotify-tools** - in addition to other **hostsblock dependencies**, including **recommended** ones such as **p7zip-full** package.
 
 Manual installation
 ----------------------
@@ -37,6 +37,7 @@ Install **kwakd** (can be extracted from deb archive file) as follows:
 Then copy **hostsblock-indicator** files like this:
 ```
 	/etc/xdg/autostart/indicator-hostsblock.desktop
+	/usr/local/indicator-hostsblock/auto-refresh
 	/usr/local/indicator-hostsblock/change-icon-gui
 	/usr/local/indicator-hostsblock/check-updates
 	/usr/local/indicator-hostsblock/disable-hostsblock
@@ -65,6 +66,8 @@ Deb package
 
 The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). It first stops the hostsblock-indicator, if running, and deletes the directories `/etc/hostsblock/` and `/usr/local/indicator-hostsblock/`, if they exist. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
+**Note:** This deb package successfully installs hostsblock indicator via **Ubuntu Software Manager**, but not via **GDebi Package Installer**, due to a number *lintian errors*.
+
 Info about some files
 ----------------------
 
@@ -86,14 +89,10 @@ This fork includes several minor modifications in the upstream `hostsblock.conf`
 
 8. The **edit-user-gui** is a simple zenity-based script that allows the user to create/edit user-specific lists for **black.list** and **white.list** under subfolder `~/.local/share/indicator-hostsblock/` which can afterwards be used to merge into those corresponding hostsblock configuration files at `/etc/hostsblock/`.
 
-To do
-----------------------
-
-- Automatically refresh indicator after launcher performs a cron job and last update date and time changes
-
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.3-4.deb:** Indicator now automatically refreshes after a change in `/usr/local/indicator-hostsblock/`, including **hostsblock.log** and indicator icon, i.e. **hostsblock.png**
 - **indicator-hostsblock_[amd64|i386]_0.999.3-3.deb:** Added user black/white lists feature and fixed some bugs
 - **indicator-hostsblock_[amd64|i386]_0.999.3-2.deb:** Fixed indicator restart failure after launcher cron job
 - **indicator-hostsblock_[amd64|i386]_0.999.3-1.deb:** Minor upstream updates, added hostsblock man files
