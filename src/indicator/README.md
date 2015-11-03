@@ -66,7 +66,11 @@ Deb package
 
 The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). It first stops the hostsblock-indicator, if running, and deletes the directories `/etc/hostsblock/` and `/usr/local/indicator-hostsblock/`, if they exist. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
-**Note:** This deb package successfully installs hostsblock indicator via **Ubuntu Software Manager**, but not via **GDebi Package Installer**, due to a number *lintian errors*.
+**Notes:**
+
+1. This deb package successfully installs hostsblock indicator via **Ubuntu Software Manager**, or Terminal command `sudo dpkg -i "/path/to/indicator-hostsblock_xxxx_0.999.x-x.deb"`, but not via **GDebi Package Installer**, due to a number *lintian errors*.
+
+2. This deb package is good for installation from scratch, but not for **upgrading** in proper; therefore, in the event of re-installation or upgrade, it's recommended to (i) make a backup of `/etc/hosts.block`, (ii) uninstall the previous deb package, and then (iii) install the new one.
 
 Info about some files
 ----------------------
@@ -90,6 +94,10 @@ This fork includes several minor modifications in the upstream `hostsblock.conf`
 8. The file **edit-user-gui** is a simple zenity-based script that allows the user to create/edit user-specific lists for **black.list** and **white.list** under subfolder `~/.local/share/indicator-hostsblock/` which can afterwards be used to merge into those corresponding hostsblock configuration files at `/etc/hostsblock/`.
 
 9. The file **auto-refresh**, which is automatically executed when the main python script starts, monitors the directory `/usr/local/indicator-hostsblock` so as to restart/refresh the indicator whenever its contents are modified, e.g. in the event of a change of indicator icon or hostsblock.log file (the source of last update date and time displayed at the top of the menu).
+
+To do
+----------------------
+Make deb package fully functional, i.e. for re-installation and upgrading without requiring to uninstall first
 
 Change log
 ----------------------
