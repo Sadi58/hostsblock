@@ -23,19 +23,19 @@ option(){
 choice=`echo $im | sh -`
 if echo $choice | grep "hosts.block" > /dev/null
 then
-	sudo -Sp '' xdg-open "/etc/hosts.block" <<<"${sudo_password}" &
+	sudo -Sp '' kkedit "/etc/hosts.block" <<<"${sudo_password}" &
 fi
 if echo $choice | grep "hostsblock.conf" > /dev/null
 then
-	sudo -Sp '' xdg-open "/etc/hostsblock/hostsblock.conf" <<<"${sudo_password}" &
+	sudo -Sp '' kkedit "/etc/hostsblock/hostsblock.conf" <<<"${sudo_password}" &
 fi
 if echo $choice | grep "black.list" > /dev/null
 then
-	sudo -Sp '' xdg-open "/etc/hostsblock/black.list" <<<"${sudo_password}" &
+	sudo -Sp '' kkedit "/etc/hostsblock/black.list" <<<"${sudo_password}" &
 fi
 if echo $choice | grep "white.list" > /dev/null
 then
-	sudo -Sp '' xdg-open "/etc/hostsblock/white.list" <<<"${sudo_password}" &
+	sudo -Sp '' kkedit "/etc/hostsblock/white.list" <<<"${sudo_password}" &
 fi
 }
 menu

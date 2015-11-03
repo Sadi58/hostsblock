@@ -101,7 +101,7 @@ Make deb package fully functional, i.e. for re-installation and upgrading withou
 
 Change log
 ----------------------
-
+- **indicator-hostsblock_[amd64|i386]_0.999.3-6.deb:** Improved View/Edit Config Files menu items, and hostsblock.conf format
 - **indicator-hostsblock_[amd64|i386]_0.999.3-5.deb:** Added quit menu item and polished menu further
 - **indicator-hostsblock_[amd64|i386]_0.999.3-4.deb:** Indicator now automatically refreshes after a change in `/usr/local/indicator-hostsblock/`, including **hostsblock.log** and indicator icon, i.e. **hostsblock.png**
 - **indicator-hostsblock_[amd64|i386]_0.999.3-3.deb:** Added user black/white lists feature and fixed some bugs

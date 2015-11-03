@@ -1,19 +1,29 @@
 #!/bin/bash
 # options
 menu(){
-im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 450 --height 210"
+im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 480 --height 230"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
-im=$im"FALSE \"hostsblock.conf\" \"/etc/hosts.block/hostsblock.conf\" "
-im=$im"FALSE \"black.list\" \"/etc/hosts.block/black.list\" "
-im=$im"FALSE \"white.list\" \"/etc/hosts.block/white.list\" "
+im=$im"FALSE \"hostsblock.conf(full)\" \"/etc/hostsblock/hostsblock.conf (full)\" "
+im=$im"FALSE \"hostsblock.conf(extract)\" \"/etc/hostsblock/hostsblock.conf (extract)\" "
+im=$im"FALSE \"black.list\" \"/etc/hostsblock/black.list\" "
+im=$im"FALSE \"white.list\" \"/etc/hostsblock/white.list\" "
 im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
 im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
 }
 option(){
 choice=`echo $im | sh -`
-if echo $choice | grep "hostsblock.conf" > /dev/null
+if echo $choice | grep "hostsblock.conf(full)" > /dev/null
 then
-	zenity --text-info --filename="/etc/hostsblock/hostsblock.conf" --title="hostsblock.conf (view only)" --width 980 --height 680 &
+	zenity --text-info --filename="/etc/hostsblock/hostsblock.conf" --title="hostsblock.conf - full (view only)" --width 980 --height 680 &
+fi
+if echo $choice | grep "hostsblock.conf(extract)" > /dev/null
+then
+	cp '/etc/hostsblock/hostsblock.conf' '/tmp/extract-hostsblock.conf'
+	sed -i 's/^# .*$//g' '/tmp/extract-hostsblock.conf'
+	sed -i "s/^### .*$//g" "/tmp/extract-hostsblock.conf"
+	sed -i "/^\s*$/d" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^##/\n##/g" "/tmp/extract-hostsblock.conf"
+	zenity --text-info --filename="/tmp/extract-hostsblock.conf" --title="hostsblock.conf - extract (view only)" --width 980 --height 680 &
 fi
 if echo $choice | grep "black.list" > /dev/null
 then
