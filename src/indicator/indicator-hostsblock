@@ -84,16 +84,20 @@ class HostsBlockIndicator:
 	self.seperator3_item = gtk.SeparatorMenuItem()
 	self.seperator3_item.show()
 
-	self.Icon_item = gtk.MenuItem("Change Indicator Icon...")
+	self.Icon_item = gtk.MenuItem("Change Icon...")
         self.Icon_item.connect("activate", self.setIcon)
         self.Icon_item.show()
 
 	self.seperator4_item = gtk.SeparatorMenuItem()
 	self.seperator4_item.show()
 
-	self.Refresh_item = gtk.MenuItem("Refresh Indicator")
+	self.Refresh_item = gtk.MenuItem("Refresh")
         self.Refresh_item.connect("activate", self.doRefresh)
         self.Refresh_item.show()
+
+	self.Quit_item = gtk.MenuItem("Quit")
+        self.Quit_item.connect("activate", self.doQuit)
+        self.Quit_item.show()
 
 	self.menu.append(self.infoHostsBlockAuto_item)
 	self.menu.append(self.infoHostsBlockLast_item)
@@ -114,6 +118,7 @@ class HostsBlockIndicator:
 	self.menu.append(self.Icon_item)
 	self.menu.append(self.seperator4_item)
 	self.menu.append(self.Refresh_item)
+	self.menu.append(self.Quit_item)
 
     def AutoRefresh(self):
 	os.system("/usr/local/indicator-hostsblock/auto-refresh &")
@@ -166,6 +171,9 @@ class HostsBlockIndicator:
 
     def doRefresh(self, dude):
 	os.system("/usr/local/indicator-hostsblock/restart-indicator")
+
+    def doQuit(self, dude):
+	os.system("pkill -f 'inotifywait -qqre modify /usr/local/indicator-hostsblock/' & pkill -f '/bin/bash /usr/local/indicator-hostsblock/auto-refresh' & pkill -f 'python /usr/local/indicator-hostsblock/indicator-hostsblock'")
 
     def ignore(*args):
 	return gtk.TRUE
