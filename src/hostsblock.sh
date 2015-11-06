@@ -12,12 +12,12 @@ Usage:
   $0 [ -f CONFIGFILE ] [ -v VERBOSITY ] - update the HOSTS file with block and redirection lists
 
 Help Options:
-  -h                            Show help options
+  -h                       Show help options
 
 Application Options:
-  -f CONFIGFILE                 Specify an alternative configuration file (instead of /etc/hostsblock/hostsblock.conf)
-  -v VERBOSITY                  Specify how much information hostsblock provides (0=only fatal errors to 5=the kitchen sink)
-  -u                            Force hostsblock to update its target file, even if no changes to source files are found
+  -f CONFIGFILE            Specify an alternative configuration file (instead of /usr/share/hostsblock/hostsblock.conf)
+  -v VERBOSITY             Specify how much information hostsblock provides (0=only fatal errors to 5=the kitchen sink)
+  -u                       Force hostsblock to update its target file, even if no changes to source files are found
 EOF
             exit 1
         ;;

@@ -11,15 +11,15 @@ option(){
 choice=`echo $im | sh -`
 if echo $choice | grep "Light" > /dev/null
 then
-	cp -f /usr/local/indicator-hostsblock/hostsblock-dark.png /usr/local/indicator-hostsblock/hostsblock.png
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-dark.png" "/usr/share/indicator-hostsblock/hostsblock.png"
 fi
 if echo $choice | grep "Dark" > /dev/null
 then
-	cp -f /usr/local/indicator-hostsblock/hostsblock-light.png /usr/local/indicator-hostsblock/hostsblock.png
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-light.png" "/usr/share/indicator-hostsblock/hostsblock.png"
 fi
 if echo $choice | grep "Color" > /dev/null
 then
-	cp -f /usr/local/indicator-hostsblock/hostsblock-color.png /usr/local/indicator-hostsblock/hostsblock.png
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-color.png" "/usr/share/indicator-hostsblock/hostsblock.png"
 fi
 }
 menu

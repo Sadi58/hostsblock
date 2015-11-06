@@ -1,37 +1,39 @@
 #!/bin/bash
 # launch hostsblock with verbosity level 3, and create log
-/etc/hostsblock/hostsblock.sh -v 3 &>/tmp/hostsblock.log
+"/usr/share/hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log"
 # append date and time stamp to log
-cat <<EOF >> /tmp/hostsblock.log
+cat <<EOF >> "/tmp/hostsblock.log"
 Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
 EOF
 # make log file open for all
-chmod a+w /tmp/hostsblock.log
+chmod a+w "/tmp/hostsblock.log"
 # backup log
-cp -f /tmp/hostsblock.log /usr/local/indicator-hostsblock/hostsblock.log
+cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log"
 # create message
-changes=$(grep -c "CHANGES FOUND" /tmp/hostsblock.log)
+changes=$(grep -c "CHANGES FOUND" "/tmp/hostsblock.log")
 if [ "$changes" -gt 0 ]
 then
-	echo "Hostsblock has just checked and updated $changes blocklist(s)" > /tmp/hostsblock-launcher-message.txt
+	echo "Hostsblock has just checked and updated $changes blocklist(s)" > "/tmp/hostsblock-launcher-message.txt"
 # notify user(s)
-xuser=$(who | grep ' \:[0-9]' | awk '{print $1}')
-xdisplay=$(who | grep ' \:[0-9]' | awk '{print $5}' | sed 's/[(|)]//g')
-message=$(cat /tmp/hostsblock-launcher-message.txt)
-	echo "$xuser" > /tmp/xusers.txt
-	echo "$xdisplay" > /tmp/xdisplays.txt
-	while read -r -u3 xuser; read -r -u4 xdisplay; do
-	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
-	done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
+xuser=$(who | grep " \:[0-9]" | awk "{print $1}")
+xdisplay=$(who | grep " \:[0-9]" | awk "{print $5}" | sed "s/[(|)]//g")
+message=$(cat "/tmp/hostsblock-launcher-message.txt")
+	echo "$xuser" > "/tmp/xusers.txt"
+	echo "$xdisplay" > "/tmp/xdisplays.txt"
+	while read -r -u3 xuser; read -r -u4 xdisplay
+	do
+		DISPLAY="$xdisplay" XAUTHORITY="/home/"$xuser"/.Xauthority" su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
+	done 3<"/tmp/xusers.txt" 4<"/tmp/xdisplays.txt"
 else
-	echo "Hostsblock has just checked and found no updates" > /tmp/hostsblock-launcher-message.txt
+	echo "Hostsblock has just checked and found no updates" > "/tmp/hostsblock-launcher-message.txt"
 # notify user(s)
-xuser=$(who | grep ' \:[0-9]' | awk '{print $1}')
-xdisplay=$(who | grep ' \:[0-9]' | awk '{print $5}' | sed 's/[(|)]//g')
-message=$(cat /tmp/hostsblock-launcher-message.txt)
-	echo "$xuser" > /tmp/xusers.txt
-	echo "$xdisplay" > /tmp/xdisplays.txt
-	while read -r -u3 xuser; read -r -u4 xdisplay; do
-	DISPLAY="$xdisplay" XAUTHORITY=/home/"$xuser"/.Xauthority su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
-	done 3</tmp/xusers.txt 4</tmp/xdisplays.txt
+xuser=$(who | grep " \:[0-9]" | awk "{print $1}")
+xdisplay=$(who | grep " \:[0-9]" | awk "{print $5}" | sed "s/[(|)]//g")
+message=$(cat "/tmp/hostsblock-launcher-message.txt")
+	echo "$xuser" > "/tmp/xusers.txt"
+	echo "$xdisplay" > "/tmp/xdisplays.txt"
+	while read -r -u3 xuser; read -r -u4 xdisplay
+	do
+		DISPLAY="$xdisplay" XAUTHORITY="/home/"$xuser"/.Xauthority" su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
+	done 3<"/tmp/xusers.txt" 4<"/tmp/xdisplays.txt"
 fi

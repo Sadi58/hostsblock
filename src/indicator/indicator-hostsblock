@@ -13,8 +13,8 @@ class HostsBlockIndicator:
                                            appindicator.CATEGORY_APPLICATION_STATUS)
 	self.ind.set_status(appindicator.STATUS_ACTIVE)
 	self.ind.set_attention_icon("indicator-messages-new")
-	self.ind.set_icon_theme_path("/usr/local/indicator-hostsblock/")
-	self.ind.set_icon('hostsblock')
+	self.ind.set_icon_theme_path("/usr/share/indicator-hostsblock/")
+	self.ind.set_icon("hostsblock")
         self.menu_setup()
         self.ind.set_menu(self.menu)
     def menu_setup(self):
@@ -121,59 +121,59 @@ class HostsBlockIndicator:
 	self.menu.append(self.Quit_item)
 
     def AutoRefresh(self):
-	os.system("/usr/local/indicator-hostsblock/auto-refresh &")
+	os.system("/usr/share/indicator-hostsblock/auto-refresh &")
 
     def infoHostsBlockAuto(self):
-	os.system("/usr/local/indicator-hostsblock/status_auto-update")
-	stat, out = commands.getstatusoutput("/usr/local/indicator-hostsblock/status_auto-update")
+	os.system("/usr/share/indicator-hostsblock/status_auto-update")
+	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/status_auto-update")
 	return out
 
     def infoHostsBlockLast(self):
-	os.system("/usr/local/indicator-hostsblock/status_last-update")
-	stat, out = commands.getstatusoutput("/usr/local/indicator-hostsblock/status_last-update")
+	os.system("/usr/share/indicator-hostsblock/status_last-update")
+	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/status_last-update")
 	return out
 
     def doLaunch(self, dude):
-	os.system("/usr/local/indicator-hostsblock/launcher-gui")
+	os.system("/usr/share/indicator-hostsblock/launcher-gui")
 
     def setSchedule(self, dude):
-	os.system("/usr/local/indicator-hostsblock/scheduler-gui")
+	os.system("/usr/share/indicator-hostsblock/scheduler-gui")
 
     def doBlock(self, dude):
-	os.system("zenity --text-info --filename=/etc/hosts.block --title=\"hosts.block (view only)\" --width 600 --height 800")
+	os.system("/usr/share/indicator-hostsblock/view-hostsblock-gui")
 
     def doLog(self, dude):
-	os.system("zenity --text-info --filename=/usr/local/indicator-hostsblock/hostsblock.log --title=\"hostsblock.log (view only)\" --width 680 --height 580")
+	os.system("/usr/share/indicator-hostsblock/view-log-gui")
 
     def doView(self, dude):
-	os.system("/usr/local/indicator-hostsblock/viewer-gui")
+	os.system("/usr/share/indicator-hostsblock/viewer-gui")
 
     def doEdit(self, dude):
-	os.system("/usr/local/indicator-hostsblock/editor-gui")
+	os.system("/usr/share/indicator-hostsblock/editor-gui")
 
     def doEditUser(self, dude):
-	os.system("/usr/local/indicator-hostsblock/edit-user-gui")
+	os.system("/usr/share/indicator-hostsblock/edit-user-gui")
 
     def doMergeUser(self, dude):
-	os.system("/usr/local/indicator-hostsblock/merge-user-gui")
+	os.system("/usr/share/indicator-hostsblock/merge-user-gui")
 
     def doDisable(self, dude):
-	os.system("/usr/local/indicator-hostsblock/disable-hostsblock")
+	os.system("/usr/share/indicator-hostsblock/disable-hostsblock")
 
     def doEnable(self, dude):
-	os.system("/usr/local/indicator-hostsblock/enable-hostsblock")
+	os.system("/usr/share/indicator-hostsblock/enable-hostsblock")
 
     def doRestart(self, dude):
-	os.system("/usr/local/indicator-hostsblock/restart-dnsmasq")
+	os.system("/usr/share/indicator-hostsblock/restart-dnsmasq")
 
     def setIcon(self, dude):
-	os.system("/usr/local/indicator-hostsblock/change-icon-gui")
+	os.system("/usr/share/indicator-hostsblock/change-icon-gui")
 
     def doRefresh(self, dude):
-	os.system("/usr/local/indicator-hostsblock/restart-indicator")
+	os.system("/usr/share/indicator-hostsblock/restart-indicator")
 
     def doQuit(self, dude):
-	os.system("pkill -f 'inotifywait -qqre modify /usr/local/indicator-hostsblock/' & pkill -f '/bin/bash /usr/local/indicator-hostsblock/auto-refresh' & pkill -f 'python /usr/local/indicator-hostsblock/indicator-hostsblock'")
+	os.system("pkill -f 'inotifywait -qqre modify /usr/share/indicator-hostsblock/' & pkill -f '/bin/bash /usr/share/indicator-hostsblock/auto-refresh' & pkill -f 'python /usr/share/indicator-hostsblock/indicator-hostsblock'")
 
     def ignore(*args):
 	return gtk.TRUE

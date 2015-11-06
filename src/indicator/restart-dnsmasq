@@ -1,6 +1,6 @@
 #!/bin/bash
 # get password
-sudo_password="$( gksudo --print-pass --message 'Provide permission to make system changes: Type your password or press Cancel.' -- : 2>/dev/null )"
+sudo_password=$( gksudo --print-pass --description="HostsBlock" --message="Provide permission to make system changes: Type your password or press Cancel." -- : 2>/dev/null )
 # check for null entry or cancellation
 if [[ ${?} != 0 || -z ${sudo_password} ]]
 then
@@ -11,7 +11,7 @@ then
     exit 4
 fi
 # command
-sudo -Sp '' /etc/init.d/dnsmasq restart <<<"${sudo_password}"
+sudo -Sp '' "/etc/init.d/dnsmasq" restart <<<"${sudo_password}"
 # notify
-/usr/bin/canberra-gtk-play --id="dialog-information" &
+"/usr/bin/canberra-gtk-play" --id="dialog-information" &
 notify-send -i gtk-dialog-info "DNSmasq service has been restarted" -i gtk-dialog-info -t 1000 -u normal

@@ -1,10 +1,10 @@
 #!/bin/bash
 # confirmation
-zenity --question --title="Merge User Lists" --text="This will merge:\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/etc/hostsblock/white.list</i>\"\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/etc/hostsblock/black.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
+zenity --question --title="Merge User Lists" --text="This will merge:\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/hostsblock/white.list</i>\"\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/hostsblock/black.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
 if [ $? = 0 ]
 then
 # get password
-sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null)"
+sudo_password=$(gksudo --print-pass --description="HostsBlock" --message="Provide permission to make system changes: Type your password or press Cancel." -- : 2>/dev/null)
 # check for null entry or cancellation
 	if [[ ${?} != 0 || -z ${sudo_password} ]]
 	then
@@ -15,20 +15,20 @@ sudo_password="$(gksudo --print-pass --description 'hostsblock' -- : 2>/dev/null
 		exit 4
 	fi
 # merge files if exist
-	if [ -f $HOME/.local/share/indicator-hostsblock/user.deny.list ]
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
 	then
-		cat "/etc/hostsblock/black.list" "$HOME/.local/share/indicator-hostsblock/user.deny.list" | sort -u > /tmp/merged.black.list
-		sudo -Sp '' mv -f "/etc/hostsblock/black.list" "/etc/hostsblock/black.list.old" <<<"${sudo_password}"
-		sudo -Sp '' mv -f "/tmp/merged.black.list" "/etc/hostsblock/black.list" <<<"${sudo_password}"
-		zenity --text-info --filename="/etc/hostsblock/black.list" --title="black.list (view only)" --width 300 --height 600 &
+		cat "/usr/share/hostsblock/black.list" "$HOME/.local/share/indicator-hostsblock/user.deny.list" | sort -u > "/tmp/merged.black.list"
+		sudo -Sp '' mv -f "/usr/share/hostsblock/black.list" "/usr/share/hostsblock/black.list.old" <<<"${sudo_password}"
+		sudo -Sp '' mv -f "/tmp/merged.black.list" "/usr/share/hostsblock/black.list" <<<"${sudo_password}"
+		zenity --text-info --filename="/usr/share/hostsblock/black.list" --title="black.list - merged (view only)" --width 300 --height 600 &
 		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
 	fi
-	if [ -f $HOME/.local/share/indicator-hostsblock/user.allow.list ]
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
 	then
-		cat "/etc/hostsblock/white.list" "$HOME/.local/share/indicator-hostsblock/user.allow.list" | sort -u > /tmp/merged.white.list
-		sudo -Sp '' mv -f "/etc/hostsblock/white.list" "/etc/hostsblock/white.list.old" <<<"${sudo_password}"
-		sudo -Sp '' mv -f "/tmp/merged.white.list" "/etc/hostsblock/white.list" <<<"${sudo_password}"
-		zenity --text-info --filename="/etc/hostsblock/white.list" --title="white.list (view only)" --width 300 --height 500 &
+		cat "/usr/share/hostsblock/white.list" "$HOME/.local/share/indicator-hostsblock/user.allow.list" | sort -u > "/tmp/merged.white.list"
+		sudo -Sp '' mv -f "/usr/share/hostsblock/white.list" "/usr/share/hostsblock/white.list.old" <<<"${sudo_password}"
+		sudo -Sp '' mv -f "/tmp/merged.white.list" "/usr/share/hostsblock/white.list" <<<"${sudo_password}"
+		zenity --text-info --filename="/usr/share/hostsblock/white.list" --title="white.list - merged (view only)" --width 300 --height 500 &
 		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
 	fi
 fi

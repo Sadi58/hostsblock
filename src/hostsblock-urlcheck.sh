@@ -1,6 +1,6 @@
 #!/bin/bash
 # DO NOT MODIFY THIS FILE. MODIFY SETTINGS VIA THE CONFIGURATION FILES IN
-# /etc/hostsblock.conf
+# /usr/share/hostsblock/hostsblock.conf
 
 # GET OPTIONS
 while getopts "v:f:h" _option; do
@@ -15,10 +15,10 @@ $0 will first verify that [url] is blocked or unblocked,
 and then scan that url for further contained subdomains
 
 Help Options:
-  -h                            Show help options
+  -h                        Show help options
 
 Application Options:
-  -f CONFIGFILE                 Specify an alternative configuration file (instead of /etc/hostsblock/hostsblock.conf)
+  -f CONFIGFILE             Specify an alternative configuration file (instead of /usr/share/hostsblock/hostsblock.conf)
 EOF
             exit 1
         ;;

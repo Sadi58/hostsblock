@@ -17,69 +17,67 @@ Manual installation
 
 Install **hostsblock** as required - for example:
 ```
-	/etc/hostsblock/black.list
-	/etc/hostsblock/hostsblock.conf
-	/etc/hostsblock/hostsblock.sh
-	/etc/hostsblock/hostsblock-urlcheck.sh
-	/etc/hostsblock/white.list
-	/usr/local/lib/hostsblock-common.sh
-	/usr/local/share/man/man8/hostsblock.8
-	/usr/local/share/man/man8/hostsblock.conf.8
-	/usr/local/share/man/man8/hostsblock-urlcheck.8
+	/usr/share/hostsblock/black.list
+	/usr/share/hostsblock/hostsblock.conf
+	/usr/share/hostsblock/hostsblock.sh
+	/usr/share/hostsblock/hostsblock-urlcheck.sh
+	/usr/share/hostsblock/white.list
+	/usr/share/hostsblock-common.sh
+	/usr/share/man/man8/hostsblock.8
+	/usr/share/man/man8/hostsblock.conf.8
+	/usr/share/man/man8/hostsblock-urlcheck.8
 ```
 Install **kwakd** (can be extracted from deb archive file) as follows:
 ```
 	/etc/init.d/kwakd
-	/usr/local/bin/kwakd
-	/usr/local/bin/start-kwakd
-	/usr/local/share/man/man1/kwakd.1
+	/usr/bin/kwakd
+	/usr/bin/start-kwakd
+	/usr/share/man/man1/kwakd.1
 ```
 Then copy **hostsblock-indicator** files like this:
 ```
 	/etc/xdg/autostart/indicator-hostsblock.desktop
-	/usr/local/indicator-hostsblock/auto-refresh
-	/usr/local/indicator-hostsblock/change-icon-gui
-	/usr/local/indicator-hostsblock/check-updates
-	/usr/local/indicator-hostsblock/disable-hostsblock
-	/usr/local/indicator-hostsblock/editor-gui
-	/usr/local/indicator-hostsblock/edit-user-gui
-	/usr/local/indicator-hostsblock/enable-hostsblock
-	/usr/local/indicator-hostsblock/hostsblock-color.png
-	/usr/local/indicator-hostsblock/hostsblock-dark.png
-	/usr/local/indicator-hostsblock/hostsblock-light.png
-	/usr/local/indicator-hostsblock/hostsblock.png
-	/usr/local/indicator-hostsblock/indicator-hostsblock
-	/usr/local/indicator-hostsblock/launcher
-	/usr/local/indicator-hostsblock/launcher-gui
-	/usr/local/indicator-hostsblock/merge-user-gui
-	/usr/local/indicator-hostsblock/restart-dnsmasq
-	/usr/local/indicator-hostsblock/restart-indicator
-	/usr/local/indicator-hostsblock/scheduler-gui
-	/usr/local/indicator-hostsblock/status_auto-update
-	/usr/local/indicator-hostsblock/status_last-update
-	/usr/local/indicator-hostsblock/viewer-gui
+
+	/usr/share/indicator-hostsblock/auto-refresh
+	/usr/share/indicator-hostsblock/change-icon-gui
+	/usr/share/indicator-hostsblock/check-updates
+	/usr/share/indicator-hostsblock/disable-hostsblock
+	/usr/share/indicator-hostsblock/editor-gui
+	/usr/share/indicator-hostsblock/edit-user-gui
+	/usr/share/indicator-hostsblock/enable-hostsblock
+	/usr/share/indicator-hostsblock/hostsblock-color.png
+	/usr/share/indicator-hostsblock/hostsblock-dark.png
+	/usr/share/indicator-hostsblock/hostsblock-light.png
+	/usr/share/indicator-hostsblock/hostsblock.png
+	/usr/share/indicator-hostsblock/indicator-hostsblock
+	/usr/share/indicator-hostsblock/launcher
+	/usr/share/indicator-hostsblock/launcher-gui
+	/usr/share/indicator-hostsblock/merge-user-gui
+	/usr/share/indicator-hostsblock/restart-dnsmasq
+	/usr/share/indicator-hostsblock/restart-indicator
+	/usr/share/indicator-hostsblock/scheduler-gui
+	/usr/share/indicator-hostsblock/status_auto-update
+	/usr/share/indicator-hostsblock/status_last-update
+	/usr/share/indicator-hostsblock/viewer-gui
+	/usr/share/indicator-hostsblock/view-hostsblock-gui
+	/usr/share/indicator-hostsblock/view-log-gui
+
 	/usr/share/applications/indicator_hostsblock.desktop
 ```
 
 Deb package
 ----------------------
 
-The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). It first stops the hostsblock-indicator, if running, and deletes the directories `/etc/hostsblock/` and `/usr/local/indicator-hostsblock/`, if they exist. After copying all necessary files, it adds necessary entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
-
-**Notes:**
-
-1. This deb package successfully installs hostsblock indicator via **Ubuntu Software Manager**, or Terminal command `sudo dpkg -i "/path/to/indicator-hostsblock_xxxx_0.999.x-x.deb"`, but not via **GDebi Package Installer**, due to a number *lintian errors*.
-
-2. This deb package is good for installation from scratch, but not for **upgrading** in proper; therefore, in the event of re-installation or upgrade, it's recommended to (i) make a backup of `/etc/hosts.block`, (ii) uninstall the previous deb package, and then (iii) install the new one.
+The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). After copying all files, it adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
 Info about some files
 ----------------------
 
-This fork includes several minor modifications in the upstream `hostsblock.conf` file (i.e. using a separate `/etc/hosts.block` file instead of `/etc/hosts`, using `0.0.0.0` instead of `127.0.0.1` for *localhost redirection* to produce a smaller file, and commenting out several blocklists for a more modest size), and also several minor modifications in other configuration files. The main change is the subdirectory **indicator** and its contents as follows:
+This fork includes - in addition to change of directory from `/etc/hostsblock` to `/usr/share/hostsblock` - several minor modifications in the upstream `hostsblock.conf` file (i.e. using a separate `/etc/hosts.block` file instead of `/etc/hosts`, using `0.0.0.0` instead of `127.0.0.1` for *localhost redirection* to produce a smaller file, and commenting out several blocklists for a more modest size), and also several minor modifications in other configuration files. The main change is the subdirectory **indicator** and its contents as follows:
 
 1. The file **indicator-hostsblock** is a simple python script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
 
-2. The file **launcher** merely launches `/etc/hostsblock/hostsblock.sh` with verbosity level 3, creates a log file, and sends a **graphical notification** of any updates to user(s).
+2. The file **launcher** merely launches `/usr/share/hostsblock/hostsblock.sh` with verbosity level 3, creates a log file, and sends a **graphical notification** of any updates to user(s).
 
 3. The file **check-updates** is actually a clipping of the original **hostsblock.sh** script, which merely checks the blocklists, and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, and then allows replacing such failure messages with a "**change found**" statement in **launcher-gui**.
 
@@ -87,23 +85,21 @@ This fork includes several minor modifications in the upstream `hostsblock.conf`
 
 5. The file **scheduler-gui** is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) **hostsblock-launcher** (aka **launcher**) to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
 
-6. The files **viewer-gui** and **editor-gui** are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (`/etc/hosts.block`; `/etc/hostsblock/hostsblock.conf`,`black.list`,`white.list`).
+6. The files **viewer-gui** and **editor-gui** are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (`/etc/hosts.block`; `/usr/share/hostsblock/hostsblock.conf`,`black.list`,`white.list`).
 
 7. The file **change-icon-gui** is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).
 
-8. The file **edit-user-gui** is a simple zenity-based script that allows the user to create/edit user-specific lists for **black.list** and **white.list** under subfolder `~/.local/share/indicator-hostsblock/` which can afterwards be used to merge into those corresponding hostsblock configuration files at `/etc/hostsblock/`.
+8. The file **edit-user-gui** is a simple zenity-based script that allows the user to create/edit user-specific lists for **black.list** and **white.list** under subfolder `~/.local/share/indicator-hostsblock/` which can afterwards be used to merge into those corresponding hostsblock configuration files at `/usr/share/hostsblock/`.
 
-9. The file **auto-refresh**, which is automatically executed when the main python script starts, monitors the directory `/usr/local/indicator-hostsblock` so as to restart/refresh the indicator whenever its contents are modified, e.g. in the event of a change of indicator icon or hostsblock.log file (the source of last update date and time displayed at the top of the menu).
-
-To do
-----------------------
-Make deb package fully functional, i.e. for re-installation and upgrading without requiring to uninstall first
+9. The file **auto-refresh**, which is automatically executed when the main python script starts, monitors the directory `/usr/share/indicator-hostsblock` so as to restart/refresh the indicator whenever its contents are modified, e.g. in the event of a change of indicator icon or hostsblock.log file (the source of last update date and time displayed at the top of the menu).
 
 Change log
 ----------------------
+
+- **indicator-hostsblock_[amd64|i386]_0.999.3-6.deb:** Both **hostsblock** and **indicator** moved to `/usr/share/` to avoid the **lintian errors** that emerged in previous versions
 - **indicator-hostsblock_[amd64|i386]_0.999.3-6.deb:** Improved View/Edit Config Files menu items, and hostsblock.conf format
 - **indicator-hostsblock_[amd64|i386]_0.999.3-5.deb:** Added quit menu item and polished menu further
-- **indicator-hostsblock_[amd64|i386]_0.999.3-4.deb:** Indicator now automatically refreshes after a change in `/usr/local/indicator-hostsblock/`, including **hostsblock.log** and indicator icon, i.e. **hostsblock.png**
+- **indicator-hostsblock_[amd64|i386]_0.999.3-4.deb:** Indicator now automatically refreshes after a change in program directory, including **hostsblock.log** and indicator icon, i.e. **hostsblock.png**
 - **indicator-hostsblock_[amd64|i386]_0.999.3-3.deb:** Added user black/white lists feature and fixed some bugs
 - **indicator-hostsblock_[amd64|i386]_0.999.3-2.deb:** Fixed indicator restart failure after launcher cron job
 - **indicator-hostsblock_[amd64|i386]_0.999.3-1.deb:** Minor upstream updates, added hostsblock man files
