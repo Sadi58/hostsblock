@@ -11,5 +11,5 @@ then
 	fi
 # if exists
 else
-	echo "Last: `cat "/usr/share/indicator-hostsblock/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " "{print $2}"`"
+	echo "Last: `cat "/usr/share/indicator-hostsblock/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " '{print $2}'`"
 fi

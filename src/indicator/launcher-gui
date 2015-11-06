@@ -18,7 +18,7 @@ then
 	notify-send "HostsBlock found no updates; exiting..." -i gtk-dialog-info -t 1000 -u normal &
 	exit
 else
-	zenity --question --title "HostsBlock found the following change(s):" --text "<i>$changes</i>\n\nWould you like to update now?"
+	zenity --question --title="HostsBlock found the following change(s):" --text="<i>$changes</i>\n\n<b>Would you like to update now?</b>" --width 300 --height 300
 	if [ $? = 0 ]
 	then
 # get password
@@ -44,7 +44,7 @@ EOF
 # backup log
 		sudo -Sp '' cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log" <<<"${sudo_password}"
 # option to view log
-new_update=$(cat "/tmp/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " "{print $2}")
+new_update=$(cat "/tmp/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " '{print $2}')
 		zenity --question --title="HostsBlock Updated" --text="<b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
 			if [ $? = 0 ]
 			then

@@ -30,8 +30,8 @@ if [ -f /usr/lib/hostsblock-common.sh ]; then
     source /usr/lib/hostsblock-common.sh
 elif [ -f /usr/local/lib/hostsblock-common.sh ]; then
     source /usr/local/lib/hostsblock-common.sh
-elif [ -f ./hostsblock-common.sh ]; then
-    source ./hostsblock-common.sh
+elif [ -f /usr/share/hostsblock/hostsblock-common.sh ]; then
+    source /usr/share/hostsblock/hostsblock-common.sh
 else
     echo "hostsblock.common.sh NOT FOUND. INSTALL IT TO /usr/lib/ OR /usr/local/lib/. EXITING..."
     exit 1

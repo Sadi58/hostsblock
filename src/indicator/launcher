@@ -15,8 +15,8 @@ if [ "$changes" -gt 0 ]
 then
 	echo "Hostsblock has just checked and updated $changes blocklist(s)" > "/tmp/hostsblock-launcher-message.txt"
 # notify user(s)
-xuser=$(who | grep " \:[0-9]" | awk "{print $1}")
-xdisplay=$(who | grep " \:[0-9]" | awk "{print $5}" | sed "s/[(|)]//g")
+xuser=$(who | grep " \:[0-9]" | awk '{print $1}')
+xdisplay=$(who | grep " \:[0-9]" | awk '{print $5}' | sed "s/[(|)]//g")
 message=$(cat "/tmp/hostsblock-launcher-message.txt")
 	echo "$xuser" > "/tmp/xusers.txt"
 	echo "$xdisplay" > "/tmp/xdisplays.txt"
@@ -27,8 +27,8 @@ message=$(cat "/tmp/hostsblock-launcher-message.txt")
 else
 	echo "Hostsblock has just checked and found no updates" > "/tmp/hostsblock-launcher-message.txt"
 # notify user(s)
-xuser=$(who | grep " \:[0-9]" | awk "{print $1}")
-xdisplay=$(who | grep " \:[0-9]" | awk "{print $5}" | sed "s/[(|)]//g")
+xuser=$(who | grep " \:[0-9]" | awk '{print $1}')
+xdisplay=$(who | grep " \:[0-9]" | awk '{print $5}' | sed "s/[(|)]//g")
 message=$(cat "/tmp/hostsblock-launcher-message.txt")
 	echo "$xuser" > "/tmp/xusers.txt"
 	echo "$xdisplay" > "/tmp/xdisplays.txt"

@@ -70,6 +70,8 @@ Deb package
 
 The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). After copying all files, it adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
+**NOTE:** If **indicator-hostblock** is already installed (during an upgrade / reinstallation) this deb package somehow fails to create the directory `/usr/share/hostsblock/` and copy the necessary files there (`black.list`, `hostsblock.conf`, `hostsblock.sh`, `hostsblock-urlcheck.sh`, and `white.list`). Therefore, in the event of an upgrade or reinstallation it might be necessary either (i) to uninstall it first and then reinstall, or (ii) to simply copy the entire `/usr/share/hostsblock/` directory from the deb file opening it with archive manager.
+
 Info about some files
 ----------------------
 
@@ -96,7 +98,8 @@ This fork includes - in addition to change of directory from `/etc/hostsblock` t
 Change log
 ----------------------
 
-- **indicator-hostsblock_[amd64|i386]_0.999.3-6.deb:** Both **hostsblock** and **indicator** moved to `/usr/share/` to avoid the **lintian errors** that emerged in previous versions
+- **indicator-hostsblock_[amd64|i386]_0.999.3-8.deb:** Fixed important bugs associated with awk commands in some scripts
+- **indicator-hostsblock_[amd64|i386]_0.999.3-7.deb:** Both **hostsblock** and **indicator** moved to `/usr/share/` to avoid the **lintian errors** that emerged in previous versions
 - **indicator-hostsblock_[amd64|i386]_0.999.3-6.deb:** Improved View/Edit Config Files menu items, and hostsblock.conf format
 - **indicator-hostsblock_[amd64|i386]_0.999.3-5.deb:** Added quit menu item and polished menu further
 - **indicator-hostsblock_[amd64|i386]_0.999.3-4.deb:** Indicator now automatically refreshes after a change in program directory, including **hostsblock.log** and indicator icon, i.e. **hostsblock.png**
