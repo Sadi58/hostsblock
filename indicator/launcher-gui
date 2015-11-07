@@ -35,7 +35,7 @@ sudo_password=$(gksudo --print-pass --description="HostsBlock" --message="Provid
 # notify
 		notify-send "HostsBlock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
 # proceed to update and make log file open for all
-		sudo -Sp '' "/usr/share/hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log" <<<"${sudo_password}"
+		sudo -Sp '' "/usr/share/indicator-hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log" <<<"${sudo_password}"
 		sudo -Sp '' chmod a+w "/tmp/hostsblock.log" <<<"${sudo_password}"
 # append date and time stamp to log
 cat <<EOF >> "/tmp/hostsblock.log"

@@ -38,7 +38,7 @@ then
 fi
 # options
 menu(){
-im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock Auto-Update: <b><i>$auto_update</i></b>\n<b>Select one of the options below to change this:</b>\" --width 400 --height 220"
+im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock Auto-Update: <b><i>$auto_update</i></b>\n<b>Select one of the options below to change this:</b>\" --width 380 --height 230"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Hourly\" \"HostsBlock will auto-update every hour\" "
 im=$im"FALSE \"Daily\" \"HostsBlock will auto-update every day\" "

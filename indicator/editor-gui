@@ -1,0 +1,42 @@
+#!/bin/bash
+# get password
+sudo_password=$(gksudo --print-pass --description="HostsBlock" --message="Provide permission to make system changes: Type your password or press Cancel." -- : 2>/dev/null)
+# check for null entry or cancellation
+if [[ ${?} != 0 || -z ${sudo_password} ]]
+then
+	exit 4
+fi
+if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
+then
+	exit 4
+fi
+# options
+menu(){
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 460 --height 195"
+im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
+im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
+im=$im"FALSE \"hostsblock.conf\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
+im=$im"FALSE \"hostsblock.deny.list\" \"/usr/share/indicator-hostsblock/hostsblock.deny.list\" "
+im=$im"FALSE \"hostsblock.allow.list\" \"/usr/share/indicator-hostsblock/hostsblock.allow.list\" "
+}
+option(){
+choice=`echo $im | sh -`
+if echo $choice | grep "hosts.block" > /dev/null
+then
+	sudo -Sp '' gedit "/etc/hosts.block" <<<"${sudo_password}" &
+fi
+if echo $choice | grep "hostsblock.conf" > /dev/null
+then
+	sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.conf" <<<"${sudo_password}" &
+fi
+if echo $choice | grep "hostsblock.deny.list" > /dev/null
+then
+	sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}" &
+fi
+if echo $choice | grep "hostsblock.allow.list" > /dev/null
+then
+	sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}" &
+fi
+}
+menu
+option

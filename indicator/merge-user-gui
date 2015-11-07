@@ -1,0 +1,34 @@
+#!/bin/bash
+# confirmation
+zenity --question --title="Merge User Lists" --text="This will merge:\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.allow.list</i>\"\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.deny.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
+if [ $? = 0 ]
+then
+# get password
+sudo_password=$(gksudo --print-pass --description="HostsBlock" --message="Provide permission to make system changes: Type your password or press Cancel." -- : 2>/dev/null)
+# check for null entry or cancellation
+	if [[ ${?} != 0 || -z ${sudo_password} ]]
+	then
+		exit 4
+	fi
+	if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
+	then
+		exit 4
+	fi
+# merge files if exist
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+	then
+		cat "/usr/share/indicator-hostsblock/hostsblock.deny.list" "$HOME/.local/share/indicator-hostsblock/user.deny.list" | sort -u > "/tmp/merged.hostsblock.deny.list"
+		sudo -Sp '' mv -f "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list.old" <<<"${sudo_password}"
+		sudo -Sp '' mv -f "/tmp/merged.hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+		zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list - merged (view only)" --width 350 --height 600 &
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
+	fi
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+	then
+		cat "/usr/share/indicator-hostsblock/hostsblock.allow.list" "$HOME/.local/share/indicator-hostsblock/user.allow.list" | sort -u > "/tmp/merged.hostsblock.allow.list"
+		sudo -Sp '' mv -f "/usr/share/indicator-hostsblock/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list.old" <<<"${sudo_password}"
+		sudo -Sp '' mv -f "/tmp/merged.hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
+		zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list - merged (view only)" --width 350 --height 600 &
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
+	fi
+fi
