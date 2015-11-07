@@ -15,7 +15,7 @@ Help Options:
   -h                       Show help options
 
 Application Options:
-  -f CONFIGFILE            Specify an alternative configuration file (instead of /usr/share/hostsblock/hostsblock.conf)
+  -f CONFIGFILE            Specify an alternative configuration file (instead of /usr/share/indicator-hostsblock/hostsblock.conf)
   -v VERBOSITY             Specify how much information hostsblock provides (0=only fatal errors to 5=the kitchen sink)
   -u                       Force hostsblock to update its target file, even if no changes to source files are found
 EOF
@@ -29,10 +29,10 @@ if [ -f /usr/lib/hostsblock-common.sh ]; then
     source /usr/lib/hostsblock-common.sh
 elif [ -f /usr/local/lib/hostsblock-common.sh ]; then
     source /usr/local/lib/hostsblock-common.sh
-elif [ -f /usr/share/hostsblock/hostsblock-common.sh ]; then
-    source /usr/share/hostsblock/hostsblock-common.sh
+elif [ -f /usr/share/indicator-hostsblock/hostsblock-common.sh ]; then
+    source /usr/share/indicator-hostsblock/hostsblock-common.sh
 else
-    echo "hostsblock-common.sh NOT FOUND. INSTALL IT TO /usr/lib/ OR /usr/local/lib/. EXITING..."
+    echo "hostsblock-common.sh NOT FOUND. INSTALL IT TO /usr/lib/ OR /usr/local/lib/ OR /usr/share/indicator-hostsblock/. EXITING..."
     exit 1
 fi
 

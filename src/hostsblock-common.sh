@@ -194,17 +194,17 @@ _source_configfile() {
         if [ -f "$_configfile" ]; then
             . "$_configfile"
             _notify 4 "Using configuration file $_configfile."
-        elif [ -f /usr/share/hostsblock/hostsblock.conf ]; then
-            . /usr/share/hostsblock/hostsblock.conf
-            _notify 1 "Configuration file $_configfile NOT FOUND, using /usr/share/hostsblock/hostsblock.conf."
+        elif [ -f /usr/share/indicator-hostsblock/hostsblock.conf ]; then
+            . /usr/share/indicator-hostsblock/hostsblock.conf
+            _notify 1 "Configuration file $_configfile NOT FOUND, using /usr/share/indicator-hostsblock/hostsblock.conf."
         else
-            _notify 1 "Both configuration files $_configfile and /usr/share/hostsblock/hostsblock.conf NOT FOUND, using defaults."
+            _notify 1 "Both configuration files $_configfile and /usr/share/indicator-hostsblock/hostsblock.conf NOT FOUND, using defaults."
         fi
-    elif [ -f /usr/share/hostsblock/hostsblock.conf ]; then
-        . /usr/share/hostsblock/hostsblock.conf
-        _notify 4 "Using configuration file /usr/share/hostsblock/hostsblock.conf."
+    elif [ -f /usr/share/indicator-hostsblock/hostsblock.conf ]; then
+        . /usr/share/indicator-hostsblock/hostsblock.conf
+        _notify 4 "Using configuration file /usr/share/indicator-hostsblock/hostsblock.conf."
     else
-        _notify 1 "Configuration file /usr/share/hostsblock/hostsblock.conf NOT FOUND, using defaults."
+        _notify 1 "Configuration file /usr/share/indicator-hostsblock/hostsblock.conf NOT FOUND, using defaults."
     fi
 }
 
@@ -323,8 +323,8 @@ postprocess() {
      /bin/true
 }
 export blocklists=("http://support.it-mate.co.uk/downloads/HOSTS.txt")
-export blacklist="/usr/share/hostsblock/black.list"
-export whitelist="/usr/share/hostsblock/white.list"
+export blacklist="/usr/share/indicator-hostsblock/hostsblock.deny.list"
+export whitelist="/usr/share/indicator-hostsblock/hostsblock.allow.list"
 export hostshead="0"
 export cachedir="/var/cache/hostsblock"
 export redirects="0"
