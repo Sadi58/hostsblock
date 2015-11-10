@@ -1,0 +1,4 @@
+#!/bin/sh
+#
+sudo "/usr/bin/kwakd" -b -p 80
+sudo "/etc/init.d/dnsmasq" restart
