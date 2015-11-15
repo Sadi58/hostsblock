@@ -1,7 +1,7 @@
 #!/bin/bash
 # options
 menu(){
-im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 500 --height 230"
+im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 550 --height 230"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
 im=$im"FALSE \"hostsblock.conf(full)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
 im=$im"FALSE \"hostsblock.conf(extract)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "

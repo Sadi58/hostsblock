@@ -98,6 +98,7 @@ The main change however is the subdirectory **indicator** and its contents as fo
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.3-11.deb:** Smarter use of sudo command
 - **indicator-hostsblock_[amd64|i386]_0.999.3-10.deb:** Fixed kwakd pathnames and updated icons
 - **indicator-hostsblock_[amd64|i386]_0.999.3-9.deb:** Fixed the issue with deb reinstallation and upgrades by moving upstream hostsblock files also into indicator directory
 - **indicator-hostsblock_[amd64|i386]_0.999.3-8.deb:** Fixed important bugs associated with awk commands in some scripts

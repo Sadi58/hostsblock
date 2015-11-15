@@ -1,7 +1,7 @@
 #!/bin/bash
 # options
 menu(){
-im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 420 --height 150"
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 450 --height 150"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
 im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
 im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
