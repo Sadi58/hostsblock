@@ -45,10 +45,10 @@ Then copy **hostsblock-indicator** files like this:
 	/usr/share/indicator-hostsblock/editor-gui
 	/usr/share/indicator-hostsblock/edit-user-gui
 	/usr/share/indicator-hostsblock/enable-hostsblock
-	/usr/share/indicator-hostsblock/hostsblock-color.png
-	/usr/share/indicator-hostsblock/hostsblock-dark.png
-	/usr/share/indicator-hostsblock/hostsblock-light.png
-	/usr/share/indicator-hostsblock/hostsblock.png
+	/usr/share/indicator-hostsblock/hostsblock-color.svg
+	/usr/share/indicator-hostsblock/hostsblock-dark.svg
+	/usr/share/indicator-hostsblock/hostsblock-light.svg
+	/usr/share/indicator-hostsblock/hostsblock.svg
 	/usr/share/indicator-hostsblock/indicator-hostsblock
 	/usr/share/indicator-hostsblock/launcher
 	/usr/share/indicator-hostsblock/launcher-gui
@@ -62,6 +62,7 @@ Then copy **hostsblock-indicator** files like this:
 	/usr/share/indicator-hostsblock/view-hostsblock-gui
 	/usr/share/indicator-hostsblock/view-log-gui
 
+	/usr/share/icons/indicator-hostsblock.svg
 	/usr/share/applications/indicator_hostsblock.desktop
 ```
 
@@ -98,6 +99,7 @@ The main change however is the subdirectory **indicator** and its contents as fo
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.3-12.deb:** Changed icons
 - **indicator-hostsblock_[amd64|i386]_0.999.3-11.deb:** Smarter use of sudo command
 - **indicator-hostsblock_[amd64|i386]_0.999.3-10.deb:** Fixed kwakd pathnames and updated icons
 - **indicator-hostsblock_[amd64|i386]_0.999.3-9.deb:** Fixed the issue with deb reinstallation and upgrades by moving upstream hostsblock files also into indicator directory
