@@ -1,4 +1,4 @@
-indicator-hostsblock
+HostsBlock Indicator
 =====================
 
 A very simple and lightweight indicator applet to manage hostsblock: https://github.com/gaenserich/hostsblock
@@ -37,7 +37,7 @@ Installation
 	/usr/bin/start-kwakd
 	/usr/share/man/man1/kwakd.1
 ```
-3.4. ***Copy "hostsblock-indicator" files like this***:
+3.4. ***Copy "indicator" files like this***:
 ```
 	/etc/xdg/autostart/indicator-hostsblock.desktop
 
