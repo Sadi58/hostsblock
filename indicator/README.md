@@ -10,12 +10,11 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 Installation
 ----------------------
 
-1. ***Use the appropriate deb package provided***. 
-The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**, which has only been tested under **Ubuntu 15.04** and **Ubuntu 15.10**, has been created using `dpkg-deb` to provide a proper installation method. It should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (which is the only *amd64/i386-specific* file in the package). After copying all files, it adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf`, if necessary, and starts **dnsmasq** and **kwakd** services, if not already running, after which user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
+1. ***Use the appropriate deb package provided***: The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb** (tested under **Ubuntu 15.04** and **Ubuntu 15.10** only) has been created using `dpkg-deb` to provide a proper installation method, and should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (the only *amd64/i386-specific* file in the package). After copying all files, it adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf` (if they don't exist already), and starts **dnsmasq** and **kwakd** services (if they are not running already), after which the user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
-2. Use the **installation script** provided: Run `install-hostsblock-indicator.sh` (after customizing, if necessary, for non-Debian/GNOME systems)
+2. ***Use the "installation script" provided***: Run `install-hostsblock-indicator.sh` (after customizing, if necessary, for non-Debian/GNOME systems)
 
-3. **Manual installation**
+3. **Manual installation**:
 
 3.1. ***Install dependencies***: **gksu**, **inotify-tools**, **python-appindicator**, **python-gtk2** and **zenity** in addition to *hostsblock dependencies*; **coreutils**, **curl**, **file**, **grep**, **gzip**, **p7zip-full**, **sed** and **unzip**.
 
