@@ -121,59 +121,59 @@ class HostsBlockIndicator:
 	self.menu.append(self.Quit_item)
 
     def AutoRefresh(self):
-	os.system("/usr/share/indicator-hostsblock/auto-refresh &")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator auto_refresh &")
 
     def infoHostsBlockAuto(self):
-	os.system("/usr/share/indicator-hostsblock/status_auto-update")
-	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/status_auto-update")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator status_auto_update")
+	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/hostsblock-indicator status_auto_update")
 	return out
 
     def infoHostsBlockLast(self):
-	os.system("/usr/share/indicator-hostsblock/status_last-update")
-	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/status_last-update")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator status_last_update")
+	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/hostsblock-indicator status_last_update")
 	return out
 
     def doLaunch(self, dude):
-	os.system("/usr/share/indicator-hostsblock/launcher-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator launcher_gui")
 
     def setSchedule(self, dude):
-	os.system("/usr/share/indicator-hostsblock/scheduler-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator scheduler_gui")
 
     def doBlock(self, dude):
-	os.system("/usr/share/indicator-hostsblock/view-hostsblock-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_hostsblock_gui")
 
     def doLog(self, dude):
-	os.system("/usr/share/indicator-hostsblock/view-log-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_log_gui")
 
     def doView(self, dude):
-	os.system("/usr/share/indicator-hostsblock/viewer-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator viewer_gui")
 
     def doEdit(self, dude):
-	os.system("/usr/share/indicator-hostsblock/editor-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator editor_gui")
 
     def doEditUser(self, dude):
-	os.system("/usr/share/indicator-hostsblock/edit-user-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator edit_user_gui")
 
     def doMergeUser(self, dude):
-	os.system("/usr/share/indicator-hostsblock/merge-user-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator merge_user_gui")
 
     def doDisable(self, dude):
-	os.system("/usr/share/indicator-hostsblock/disable-hostsblock")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator disable_hostsblock")
 
     def doEnable(self, dude):
-	os.system("/usr/share/indicator-hostsblock/enable-hostsblock")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator enable_hostsblock")
 
     def doRestart(self, dude):
-	os.system("/usr/share/indicator-hostsblock/restart-dnsmasq")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator restart_dnsmasq")
 
     def setIcon(self, dude):
-	os.system("/usr/share/indicator-hostsblock/change-icon-gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator change_icon_gui")
 
     def doRefresh(self, dude):
-	os.system("/usr/share/indicator-hostsblock/restart-indicator")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator restart_indicator")
 
     def doQuit(self, dude):
-	os.system("pkill -f 'inotifywait -qqre modify /usr/share/indicator-hostsblock/' & pkill -f '/bin/bash /usr/share/indicator-hostsblock/auto-refresh' & pkill -f 'python /usr/share/indicator-hostsblock/indicator-hostsblock'")
+	os.system("pkill -f 'inotifywait -qqre modify /usr/share/indicator-hostsblock/' & killall 'hostsblock-indicator' & pkill -f 'python /usr/share/indicator-hostsblock/indicator-hostsblock'")
 
     def ignore(*args):
 	return gtk.TRUE

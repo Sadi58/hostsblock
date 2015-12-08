@@ -1,8 +1,0 @@
-#!/bin/bash
-# check if exists
-if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
-then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width 680 --height 580
-else
-	notify-send "hostsblock.log does not exist" -i gtk-dialog-info -t 1000 -u normal &
-fi

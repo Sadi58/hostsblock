@@ -40,63 +40,22 @@ Installation
 3.4. ***Copy "indicator" files like this***:
 ```
 	/etc/xdg/autostart/indicator-hostsblock.desktop
-
-	/usr/share/indicator-hostsblock/auto-refresh
-	/usr/share/indicator-hostsblock/change-icon-gui
-	/usr/share/indicator-hostsblock/check-updates
-	/usr/share/indicator-hostsblock/disable-hostsblock
-	/usr/share/indicator-hostsblock/editor-gui
-	/usr/share/indicator-hostsblock/edit-user-gui
-	/usr/share/indicator-hostsblock/enable-hostsblock
+	/usr/share/applications/indicator_hostsblock.desktop
+	/usr/share/icons/indicator-hostsblock.svg
+	/usr/share/indicator-hostsblock/hostsblock-indicator
+	/usr/share/indicator-hostsblock/hostsblock-check-updates
+	/usr/share/indicator-hostsblock/hostsblock-launcher
+	/usr/share/indicator-hostsblock/indicator-hostsblock
+	/usr/share/indicator-hostsblock/hostsblock.svg
 	/usr/share/indicator-hostsblock/hostsblock-color.svg
 	/usr/share/indicator-hostsblock/hostsblock-dark.svg
 	/usr/share/indicator-hostsblock/hostsblock-light.svg
-	/usr/share/indicator-hostsblock/hostsblock.svg
-	/usr/share/indicator-hostsblock/indicator-hostsblock
-	/usr/share/indicator-hostsblock/launcher
-	/usr/share/indicator-hostsblock/launcher-gui
-	/usr/share/indicator-hostsblock/merge-user-gui
-	/usr/share/indicator-hostsblock/restart-dnsmasq
-	/usr/share/indicator-hostsblock/restart-indicator
-	/usr/share/indicator-hostsblock/scheduler-gui
-	/usr/share/indicator-hostsblock/status_auto-update
-	/usr/share/indicator-hostsblock/status_last-update
-	/usr/share/indicator-hostsblock/viewer-gui
-	/usr/share/indicator-hostsblock/view-hostsblock-gui
-	/usr/share/indicator-hostsblock/view-log-gui
-
-	/usr/share/icons/indicator-hostsblock.svg
-	/usr/share/applications/indicator_hostsblock.desktop
 ```
-
-Info about some files
-----------------------
-
-This fork includes (in addition to change of directory from `/etc/hostsblock` to `/usr/share/indicator-hostsblock` and subsequent tweaks in upstream hostsblock scripts) several minor modifications in the upstream `hostsblock.conf` file (i.e. using a separate `/etc/hosts.block` file instead of `/etc/hosts`, and using `0.0.0.0` instead of `127.0.0.1` for *localhost redirection* to produce a smaller file as default, and commenting out several blocklists for a more modest size), and also several minor modifications in other configuration files.
-
-The main change however is the subdirectory **indicator** and its contents as follows:
-
-1. The file **indicator-hostsblock** is a simple python script (originally found here: https://github.com/beidl/amd-indicator) that adds an indicator to the system tray (Unity top panel) to easily manage the original hostsblock utility, using several scripts added here. 
-
-2. The file **launcher** merely launches `/usr/share/indicator-hostsblock/hostsblock.sh` with verbosity level 3, creates a log file, and sends a **graphical notification** of any updates to user(s).
-
-3. The file **check-updates** is actually a clipping of the original **hostsblock.sh** script, which merely checks the blocklists, and (unsuccessfully) attempts to download and overwrite those that have changed since the last update in the system cache, and then allows replacing such failure messages with a "**change found**" statement in **launcher-gui**.
-
-4. The file **launcher-gui** is a simple zenity-based script that starts the **check-updates** script, informs the user when there are updates, and asks if they would like hostsblock to update. If Yes, the user is required to enter their password, and hostsblock is launched similar to **launcher**, and then the user is asked if they would like to view the log file.
-
-5. The file **scheduler-gui** is a simple zenity-based script which checks all cron directories (/etc/cron.hourly,daily,weekly,monthly) for the file (or symlink) **hostsblock-launcher** (aka **launcher**) to inform the user how hostsblock is scheduled to run, and asks if they would like to change it, and then implements the user's choice.
-
-6. The files **viewer-gui** and **editor-gui** are simple zenity-based scripts that allow the user to view/edit configuration file(s) they choose from a list (`/etc/hosts.block`; `/usr/share/indicator-hostsblock/hostsblock.conf`,`black.list`,`white.list`).
-
-7. The file **change-icon-gui** is a simple zenity-based script that allows the user to change the indicator icon (color/dark/light).
-
-8. The file **edit-user-gui** is a simple zenity-based script that allows the user to create/edit user-specific lists for **black.list** and **white.list** under subfolder `~/.local/share/indicator-hostsblock/` which can afterwards be used to merge into those corresponding hostsblock configuration files at `/usr/share/indicator-hostsblock/`.
-
-9. The file **auto-refresh**, which is automatically executed when the main python script starts, monitors the directory `/usr/share/indicator-hostsblock` so as to restart/refresh the indicator whenever its contents are modified, e.g. in the event of a change of indicator icon or hostsblock.log file (the source of last update date and time displayed at the top of the menu).
 
 Change log
 ----------------------
 
+- **indicator-hostsblock_[amd64|i386]_0.999.3-13.deb:** Most scripts merged into a single "backend" script (as functions)
 - **indicator-hostsblock_[amd64|i386]_0.999.3-12.deb:** Changed icons
 - **indicator-hostsblock_[amd64|i386]_0.999.3-11.deb:** Smarter use of sudo command
 - **indicator-hostsblock_[amd64|i386]_0.999.3-10.deb:** Fixed kwakd pathnames and updated icons

@@ -1,5 +1,0 @@
-#!/bin/bash
-while inotifywait -qqre modify "/usr/share/indicator-hostsblock/"
-	do
-	"/usr/share/indicator-hostsblock/restart-indicator"
-done

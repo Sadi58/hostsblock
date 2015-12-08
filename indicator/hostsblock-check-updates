@@ -1,26 +1,5 @@
 #!/bin/bash
 # copied from hostsblock.sh by gaenserich
-# GET OPTIONS
-while getopts "v:f:h" _option; do
-    case "$_option" in
-        f)  [ "$OPTARG" != "" ] && _configfile="$OPTARG";;
-        v)  [ "$OPTARG" != "" ] && _verbosity_override=$OPTARG;;
-        *)
-            cat << EOF
-Usage:
-  $0 [ -f CONFIGFILE ] [ -v VERBOSITY ] - update the HOSTS file with block and redirection lists
-
-Help Options:
-  -h                            Show help options
-
-Application Options:
-  -f CONFIGFILE                 Specify an alternative configuration file (instead of /usr/share/indicator-hostsblock/hostsblock.conf)
-  -v VERBOSITY                  Specify how much information hostsblock provides (0=only fatal errors to 5=the kitchen sink)
-EOF
-            exit 1
-        ;;
-    esac
-done
 
 # SOURCE DEFAULT SETTINGS AND SUBROUTINES
 if [ -f /usr/lib/hostsblock-common.sh ]; then

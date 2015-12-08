@@ -1,8 +1,0 @@
-#!/bin/bash
-# check if exists
-if [ -f "/etc/hosts.block" ]
-then
-	zenity --text-info --filename="/etc/hosts.block" --title="hosts.block (view only)" --width 600 --height 800
-else
-	notify-send "hosts.block does not exist" -i gtk-dialog-info -t 1000 -u normal &
-fi

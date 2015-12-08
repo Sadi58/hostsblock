@@ -1,5 +1,0 @@
-#!/bin/bash
-pkill -f "python /usr/share/indicator-hostsblock/indicator-hostsblock"
-pkill -f "/bin/bash /usr/share/indicator-hostsblock/auto-refresh"
-pkill -f "inotifywait -qqre modify /usr/share/indicator-hostsblock/"
-"/usr/share/indicator-hostsblock/indicator-hostsblock"
