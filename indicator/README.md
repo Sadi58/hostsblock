@@ -12,7 +12,7 @@ Installation
 
 1. ***Use the appropriate deb package provided***: The file **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb** (tested under **Ubuntu 15.04** and **Ubuntu 15.10** only) has been created using `dpkg-deb` to provide a proper installation method, and should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (the only *amd64/i386-specific* file in the package). After copying all files, it adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf` (if they don't exist already), and starts **dnsmasq** and **kwakd** services (if they are not running already), after which the user can either run **HostsBlock Indicator** application or choose to start using it after logging off and back in.
 
-2. ***Use the "installation script" provided***: Open a terminal window, change (`cd`) to the sub-directory `.../indicator` and enter `./install-hostsblock-indicator.sh` - after **customizing**, if necessary, for non-Debian/GNOME systems)
+2. ***Use the "installation script" provided***: Open a terminal window, change (`cd`) to the sub-directory `.../indicator` and enter `./install-hostsblock-indicator.sh` (after **customizing**, if necessary, for non-Debian/GNOME systems).
 
 3. **Manual installation**:
 
