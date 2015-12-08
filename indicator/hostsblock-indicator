@@ -1,0 +1,516 @@
+#!/bin/bash
+
+get_password()
+{
+sudo_password=$(gksudo --print-pass --description="HostsBlock" --message="Provide permission to make system changes: Type your password or press Cancel." -- : 2>/dev/null)
+# check for null entry or cancellation
+if [[ ${?} != 0 || -z ${sudo_password} ]]
+then
+	exit 4
+fi
+if ! sudo -kSp '' [ 1 ] <<<"${sudo_password}" 2>/dev/null
+then
+	exit 4
+fi
+}
+
+auto_refresh()
+{
+# do some cleaning first
+for i in `ps -e --sort=start -o start,pid,cmd | grep "inotifywait -qqre modify /usr/share/indicator-hostsblock/" | egrep -v grep | sed 1d | awk '{print$2}'`
+do
+	kill -9 $i
+done
+for i in `ps -e --sort=start -o start,pid,cmd | grep "/usr/share/indicator-hostsblock/hostsblock-indicator auto_refresh" | egrep -v grep | sed 1d | awk '{print$2}'`
+do
+	kill -9 $i
+done
+for i in `ps -e --sort=start -o start,pid,cmd | grep "/usr/share/indicator-hostsblock/hostsblock-indicator restart_indicator" | egrep -v grep | sed 1d | awk '{print$2}'`
+do
+	kill -9 $i
+done
+# start monitoring
+while inotifywait -qqre modify "/usr/share/indicator-hostsblock/"
+	do
+	"/usr/share/indicator-hostsblock/hostsblock-indicator" restart_indicator
+done
+}
+
+status_last_update()
+{
+log_file="/usr/share/indicator-hostsblock/hostsblock.log"
+# check if log does not exist
+if [[ ! -f "$log_file" ]]
+then
+	if [[ -L "$log_file" ]]
+	then
+		echo "Last: None"
+	else
+		echo "Last: None"
+	fi
+# if exists
+else
+	echo "Last: `cat "/usr/share/indicator-hostsblock/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " '{print $2}'`"
+fi
+}
+
+status_auto_update()
+{
+check_hourly=$(ls "/etc/cron.hourly" | grep "hostsblock-launcher")
+check_daily=$(ls "/etc/cron.daily" | grep "hostsblock-launcher")
+check_weekly=$(ls "/etc/cron.weekly" | grep "hostsblock-launcher")
+check_monthly=$(ls "/etc/cron.monthly" | grep "hostsblock-launcher")
+if [ "$check_hourly" = "hostsblock-launcher" ]
+then
+	echo "Auto-Update: Hourly" > "/tmp/hostsblock-scheduler.txt"
+else
+	if [ "$check_daily" = "hostsblock-launcher" ]
+	then
+		echo "Auto-Update: Daily" > "/tmp/hostsblock-scheduler.txt"
+	else
+		if [ "$check_weekly" = "hostsblock-launcher" ]
+		then
+			echo "Auto-Update: Weekly" > "/tmp/hostsblock-scheduler.txt"
+		else
+			if [ "$check_monthly" = "hostsblock-launcher" ]
+			then
+				echo "Auto-Update: Monthly" > "/tmp/hostsblock-scheduler.txt"
+			else
+				echo "Auto-Update: None" > "/tmp/hostsblock-scheduler.txt"
+			fi
+		fi
+	fi
+fi
+echo `cat "/tmp/hostsblock-scheduler.txt"`
+}
+
+launcher_gui()
+{
+# notify
+notify-send "HostsBlock is checking if there are any updates..." -i gtk-dialog-info -t 1000 -u normal &
+# check updates
+"/usr/share/indicator-hostsblock/hostsblock-check-updates" -v 3 &>"/tmp/hostsblock-check-updates.log"
+# append date and time stamp to log
+cat <<EOF >> "/tmp/hostsblock-check-updates.log"
+Hostsblock checked updates at `date +'%d/%m/%Y %H:%M'`
+EOF
+# changes
+cat "/tmp/hostsblock-check-updates.log" | \
+grep "\[WARN\] FAILED to refresh\/download blocklist " | \
+sed -e "s/^\[WARN\] FAILED to refresh\/download blocklist //g" -e "s/\?hostformat=hosts&mimetype=plaintext//g" -e "s/\.$//g" -e "s/^http/• http/g" > "/tmp/hostsblock-updates.log"
+changes=$(grep "http" "/tmp/hostsblock-updates.log")
+# no changes
+if [ -z "$changes" ]
+then
+	notify-send "HostsBlock found no updates; exiting..." -i gtk-dialog-info -t 1000 -u normal &
+	exit
+else
+	zenity --question --title="HostsBlock found the following change(s):" --text="<i>$changes</i>\n\n<b>Would you like to update now?</b>" --width 300 --height 300
+	if [ $? = 0 ]
+	then
+# notify
+		notify-send "HostsBlock is applying updates..." -i gtk-dialog-info -t 1000 -u normal &
+# proceed to update and make log file open for all
+		get_password
+		sudo -Sp '' "/usr/share/indicator-hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log" <<<"${sudo_password}"
+		sudo -Sp '' chmod a+w "/tmp/hostsblock.log" <<<"${sudo_password}"
+# append date and time stamp to log
+cat <<EOF >> "/tmp/hostsblock.log"
+Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
+EOF
+# backup log
+		sudo -Sp '' cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log" <<<"${sudo_password}"
+# option to view log
+new_update=$(cat "/tmp/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " '{print $2}')
+
+		zenity --question --title="HostsBlock Updated" --text="<b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
+			if [ $? = 0 ]
+			then
+# display log
+				zenity --text-info --title="hostsblock.log (view only)" --filename="/tmp/hostsblock.log" --width 680 --height 580
+			fi
+	fi
+fi
+}
+
+scheduler_gui()
+{
+check_hourly=$(ls "/etc/cron.hourly" | grep "hostsblock-launcher")
+check_daily=$(ls "/etc/cron.daily" | grep "hostsblock-launcher")
+check_weekly=$(ls "/etc/cron.weekly" | grep "hostsblock-launcher")
+check_monthly=$(ls "/etc/cron.monthly" | grep "hostsblock-launcher")
+if [ "$check_hourly" = "hostsblock-launcher" ]
+then
+	echo "Hourly" > "/tmp/hostsblock-auto-update.txt"
+else
+	if [ "$check_daily" = "hostsblock-launcher" ]
+	then
+		echo "Daily" > "/tmp/hostsblock-auto-update.txt"
+	else
+		if [ "$check_weekly" = "hostsblock-launcher" ]
+		then
+			echo "Weekly" > "/tmp/hostsblock-auto-update.txt"
+		else
+			if [ "$check_monthly" = "hostsblock-launcher" ]
+			then
+				echo "Monthly" > "/tmp/hostsblock-auto-update.txt"
+			else
+				echo "None" > "/tmp/hostsblock-auto-update.txt"
+			fi
+		fi
+	fi
+fi
+auto_update=$(cat "/tmp/hostsblock-auto-update.txt")
+# options
+menu_scheduler()
+{
+im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock Auto-Update: <b><i>$auto_update</i></b>\n<b>Select one of the options below to change this:</b>\" --width 380 --height 230"
+im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
+im=$im"FALSE \"Hourly\" \"HostsBlock will auto-update every hour\" "
+im=$im"FALSE \"Daily\" \"HostsBlock will auto-update every day\" "
+im=$im"FALSE \"Weekly\" \"HostsBlock will auto-update every week\" "
+im=$im"FALSE \"Monthly\" \"HostsBlock will auto-update every month\" "
+im=$im"FALSE \"None\" \"HostsBlock will not auto-update\" "
+}
+option_scheduler()
+{
+choice=`echo $im | sh -`
+if echo $choice | grep -iE "Hourly|Daily|Weekly|Monthly|None" > /dev/null
+then
+	get_password
+	if echo $choice | grep "Hourly" > /dev/null
+	then
+		notify-send "HostsBlock will update automatically every hour" -i gtk-dialog-info -t 1000 -u normal &
+		sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+		sudo -Sp '' ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.hourly/hostsblock-launcher" <<<"${sudo_password}"
+		restart_indicator
+	fi
+	if echo $choice | grep "Daily" > /dev/null
+	then
+		notify-send "HostsBlock will update automatically every day" -i gtk-dialog-info -t 1000 -u normal &
+		sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+		sudo -Sp '' ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" <<<"${sudo_password}"
+		restart_indicator
+	fi
+	if echo $choice | grep "Weekly" > /dev/null
+	then
+		notify-send "HostsBlock will update automatically every week" -i gtk-dialog-info -t 1000 -u normal &
+		sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+		sudo -Sp '' ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" <<<"${sudo_password}"
+		restart_indicator
+	fi
+	if echo $choice | grep "Monthly" > /dev/null
+	then
+		notify-send "HostsBlock will update automatically every month" -i gtk-dialog-info -t 1000 -u normal &
+		sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+		sudo -Sp '' ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+		restart_indicator
+	fi
+	if echo $choice | grep "None" > /dev/null
+	then
+		notify-send "HostsBlock will not update automatically" -i gtk-dialog-info -t 1000 -u normal &
+		sudo -Sp '' rm "/etc/cron.hourly/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher" "/etc/cron.weekly/hostsblock-launcher" "/etc/cron.monthly/hostsblock-launcher" <<<"${sudo_password}"
+		restart_indicator
+	fi
+fi
+}
+menu_scheduler
+option_scheduler
+}
+
+editor_gui()
+{
+# options
+menu_editor()
+{
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 500 --height 195"
+im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
+im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
+im=$im"FALSE \"hostsblock.conf\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
+im=$im"FALSE \"hostsblock.deny.list\" \"/usr/share/indicator-hostsblock/hostsblock.deny.list\" "
+im=$im"FALSE \"hostsblock.allow.list\" \"/usr/share/indicator-hostsblock/hostsblock.allow.list\" "
+}
+option_editor()
+{
+choice=`echo $im | sh -`
+if echo $choice | grep "hosts" > /dev/null
+then
+	get_password
+	if echo $choice | grep "hosts.block" > /dev/null
+	then
+		sudo -Sp '' gedit "/etc/hosts.block" <<<"${sudo_password}" &
+	fi
+	if echo $choice | grep "hostsblock.conf" > /dev/null
+	then
+		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.conf" <<<"${sudo_password}" &
+	fi
+	if echo $choice | grep "hostsblock.deny.list" > /dev/null
+	then
+		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}" &
+	fi
+	if echo $choice | grep "hostsblock.allow.list" > /dev/null
+	then
+		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}" &
+	fi
+fi
+}
+menu_editor
+option_editor
+}
+
+edit_user_gui()
+{
+# options
+menu_edit_user()
+{
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 450 --height 150"
+im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
+im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
+im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
+}
+option_edit_user()
+{
+choice=`echo $im | sh -`
+if echo $choice | grep "user.deny.list" > /dev/null
+then
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+	then
+		gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+	else
+		zenity --question --title="user.deny.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.deny.list\" now?"
+		if [ $? = 0 ]
+		then
+			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
+			then
+				mkdir "$HOME/.local/share/indicator-hostsblock/"
+			else
+				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
+				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+			fi
+		fi
+	fi
+fi
+if echo $choice | grep "user.allow.list" > /dev/null
+then
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+	then
+		gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
+	else
+		zenity --question --title="user.allow.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.allow.list\" now?"
+		if [ $? = 0 ]
+		then
+			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
+			then
+				mkdir "$HOME/.local/share/indicator-hostsblock/"
+			else
+				touch "$HOME/.local/share/indicator-hostsblock/user.allow.list"
+				gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
+			fi
+		fi
+	fi
+fi
+}
+menu_edit_user
+option_edit_user
+}
+
+merge_user_gui()
+{
+# confirmation
+zenity --question --title="Merge User Lists" --text="This will merge:\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.allow.list</i>\"\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.deny.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
+if [ $? = 0 ]
+then
+	get_password
+# merge files if exist and not empty
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+	then
+		if [ -s "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+		then
+			cat "/usr/share/indicator-hostsblock/hostsblock.deny.list" "$HOME/.local/share/indicator-hostsblock/user.deny.list" | sort -u > "/tmp/merged.hostsblock.deny.list"
+			sudo -Sp '' mv -f "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list.old" <<<"${sudo_password}"
+			sudo -Sp '' mv -f "/tmp/merged.hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list - merged (view only)" --width 450 --height 600 &
+			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
+		fi
+	fi
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+	then
+		if [ -s "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+		then
+			cat "/usr/share/indicator-hostsblock/hostsblock.allow.list" "$HOME/.local/share/indicator-hostsblock/user.allow.list" | sort -u > "/tmp/merged.hostsblock.allow.list"
+			sudo -Sp '' mv -f "/usr/share/indicator-hostsblock/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list.old" <<<"${sudo_password}"
+			sudo -Sp '' mv -f "/tmp/merged.hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
+			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list - merged (view only)" --width 450 --height 600 &
+			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
+		fi
+	fi
+fi
+}
+
+viewer_gui()
+{
+# options
+menu_viewer()
+{
+im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 550 --height 230"
+im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
+im=$im"FALSE \"hostsblock.conf(full)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
+im=$im"FALSE \"hostsblock.conf(extract)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
+im=$im"FALSE \"hostsblock.deny.list\" \"/usr/share/indicator-hostsblock/hostsblock.deny.list\" "
+im=$im"FALSE \"hostsblock.allow.list\" \"/usr/share/indicator-hostsblock/hostsblock.allow.list\" "
+im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
+im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
+}
+option_viewer()
+{
+choice=`echo $im | sh -`
+if echo $choice | grep "hostsblock.conf(full)" > /dev/null
+then
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.conf" --title="hostsblock.conf - full (view only)" --width 980 --height 680 &
+fi
+if echo $choice | grep "hostsblock.conf(extract)" > /dev/null
+then
+	cp "/usr/share/indicator-hostsblock/hostsblock.conf" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^# .*$//g" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^### .*$//g" "/tmp/extract-hostsblock.conf"
+	sed -i "/^\s*$/d" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^##/\n##/g" "/tmp/extract-hostsblock.conf"
+	zenity --text-info --filename="/tmp/extract-hostsblock.conf" --title="hostsblock.conf - extract (view only)" --width 980 --height 680 &
+fi
+if echo $choice | grep "hostsblock.deny.list" > /dev/null
+then
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list (view only)" --width 300 --height 600 &
+fi
+if echo $choice | grep "hostsblock.allow.list" > /dev/null
+then
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list (view only)" --width 300 --height 600 &
+fi
+if echo $choice | grep "user.deny.list" > /dev/null
+then
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+	then
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
+	else
+		notify-send "user.deny.list does not exist" -i gtk-dialog-info -t 1000 -u normal &
+	fi
+fi
+if echo $choice | grep "user.allow.list" > /dev/null
+then
+	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+	then
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
+	else
+		notify-send "user.allow.list does not exist" -i gtk-dialog-info -t 1000 -u normal &
+	fi
+fi
+}
+menu_viewer
+option_viewer
+}
+
+view_hostsblock_gui()
+{
+# check if exists
+if [ -f "/etc/hosts.block" ]
+then
+	zenity --text-info --filename="/etc/hosts.block" --title="hosts.block (view only)" --width 600 --height 800
+else
+	notify-send "hosts.block does not exist" -i gtk-dialog-info -t 1000 -u normal &
+fi
+}
+
+view_log_gui()
+{
+# check if exists
+if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
+then
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width 680 --height 580
+else
+	notify-send "hostsblock.log does not exist" -i gtk-dialog-info -t 1000 -u normal &
+fi
+}
+
+change_icon_gui()
+{
+# options
+menu_icon()
+{
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width 270 --height 170"
+im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
+im=$im"FALSE \"Light\" \"Icon for dark panels\" "
+im=$im"FALSE \"Dark\" \"Icon for light panels\" "
+im=$im"FALSE \"Color\" \"Icon for all panels\" "
+}
+option_icon()
+{
+choice=`echo $im | sh -`
+if echo $choice | grep "Light" > /dev/null
+then
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-dark.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+fi
+if echo $choice | grep "Dark" > /dev/null
+then
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-light.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+fi
+if echo $choice | grep "Color" > /dev/null
+then
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-color.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+fi
+}
+menu_icon
+option_icon
+}
+
+disable_hostsblock()
+{
+get_password
+# commands
+sudo -Sp '' mv "/etc/hosts.block /etc/hosts.block.disabled" <<<"${sudo_password}"
+sudo -Sp '' "/etc/init.d/dnsmasq" restart <<<"${sudo_password}"
+# notify
+"/usr/bin/canberra-gtk-play" --id="dialog-information" &
+notify-send "HostsBlock disabled, DNSmasq restarted" -i gtk-dialog-info -t 1000 -u normal
+}
+
+enable_hostsblock()
+{
+get_password
+# commands
+sudo -Sp '' mv "/etc/hosts.block.disabled" "/etc/hosts.block" <<<"${sudo_password}"
+sudo -Sp '' "/etc/init.d/dnsmasq" restart <<<"${sudo_password}"
+# notify
+"/usr/bin/canberra-gtk-play" --id="dialog-information" &
+notify-send "HostsBlock re-enabled, DNSmasq restarted" -i gtk-dialog-info -t 1000 -u normal
+}
+
+restart_dnsmasq()
+{
+get_password
+# command
+sudo -Sp '' "/etc/init.d/dnsmasq" restart <<<"${sudo_password}"
+# notify
+"/usr/bin/canberra-gtk-play" --id="dialog-information" &
+notify-send -i gtk-dialog-info "DNSmasq service has been restarted" -i gtk-dialog-info -t 1000 -u normal
+}
+
+restart_indicator()
+{
+pkill -f "python /usr/share/indicator-hostsblock/indicator-hostsblock"
+pkill -f "/bin/bash /usr/share/indicator-hostsblock/hostsblock-indicator auto_refresh"
+pkill -f "inotifywait -qqre modify /usr/share/indicator-hostsblock/"
+"/usr/share/indicator-hostsblock/indicator-hostsblock"
+}
+
+#####################################################################
+
+if [ $# -eq 0 ]
+then
+	echo "You should specify a function as parameter; e.g. view_log_gui"
+	exit 1;
+else
+	for func do
+		[ "$(type -t -- "$func")" = function ] && "$func"
+	done
+fi
+
+exit 0
