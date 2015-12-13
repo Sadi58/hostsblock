@@ -21,13 +21,9 @@ for i in `ps -e --sort=start -o start,pid,cmd | grep "inotifywait -qqre modify /
 do
 	kill -9 $i
 done
-for i in `ps -e --sort=start -o start,pid,cmd | grep "/usr/share/indicator-hostsblock/hostsblock-indicator auto_refresh" | egrep -v grep | sed 1d | awk '{print$2}'`
-do
-	kill -9 $i
-done
 for i in `ps -e --sort=start -o start,pid,cmd | grep "/usr/share/indicator-hostsblock/hostsblock-indicator restart_indicator" | egrep -v grep | sed 1d | awk '{print$2}'`
 do
-	kill -9 $i
+kill -9 $i
 done
 # start monitoring
 while inotifywait -qqre modify "/usr/share/indicator-hostsblock/"
@@ -50,7 +46,7 @@ then
 	fi
 # if exists
 else
-	echo "Last: `cat "/usr/share/indicator-hostsblock/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " '{print $2}'`"
+	echo "Last: `grep "Hostsblock completed on " "/usr/share/indicator-hostsblock/hostsblock.log" | awk -F " completed on " '{print $2}'`"
 fi
 }
 
@@ -62,26 +58,26 @@ check_weekly=$(ls "/etc/cron.weekly" | grep "hostsblock-launcher")
 check_monthly=$(ls "/etc/cron.monthly" | grep "hostsblock-launcher")
 if [ "$check_hourly" = "hostsblock-launcher" ]
 then
-	echo "Auto-Update: Hourly" > "/tmp/hostsblock-scheduler.txt"
+	echo "Auto-Update: Hourly" > "/tmp/hostsblock-auto-update.txt"
 else
 	if [ "$check_daily" = "hostsblock-launcher" ]
 	then
-		echo "Auto-Update: Daily" > "/tmp/hostsblock-scheduler.txt"
+		echo "Auto-Update: Daily" > "/tmp/hostsblock-auto-update.txt"
 	else
 		if [ "$check_weekly" = "hostsblock-launcher" ]
 		then
-			echo "Auto-Update: Weekly" > "/tmp/hostsblock-scheduler.txt"
+			echo "Auto-Update: Weekly" > "/tmp/hostsblock-auto-update.txt"
 		else
 			if [ "$check_monthly" = "hostsblock-launcher" ]
 			then
-				echo "Auto-Update: Monthly" > "/tmp/hostsblock-scheduler.txt"
+				echo "Auto-Update: Monthly" > "/tmp/hostsblock-auto-update.txt"
 			else
-				echo "Auto-Update: None" > "/tmp/hostsblock-scheduler.txt"
+				echo "Auto-Update: None" > "/tmp/hostsblock-auto-update.txt"
 			fi
 		fi
 	fi
 fi
-echo `cat "/tmp/hostsblock-scheduler.txt"`
+cat "/tmp/hostsblock-auto-update.txt"
 }
 
 launcher_gui()
@@ -91,21 +87,17 @@ notify-send "HostsBlock is checking if there are any updates..." -i gtk-dialog-i
 # check updates
 "/usr/share/indicator-hostsblock/hostsblock-check-updates" -v 3 &>"/tmp/hostsblock-check-updates.log"
 # append date and time stamp to log
-cat <<EOF >> "/tmp/hostsblock-check-updates.log"
-Hostsblock checked updates at `date +'%d/%m/%Y %H:%M'`
-EOF
+echo "Hostsblock checked updates on `date +'%a %d %b'` `date +'%H:%M'`" >> "/tmp/hostsblock-check-updates.log"
 # changes
-cat "/tmp/hostsblock-check-updates.log" | \
-grep "\[WARN\] FAILED to refresh\/download blocklist " | \
-sed -e "s/^\[WARN\] FAILED to refresh\/download blocklist //g" -e "s/\?hostformat=hosts&mimetype=plaintext//g" -e "s/\.$//g" -e "s/^http/• http/g" > "/tmp/hostsblock-updates.log"
-changes=$(grep "http" "/tmp/hostsblock-updates.log")
+grep "\[WARN\] FAILED to refresh\/download blocklist " "/tmp/hostsblock-check-updates.log" | sed -e "s/^\[WARN\] FAILED to refresh\/download blocklist //g" -e "s/\?hostformat=hosts&mimetype=plaintext//g" -e "s/\.$//g" -e "s/^http/• http/g" > "/tmp/hostsblock-updates.txt"
+changes=$(grep "http" "/tmp/hostsblock-updates.txt")
 # no changes
 if [ -z "$changes" ]
 then
 	notify-send "HostsBlock found no updates; exiting..." -i gtk-dialog-info -t 1000 -u normal &
 	exit
 else
-	zenity --question --title="HostsBlock found the following change(s):" --text="<i>$changes</i>\n\n<b>Would you like to update now?</b>" --width 300 --height 300
+	zenity --question --title="HostsBlock" --text="Found the following change(s):\n\n<i>$changes</i>\n\n<b>Would you like to update now?</b>" --width 300 --height 400
 	if [ $? = 0 ]
 	then
 # notify
@@ -115,15 +107,13 @@ else
 		sudo -Sp '' "/usr/share/indicator-hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log" <<<"${sudo_password}"
 		sudo -Sp '' chmod a+w "/tmp/hostsblock.log" <<<"${sudo_password}"
 # append date and time stamp to log
-cat <<EOF >> "/tmp/hostsblock.log"
-Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
-EOF
+echo "Hostsblock completed on `date +'%a %d %b'` `date +'%H:%M'`" >> "/tmp/hostsblock.log"
 # backup log
 		sudo -Sp '' cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log" <<<"${sudo_password}"
 # option to view log
-new_update=$(cat "/tmp/hostsblock.log" | grep "Hostsblock completed at " | awk -F " at " '{print $2}')
+new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
 
-		zenity --question --title="HostsBlock Updated" --text="<b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
+		zenity --question --title="HostsBlock" --text="Updated on: <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
 			if [ $? = 0 ]
 			then
 # display log
@@ -135,31 +125,6 @@ fi
 
 scheduler_gui()
 {
-check_hourly=$(ls "/etc/cron.hourly" | grep "hostsblock-launcher")
-check_daily=$(ls "/etc/cron.daily" | grep "hostsblock-launcher")
-check_weekly=$(ls "/etc/cron.weekly" | grep "hostsblock-launcher")
-check_monthly=$(ls "/etc/cron.monthly" | grep "hostsblock-launcher")
-if [ "$check_hourly" = "hostsblock-launcher" ]
-then
-	echo "Hourly" > "/tmp/hostsblock-auto-update.txt"
-else
-	if [ "$check_daily" = "hostsblock-launcher" ]
-	then
-		echo "Daily" > "/tmp/hostsblock-auto-update.txt"
-	else
-		if [ "$check_weekly" = "hostsblock-launcher" ]
-		then
-			echo "Weekly" > "/tmp/hostsblock-auto-update.txt"
-		else
-			if [ "$check_monthly" = "hostsblock-launcher" ]
-			then
-				echo "Monthly" > "/tmp/hostsblock-auto-update.txt"
-			else
-				echo "None" > "/tmp/hostsblock-auto-update.txt"
-			fi
-		fi
-	fi
-fi
 auto_update=$(cat "/tmp/hostsblock-auto-update.txt")
 # options
 menu_scheduler()
@@ -326,9 +291,9 @@ then
 	then
 		if [ -s "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
 		then
-			cat "/usr/share/indicator-hostsblock/hostsblock.deny.list" "$HOME/.local/share/indicator-hostsblock/user.deny.list" | sort -u > "/tmp/merged.hostsblock.deny.list"
 			sudo -Sp '' mv -f "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list.old" <<<"${sudo_password}"
-			sudo -Sp '' mv -f "/tmp/merged.hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+			sudo -Sp '' echo "$HOME/.local/share/indicator-hostsblock/user.deny.list" >> "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
 			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list - merged (view only)" --width 450 --height 600 &
 			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
 		fi
@@ -337,9 +302,9 @@ then
 	then
 		if [ -s "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
 		then
-			cat "/usr/share/indicator-hostsblock/hostsblock.allow.list" "$HOME/.local/share/indicator-hostsblock/user.allow.list" | sort -u > "/tmp/merged.hostsblock.allow.list"
 			sudo -Sp '' mv -f "/usr/share/indicator-hostsblock/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list.old" <<<"${sudo_password}"
-			sudo -Sp '' mv -f "/tmp/merged.hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
+			sudo -Sp '' echo "$HOME/.local/share/indicator-hostsblock/user.allow.list" >> "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
+			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
 			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list - merged (view only)" --width 450 --height 600 &
 			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
 		fi
@@ -501,7 +466,7 @@ pkill -f "inotifywait -qqre modify /usr/share/indicator-hostsblock/"
 "/usr/share/indicator-hostsblock/indicator-hostsblock"
 }
 
-#####################################################################
+##############
 
 if [ $# -eq 0 ]
 then

@@ -2,9 +2,7 @@
 # launch hostsblock with verbosity level 3, and create log
 "/usr/share/indicator-hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log"
 # append date and time stamp to log
-cat <<EOF >> "/tmp/hostsblock.log"
-Hostsblock completed at `date +'%d/%m/%Y %H:%M'`
-EOF
+echo "Hostsblock completed on `date +'%a %d %b'` `date +'%H:%M'`" >> "/tmp/hostsblock.log"
 # make log file open for all
 chmod a+w "/tmp/hostsblock.log"
 # backup log
