@@ -46,9 +46,13 @@ class HostsBlockIndicator:
         self.Block_item.connect("activate", self.doBlock)
         self.Block_item.show()
 
-	self.Log_item = gtk.MenuItem("View Log File")
+	self.Log_item = gtk.MenuItem("View Log")
         self.Log_item.connect("activate", self.doLog)
         self.Log_item.show()
+
+	self.History_item = gtk.MenuItem("View History")
+        self.History_item.connect("activate", self.doHistory)
+        self.History_item.show()
 
 	self.View_item = gtk.MenuItem("View Config Files...")
         self.View_item.connect("activate", self.doView)
@@ -106,6 +110,7 @@ class HostsBlockIndicator:
 	self.menu.append(self.Schedule_item)
 	self.menu.append(self.Block_item)
 	self.menu.append(self.Log_item)
+	self.menu.append(self.History_item)
 	self.menu.append(self.View_item)
 	self.menu.append(self.Edit_item)
 	self.menu.append(self.EditUser_item)
@@ -144,6 +149,9 @@ class HostsBlockIndicator:
 
     def doLog(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_log_gui")
+
+    def doHistory(self, dude):
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_cumulative_log_gui")
 
     def doView(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator viewer_gui")
