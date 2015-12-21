@@ -107,18 +107,36 @@ else
 		sudo -Sp '' "/usr/share/indicator-hostsblock/hostsblock.sh" -v 3 &>"/tmp/hostsblock.log" <<<"${sudo_password}"
 		sudo -Sp '' chmod a+w "/tmp/hostsblock.log" <<<"${sudo_password}"
 # append date and time stamp to log
-echo "Hostsblock completed on `date +'%a %d %b'` `date +'%H:%M'`" >> "/tmp/hostsblock.log"
+		echo "Hostsblock completed on `date +'%a %d %b'` `date +'%H:%M'`" >> "/tmp/hostsblock.log"
 # backup log
 		sudo -Sp '' cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log" <<<"${sudo_password}"
+# create cumulative log
+		grep "Hostsblock completed on " "/usr/share/indicator-hostsblock/hostsblock.log" > "/tmp/hostsblock-cumulative.log"
+		grep " urls redirected to " "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-cumulative.log"
+		sed -i 's/Hostsblock completed on [A-Z][a-z][a-z] //g' "/tmp/hostsblock-cumulative.log"
+		sed -i 's/\[INFO\] \/etc\/hosts\.block: //g' "/tmp/hostsblock-cumulative.log"
+		sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-cumulative.log"
+		cat "/tmp/hostsblock-cumulative.log" | tr '\n' '\t' | sed 's/\t$/\n/g' > "/tmp/hostsblock-cumulative.txt"
+		mv "/tmp/hostsblock-cumulative.txt" "/tmp/hostsblock-cumulative.log"
+		if [[ ! -f "/usr/share/indicator-hostsblock/hostsblock-cumulative.log" ]]
+		then
+			sudo -Sp '' touch "/usr/share/indicator-hostsblock/hostsblock-cumulative.log" <<<"${sudo_password}"
+			sudo -Sp '' chmod a+w "/usr/share/indicator-hostsblock/hostsblock-cumulative.log" <<<"${sudo_password}"
+		fi
+		cat "/tmp/hostsblock-cumulative.log" >> "/usr/share/indicator-hostsblock/hostsblock-cumulative.log"
+		lines=$(wc -l "/usr/share/indicator-hostsblock/hostsblock-cumulative.log" | awk '{print $1}')
+		if [ $lines -gt 30 ]
+		then
+			sed -i -e "1,1d" "/usr/share/indicator-hostsblock/hostsblock-cumulative.log"
+		fi
 # option to view log
-new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
-
+		new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
 		zenity --question --title="HostsBlock" --text="Updated on: <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
-			if [ $? = 0 ]
-			then
+		if [ $? = 0 ]
+		then
 # display log
-				zenity --text-info --title="hostsblock.log (view only)" --filename="/tmp/hostsblock.log" --width 680 --height 580
-			fi
+			zenity --text-info --title="hostsblock.log (view only)" --filename="/tmp/hostsblock.log" --width 680 --height 580
+		fi
 	fi
 fi
 }
@@ -395,6 +413,17 @@ else
 fi
 }
 
+view_cumulative_log_gui()
+{
+# check if exists
+if [ -f "/usr/share/indicator-hostsblock/hostsblock-cumulative.log" ]
+then
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock-cumulative.log" --title="hostsblock-cumulative.log" --width 300 --height 500
+else
+	notify-send "hostsblock-cumulative.log does not exist" -i gtk-dialog-info -t 1000 -u normal &
+fi
+}
+
 change_icon_gui()
 {
 # options
@@ -471,7 +500,7 @@ pkill -f "inotifywait -qqre modify /usr/share/indicator-hostsblock/"
 if [ $# -eq 0 ]
 then
 	echo "You should specify a function as parameter; e.g. view_log_gui"
-	exit 1;
+	exit 1
 else
 	for func do
 		[ "$(type -t -- "$func")" = function ] && "$func"
