@@ -42,6 +42,9 @@ class HostsBlockIndicator:
         self.Schedule_item.connect("activate", self.setSchedule)
         self.Schedule_item.show()
 
+	self.seperator2_item = gtk.SeparatorMenuItem()
+	self.seperator2_item.show()
+
 	self.Block_item = gtk.MenuItem("View Hosts.Block File")
         self.Block_item.connect("activate", self.doBlock)
         self.Block_item.show()
@@ -58,6 +61,20 @@ class HostsBlockIndicator:
         self.View_item.connect("activate", self.doView)
         self.View_item.show()
 
+	self.seperator3_item = gtk.SeparatorMenuItem()
+	self.seperator3_item.show()
+
+	self.QueryHB_item = gtk.MenuItem("Query Hosts.Block File...")
+        self.QueryHB_item.connect("activate", self.doQueryHB)
+        self.QueryHB_item.show()
+
+	self.QueryCF_item = gtk.MenuItem("Query Cache Files...")
+        self.QueryCF_item.connect("activate", self.doQueryCF)
+        self.QueryCF_item.show()
+
+	self.seperator4_item = gtk.SeparatorMenuItem()
+	self.seperator4_item.show()
+
 	self.Edit_item = gtk.MenuItem("Edit Config Files...")
         self.Edit_item.connect("activate", self.doEdit)
         self.Edit_item.show()
@@ -70,8 +87,8 @@ class HostsBlockIndicator:
         self.MergeUser_item.connect("activate", self.doMergeUser)
         self.MergeUser_item.show()
 
-	self.seperator2_item = gtk.SeparatorMenuItem()
-	self.seperator2_item.show()
+	self.seperator5_item = gtk.SeparatorMenuItem()
+	self.seperator5_item.show()
 
 	self.Disable_item = gtk.MenuItem("Disable HostsBlock")
         self.Disable_item.connect("activate", self.doDisable)
@@ -85,15 +102,15 @@ class HostsBlockIndicator:
         self.Restart_item.connect("activate", self.doRestart)
         self.Restart_item.show()
 
-	self.seperator3_item = gtk.SeparatorMenuItem()
-	self.seperator3_item.show()
+	self.seperator6_item = gtk.SeparatorMenuItem()
+	self.seperator6_item.show()
 
 	self.Icon_item = gtk.MenuItem("Change Icon...")
         self.Icon_item.connect("activate", self.setIcon)
         self.Icon_item.show()
 
-	self.seperator4_item = gtk.SeparatorMenuItem()
-	self.seperator4_item.show()
+	self.seperator7_item = gtk.SeparatorMenuItem()
+	self.seperator7_item.show()
 
 	self.Refresh_item = gtk.MenuItem("Refresh")
         self.Refresh_item.connect("activate", self.doRefresh)
@@ -108,20 +125,25 @@ class HostsBlockIndicator:
 	self.menu.append(self.seperator1_item)
 	self.menu.append(self.Launch_item)
 	self.menu.append(self.Schedule_item)
+	self.menu.append(self.seperator2_item)
 	self.menu.append(self.Block_item)
 	self.menu.append(self.Log_item)
 	self.menu.append(self.History_item)
 	self.menu.append(self.View_item)
+	self.menu.append(self.seperator3_item)
+	self.menu.append(self.QueryHB_item)
+	self.menu.append(self.QueryCF_item)
+	self.menu.append(self.seperator4_item)
 	self.menu.append(self.Edit_item)
 	self.menu.append(self.EditUser_item)
 	self.menu.append(self.MergeUser_item)
-	self.menu.append(self.seperator2_item)
+	self.menu.append(self.seperator5_item)
 	self.menu.append(self.Disable_item)
 	self.menu.append(self.Enable_item)
 	self.menu.append(self.Restart_item)
-	self.menu.append(self.seperator3_item)
+	self.menu.append(self.seperator6_item)
 	self.menu.append(self.Icon_item)
-	self.menu.append(self.seperator4_item)
+	self.menu.append(self.seperator7_item)
 	self.menu.append(self.Refresh_item)
 	self.menu.append(self.Quit_item)
 
@@ -151,10 +173,16 @@ class HostsBlockIndicator:
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_log_gui")
 
     def doHistory(self, dude):
-	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_cumulative_log_gui")
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator view_history_log_gui")
 
     def doView(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator viewer_gui")
+
+    def doQueryHB(self, dude):
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator query_hostsblock_gui")
+
+    def doQueryCF(self, dude):
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator query_cache_gui")
 
     def doEdit(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator editor_gui")

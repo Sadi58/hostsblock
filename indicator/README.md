@@ -55,18 +55,19 @@ Installation
 Change log
 ----------------------
 
-- **indicator-hostsblock_[amd64|i386]_0.999.3-13.deb:** Most scripts merged into a single "backend" script (as functions)
-- **indicator-hostsblock_[amd64|i386]_0.999.3-12.deb:** Changed icons
-- **indicator-hostsblock_[amd64|i386]_0.999.3-11.deb:** Smarter use of sudo command
-- **indicator-hostsblock_[amd64|i386]_0.999.3-10.deb:** Fixed kwakd pathnames and updated icons
-- **indicator-hostsblock_[amd64|i386]_0.999.3-9.deb:** Fixed the issue with deb reinstallation and upgrades by moving upstream hostsblock files also into indicator directory
-- **indicator-hostsblock_[amd64|i386]_0.999.3-8.deb:** Fixed important bugs associated with awk commands in some scripts
-- **indicator-hostsblock_[amd64|i386]_0.999.3-7.deb:** Both **hostsblock** and **indicator** moved to `/usr/share/` to avoid the **lintian errors** that emerged in previous versions
-- **indicator-hostsblock_[amd64|i386]_0.999.3-6.deb:** Improved View/Edit Config Files menu items, and hostsblock.conf format
-- **indicator-hostsblock_[amd64|i386]_0.999.3-5.deb:** Added quit menu item and polished menu further
-- **indicator-hostsblock_[amd64|i386]_0.999.3-4.deb:** Indicator now automatically refreshes after a change in program directory, including **hostsblock.log** and indicator icon, i.e. **hostsblock.png**
-- **indicator-hostsblock_[amd64|i386]_0.999.3-3.deb:** Added user black/white lists feature and fixed some bugs
-- **indicator-hostsblock_[amd64|i386]_0.999.3-2.deb:** Fixed indicator restart failure after launcher cron job
-- **indicator-hostsblock_[amd64|i386]_0.999.3-1.deb:** Minor upstream updates, added hostsblock man files
-- **indicator-hostsblock_[amd64|i386]_0.999.2-3.deb:** Added kwakd man file
-- **indicator-hostsblock_amd64_0.999.2-2.deb:** Added launcher no update notification
+- **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes
+- **0.999.3-13:** Most scripts merged into a single "backend" script (as functions)
+- **0.999.3-12:** Changed icons
+- **0.999.3-11:** Smarter use of sudo command
+- **0.999.3-10:** Fixed kwakd pathnames and updated icons
+- **0.999.3-09:** Fixed the issue with deb reinstallation and upgrades by moving upstream hostsblock files also into indicator directory
+- **0.999.3-08:** Fixed important bugs associated with awk commands in some scripts
+- **0.999.3-07:** Both **hostsblock** and **indicator** moved to `/usr/share/` to avoid **lintian errors**
+- **0.999.3-06:** Improved View/Edit Config Files menu items, and hostsblock.conf format
+- **0.999.3-05:** Added quit menu item and polished menu further
+- **0.999.3-04:** Indicator now automatically refreshes after a change in program directory (e.g. log, icon)
+- **0.999.3-03:** Added user black/white lists feature and fixed some bugs
+- **0.999.3-02:** Fixed indicator restart failure after launcher cron job
+- **0.999.3-01:** Minor upstream updates, added hostsblock man files
+- **0.999.2-03:** Added kwakd man file
+- **0.999.2-02:** Added launcher no update notification
