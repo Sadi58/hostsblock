@@ -60,7 +60,7 @@ Change log
 - **0.999.3-12:** Changed icons
 - **0.999.3-11:** Smarter use of sudo command
 - **0.999.3-10:** Fixed kwakd pathnames and updated icons
-- **0.999.3-09:** Fixed the issue with deb reinstallation and upgrades by moving upstream hostsblock files also into indicator directory
+- **0.999.3-09:** Moved upstream hostsblock files also into indicator directory to fix deb reinstallation/upgrade issues
 - **0.999.3-08:** Fixed important bugs associated with awk commands in some scripts
 - **0.999.3-07:** Both **hostsblock** and **indicator** moved to `/usr/share/` to avoid **lintian errors**
 - **0.999.3-06:** Improved View/Edit Config Files menu items, and hostsblock.conf format
