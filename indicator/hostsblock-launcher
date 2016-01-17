@@ -40,7 +40,7 @@ then
 	echo "$xdisplay" > "/tmp/xdisplays.txt"
 	while read -r -u3 xuser; read -r -u4 xdisplay
 	do
-		DISPLAY="$xdisplay" XAUTHORITY="/home/"$xuser"/.Xauthority" su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
+		DISPLAY="$xdisplay" XAUTHORITY="/home/"$xuser"/.Xauthority" su "$xuser" -c "notify-send '$message' -i gtk-dialog-info" &
 	done 3<"/tmp/xusers.txt" 4<"/tmp/xdisplays.txt"
 else
 	echo "Hostsblock has just checked and found no updates" > "/tmp/hostsblock-launcher-message.txt"
@@ -52,6 +52,6 @@ else
 	echo "$xdisplay" > "/tmp/xdisplays.txt"
 	while read -r -u3 xuser; read -r -u4 xdisplay
 	do
-		DISPLAY="$xdisplay" XAUTHORITY="/home/"$xuser"/.Xauthority" su "$xuser" -c "notify-send '$message' -i gtk-dialog-info -t 1000 -u normal" &
+		DISPLAY="$xdisplay" XAUTHORITY="/home/"$xuser"/.Xauthority" su "$xuser" -c "notify-send '$message' -i gtk-dialog-info" &
 	done 3<"/tmp/xusers.txt" 4<"/tmp/xdisplays.txt"
 fi
