@@ -127,7 +127,7 @@ else
 		lines=$(wc -l "/usr/share/indicator-hostsblock/hostsblock-history.log" | awk '{print $1}')
 		if [ $lines -gt 30 ]
 		then
-			sed -i -e "1,1d" "/usr/share/indicator-hostsblock/hostsblock-history.log"
+			sudo -Sp '' sed -i -e "1,1d" "/usr/share/indicator-hostsblock/hostsblock-history.log" <<<"${sudo_password}"
 		fi
 # option to view log
 		new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
@@ -435,7 +435,7 @@ else
 	RESULT=$(grep "$DOMAIN" "/etc/hosts.block" | sed -e "s/^0\.0\.0\.0\s\s*//g" -e "s/^127\.0\.0\.1\s\s*//g")
 	if [ -z "$RESULT" ]
 	then
-		zenity --info --title="Query results" --text="No match found"
+		zenity --info --title="Query results" --text="No match found!"
 	else
 		zenity --info --title="Query results" --text="$RESULT"
 	fi
@@ -495,7 +495,7 @@ else
 	RESULT06=$(grep "$DOMAIN" "/tmp/hostsblock-lists/Hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT07=$(grep "$DOMAIN" "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT08=$(grep "$DOMAIN" "/tmp/hostsblock-lists/HOSTS" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	zenity --info --title="Search results" --text="<b>hosts-file.net.ad_servers:</b> $RESULT01\n<b>pgl.yoyo.org.as.serverlist:</b> $RESULT02\n<b>sadi58.tripod.com.misc.hosts:</b> $RESULT03\n<b>someonewhocares.org.hosts:</b> $RESULT04\n<b>sysctl.org.cameleon.hosts:</b> $RESULT05\n<b>hostsfile.mine.nu.Hosts:</b> $RESULT06\n<b>hostsfile.org.hosts.lnx:</b> $RESULT07\n<b>winhelp2002.mvps.org.HOSTS:</b> $RESULT08"
+	zenity --info --title="Search results" --text="hosts-file.net.ad_servers: <b>$RESULT01</b>\npgl.yoyo.org.as.serverlist: <b>$RESULT02\nsadi58.tripod.com.misc.hosts: <b>$RESULT03</b>\nsomeonewhocares.org.hosts: <b>$RESULT04\nsysctl.org.cameleon.hosts: <b>$RESULT05</b>\nhostsfile.mine.nu.Hosts: <b>$RESULT06</b>\nhostsfile.org.hosts.lnx: <b>$RESULT07</b>\nwinhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>"
 fi
 }
 

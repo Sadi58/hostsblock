@@ -23,9 +23,9 @@ then
 fi
 cat "/tmp/hostsblock-history.log" >> "/usr/share/indicator-hostsblock/hostsblock-history.log"
 lines=$(wc -l "/usr/share/indicator-hostsblock/hostsblock-history.log" | awk '{print $1}')
-if [ $lines -gt 99 ]
+if [ $lines -gt 30 ]
 then
-	sed -i -e "1,3d" "/usr/share/indicator-hostsblock/hostsblock-history.log"
+	sed -i -e "1,1d" "/usr/share/indicator-hostsblock/hostsblock-history.log"
 fi
 # create message
 changes=$(grep -c "CHANGES FOUND" "/tmp/hostsblock.log")
