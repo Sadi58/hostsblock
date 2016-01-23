@@ -131,7 +131,7 @@ else
 		fi
 # option to view log
 		new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
-		zenity --question --title="HostsBlock" --text="Updated on: <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
+		zenity --question --title="HostsBlock" --text="Last updated: <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
 		if [ $? = 0 ]
 		then
 # display log
@@ -300,7 +300,7 @@ option_edit_user
 merge_user_gui()
 {
 # confirmation
-zenity --question --title="Merge User Lists" --text="This will merge:\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.allow.list</i>\"\n\n●\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.deny.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
+zenity --question --title="Merge User Lists" --text="This will merge:\n\n• \"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.allow.list</i>\"\n\n• \"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.deny.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
 if [ $? = 0 ]
 then
 	get_password
@@ -495,7 +495,7 @@ else
 	RESULT06=$(grep "$DOMAIN" "/tmp/hostsblock-lists/Hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT07=$(grep "$DOMAIN" "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT08=$(grep "$DOMAIN" "/tmp/hostsblock-lists/HOSTS" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	zenity --info --title="Search results" --text="hosts-file.net.ad_servers: <b>$RESULT01</b>\npgl.yoyo.org.as.serverlist: <b>$RESULT02\nsadi58.tripod.com.misc.hosts: <b>$RESULT03</b>\nsomeonewhocares.org.hosts: <b>$RESULT04\nsysctl.org.cameleon.hosts: <b>$RESULT05</b>\nhostsfile.mine.nu.Hosts: <b>$RESULT06</b>\nhostsfile.org.hosts.lnx: <b>$RESULT07</b>\nwinhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>"
+	zenity --info --title="Search results" --text="• hosts-file.net.ad_servers: <b>$RESULT01</b>\n• pgl.yoyo.org.as.serverlist: <b>$RESULT02</b>\n• sadi58.tripod.com.misc.hosts: <b>$RESULT03</b>\n• someonewhocares.org.hosts: <b>$RESULT04</b>\n• sysctl.org.cameleon.hosts: <b>$RESULT05</b>\n• hostsfile.mine.nu.Hosts: <b>$RESULT06</b>\n• hostsfile.org.hosts.lnx: <b>$RESULT07</b>\n• winhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>"
 fi
 }
 
