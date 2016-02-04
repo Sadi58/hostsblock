@@ -1,6 +1,4 @@
-
-### Anti-Spyware List ###
-
+####### Anti-Spyware List Begins #######
 0.0.0.0	www.007guard.com
 0.0.0.0	007guard.com
 0.0.0.0	008i.com
@@ -15495,25 +15493,4 @@
 0.0.0.0	www.zxsex2.info
 0.0.0.0	zxsex2.info
 0.0.0.0	zyban-zocor-levitra.com
-
-### AdAway special list ###
-
-0.0.0.0	30-day-change.com
-0.0.0.0	apps.id.net
-0.0.0.0	canuck-method.com
-0.0.0.0	www.canuck-method.com
-0.0.0.0	external.stealthedeal.com
-0.0.0.0	mackeeperapp.zeobit.com
-0.0.0.0	promotions.yourfirstmillion.biz
-0.0.0.0	quickcash-system.com
-0.0.0.0	save-your-pc.info
-0.0.0.0	embed.sendtonews.com
-0.0.0.0	promotion.com-rewards.club
-0.0.0.0	specialsections.siteseer.ca
-0.0.0.0	stealthedeal.com
-0.0.0.0	twitter.cm
-0.0.0.0	virtual.thewhig.com
-0.0.0.0	www.quickcash-system.com
-
-### Extras ###
-y.lygo.com
+####### Anti-Spyware List Ends #######
