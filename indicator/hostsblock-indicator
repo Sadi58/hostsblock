@@ -452,6 +452,7 @@ then
 	mkdir "/tmp/hostsblock-lists"
 fi
 cd "/tmp/hostsblock-lists"
+
 if [ ! -f "/tmp/hostsblock-lists/hosts-file.net.ad_servers.txt" ]
 then
 	cp "/var/cache/hostsblock/hosts-file.net.ad_servers.txt" "/tmp/hostsblock-lists/"
@@ -460,9 +461,9 @@ if [ ! -f "/tmp/hostsblock-lists/pgl.yoyo.org.as.serverlist.php.hostformat.hosts
 then
 	cp "/var/cache/hostsblock/pgl.yoyo.org.as.serverlist.php.hostformat.hosts.mimetype.plaintext" "/tmp/hostsblock-lists/"
 fi
-if [ ! -f "/tmp/hostsblock-lists/sadi58.tripod.com.misc.hosts.txt" ]
+if [ ! -f "/tmp/hostsblock-lists/https:..raw.githubusercontent.com.Sadi58.hostsblock.master.indicator.hosts.txt" ]
 then
-	cp "/var/cache/hostsblock/sadi58.tripod.com.misc.hosts.txt" "/tmp/hostsblock-lists/"
+	cp "/var/cache/hostsblock/https:..raw.githubusercontent.com.Sadi58.hostsblock.master.indicator.hosts.txt" "/tmp/hostsblock-lists/"
 fi
 if [ ! -f "/tmp/hostsblock-lists/someonewhocares.org.hosts.hosts" ]
 then
@@ -484,6 +485,10 @@ if [ ! -f "/tmp/hostsblock-lists/HOSTS" ]
 then
 	unzip -qq "/var/cache/hostsblock/winhelp2002.mvps.org.hosts.zip" HOSTS
 fi
+if [ ! -f "/tmp/hostsblock-lists/adaway.org.hosts.txt" ]
+then
+	cp "/var/cache/hostsblock/adaway.org.hosts.txt" "/tmp/hostsblock-lists/"
+fi
 DOMAIN=$(zenity --entry --title="Query cached blocklists" --text="For:" --width 250)
 if [ -z "$DOMAIN" ]
 then
@@ -492,13 +497,14 @@ then
 else
 	RESULT01=$(grep "$DOMAIN" "/tmp/hostsblock-lists/hosts-file.net.ad_servers.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT02=$(grep "$DOMAIN" "/tmp/hostsblock-lists/pgl.yoyo.org.as.serverlist.php.hostformat.hosts.mimetype.plaintext" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	RESULT03=$(grep "$DOMAIN" "/tmp/hostsblock-lists/sadi58.tripod.com.misc.hosts.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
+	RESULT03=$(grep "$DOMAIN" "/tmp/hostsblock-lists/https:..raw.githubusercontent.com.Sadi58.hostsblock.master.indicator.hosts.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT04=$(grep "$DOMAIN" "/tmp/hostsblock-lists/someonewhocares.org.hosts.hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT05=$(grep "$DOMAIN" "/tmp/hostsblock-lists/sysctl.org.cameleon.hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT06=$(grep "$DOMAIN" "/tmp/hostsblock-lists/Hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT07=$(grep "$DOMAIN" "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT08=$(grep "$DOMAIN" "/tmp/hostsblock-lists/HOSTS" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	zenity --info --title="Search results" --text="• hosts-file.net.ad_servers: <b>$RESULT01</b>\n• pgl.yoyo.org.as.serverlist: <b>$RESULT02</b>\n• sadi58.tripod.com.misc.hosts: <b>$RESULT03</b>\n• someonewhocares.org.hosts: <b>$RESULT04</b>\n• sysctl.org.cameleon.hosts: <b>$RESULT05</b>\n• hostsfile.mine.nu.Hosts: <b>$RESULT06</b>\n• hostsfile.org.hosts.lnx: <b>$RESULT07</b>\n• winhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>"
+	RESULT09=$(grep "$DOMAIN" "/tmp/hostsblock-lists/adaway.org.hosts.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
+	zenity --info --title="Search results" --text="• hosts-file.net.ad_servers: <b>$RESULT01</b>\n• pgl.yoyo.org.as.serverlist: <b>$RESULT02</b>\n• Sadi58.hostsblock: <b>$RESULT03</b>\n• someonewhocares.org.hosts: <b>$RESULT04</b>\n• sysctl.org.cameleon.hosts: <b>$RESULT05</b>\n• hostsfile.mine.nu.Hosts: <b>$RESULT06</b>\n• hostsfile.org.hosts.lnx: <b>$RESULT07</b>\n• winhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>\n• adaway.org.hosts: <b>$RESULT09</b>"
 fi
 }
 
