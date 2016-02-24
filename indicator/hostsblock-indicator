@@ -465,9 +465,9 @@ if [ ! -f "/tmp/hostsblock-lists/https:..raw.githubusercontent.com.Sadi58.hostsb
 then
 	cp "/var/cache/hostsblock/https:..raw.githubusercontent.com.Sadi58.hostsblock.master.indicator.hosts.txt" "/tmp/hostsblock-lists/"
 fi
-if [ ! -f "/tmp/hostsblock-lists/someonewhocares.org.hosts.hosts" ]
+if [ ! -f "/tmp/hostsblock-lists/someonewhocares.org.hosts.zero." ]
 then
-	cp "/var/cache/hostsblock/someonewhocares.org.hosts.hosts" "/tmp/hostsblock-lists/"
+	cp "/var/cache/hostsblock/someonewhocares.org.hosts.zero." "/tmp/hostsblock-lists/"
 fi
 if [ ! -f "/tmp/hostsblock-lists/sysctl.org.cameleon.hosts" ]
 then
@@ -475,7 +475,7 @@ then
 fi
 if [ ! -f "/tmp/hostsblock-lists/Hosts" ]
 then
-	unzip -qq "/var/cache/hostsblock/hostsfile.mine.nu.Hosts.zip" Hosts
+	unzip -qq "/var/cache/hostsblock/hostsfile.mine.nu.Hosts0.zip" Hosts
 fi
 if [ ! -f "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" ]
 then
@@ -498,7 +498,7 @@ else
 	RESULT01=$(grep "$DOMAIN" "/tmp/hostsblock-lists/hosts-file.net.ad_servers.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT02=$(grep "$DOMAIN" "/tmp/hostsblock-lists/pgl.yoyo.org.as.serverlist.php.hostformat.hosts.mimetype.plaintext" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT03=$(grep "$DOMAIN" "/tmp/hostsblock-lists/https:..raw.githubusercontent.com.Sadi58.hostsblock.master.indicator.hosts.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	RESULT04=$(grep "$DOMAIN" "/tmp/hostsblock-lists/someonewhocares.org.hosts.hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
+	RESULT04=$(grep "$DOMAIN" "/tmp/hostsblock-lists/someonewhocares.org.hosts.zero." | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT05=$(grep "$DOMAIN" "/tmp/hostsblock-lists/sysctl.org.cameleon.hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT06=$(grep "$DOMAIN" "/tmp/hostsblock-lists/Hosts" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT07=$(grep "$DOMAIN" "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
