@@ -21,6 +21,10 @@ for i in `ps -e --sort=start -o start,pid,cmd | grep "inotifywait -qqre modify /
 do
 	kill -9 $i
 done
+for i in `ps -e --sort=start -o start,pid,cmd | grep "/usr/share/indicator-hostsblock/hostsblock-indicator auto_refresh" | egrep -v grep | sed 1d | awk '{print$2}'`
+do
+kill -9 $i
+done
 for i in `ps -e --sort=start -o start,pid,cmd | grep "/usr/share/indicator-hostsblock/hostsblock-indicator restart_indicator" | egrep -v grep | sed 1d | awk '{print$2}'`
 do
 kill -9 $i
