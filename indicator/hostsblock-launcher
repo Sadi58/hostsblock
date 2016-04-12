@@ -8,24 +8,26 @@ chmod a+w "/tmp/hostsblock.log"
 # backup log
 cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log"
 # create history log
-grep "Hostsblock completed on " "/usr/share/indicator-hostsblock/hostsblock.log" > "/tmp/hostsblock-history.log"
-grep " urls redirected to " "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-history.log"
-sed -i 's/Hostsblock completed on [A-Z][a-z][a-z] //g' "/tmp/hostsblock-history.log"
-sed -i 's/\[INFO\] \/etc\/hosts\.block: //g' "/tmp/hostsblock-history.log"
-sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-history.log"
-sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-history.log"
-cat "/tmp/hostsblock-history.log" | tr '\n' '\t' | sed 's/\t$/\n/g' > "/tmp/hostsblock-history.txt"
-mv "/tmp/hostsblock-history.txt" "/tmp/hostsblock-history.log"
+grep "Hostsblock completed on " "/usr/share/indicator-hostsblock/hostsblock.log" > "/tmp/hostsblock-history-new.log"
+grep " urls redirected to " "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-history-new.log"
+sed -i 's/Hostsblock completed on [A-Z][a-z][a-z] //g' "/tmp/hostsblock-history-new.log"
+sed -i 's/\[INFO\] \/etc\/hosts\.block: //g' "/tmp/hostsblock-history-new.log"
+sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-history-new.log"
+sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-history-new.log"
+cat "/tmp/hostsblock-history-new.log" | tr '\n' '\t' | sed 's/\t$/\n/g' > "/tmp/hostsblock-history-new.txt"
+mv "/tmp/hostsblock-history-new.txt" "/tmp/hostsblock-history-new.log"
+chmod a+w "/tmp/hostsblock-history-new.log"
 if [[ ! -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]]
 then
-	touch "/usr/share/indicator-hostsblock/hostsblock-history.log"
-	chmod a+w "/usr/share/indicator-hostsblock/hostsblock-history.log"
-fi
-cat "/tmp/hostsblock-history.log" >> "/usr/share/indicator-hostsblock/hostsblock-history.log"
-lines=$(wc -l "/usr/share/indicator-hostsblock/hostsblock-history.log" | awk '{print $1}')
-if [ $lines -gt 30 ]
-then
-	sed -i -e "1,1d" "/usr/share/indicator-hostsblock/hostsblock-history.log"
+	mv "/tmp/hostsblock-history-new.log" "/usr/share/indicator-hostsblock/hostsblock-history.log"
+else
+	cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-history-new.log"
+	lines=$(wc -l "/tmp/hostsblock-history-new.log" | awk '{print $1}')
+	if [ $lines -gt 21 ]
+	then
+		sed -i '$d' "/tmp/hostsblock-history-new.log"
+	fi
+	mv "/tmp/hostsblock-history-new.log" "/usr/share/indicator-hostsblock/hostsblock-history.log"
 fi
 # create message
 changes=$(grep -c "CHANGES FOUND" "/tmp/hostsblock.log")

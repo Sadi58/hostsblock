@@ -101,7 +101,7 @@ then
 	notify-send "HostsBlock" "found no updates; exiting..." -i gtk-dialog-info &
 	exit
 else
-	zenity --question --title="HostsBlock" --text="Found the following change(s):\n\n<i>$changes</i>\n\n<b>Would you like to update now?</b>" --width 300 --height 400
+	zenity --question --title="HostsBlock" --text="Found the following change(s):\n\n<i>$changes</i>\n\n<b>Would you like to update now?</b>" --width=300 --height=400
 	if [ $? = 0 ]
 	then
 # notify
@@ -115,23 +115,25 @@ else
 # backup log
 		sudo -Sp '' cp -f "/tmp/hostsblock.log" "/usr/share/indicator-hostsblock/hostsblock.log" <<<"${sudo_password}"
 # create history log
-		grep "Hostsblock completed on " "/usr/share/indicator-hostsblock/hostsblock.log" > "/tmp/hostsblock-history.log"
-		grep " urls redirected to " "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-history.log"
-		sed -i 's/Hostsblock completed on [A-Z][a-z][a-z] //g' "/tmp/hostsblock-history.log"
-		sed -i 's/\[INFO\] \/etc\/hosts\.block: //g' "/tmp/hostsblock-history.log"
-		sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-history.log"
-		cat "/tmp/hostsblock-history.log" | tr '\n' '\t' | sed 's/\t$/\n/g' > "/tmp/hostsblock-history.txt"
-		mv "/tmp/hostsblock-history.txt" "/tmp/hostsblock-history.log"
+		grep "Hostsblock completed on " "/usr/share/indicator-hostsblock/hostsblock.log" > "/tmp/hostsblock-history-new.log"
+		grep " urls redirected to " "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-history-new.log"
+		sed -i 's/Hostsblock completed on [A-Z][a-z][a-z] //g' "/tmp/hostsblock-history-new.log"
+		sed -i 's/\[INFO\] \/etc\/hosts\.block: //g' "/tmp/hostsblock-history-new.log"
+		sed -i 's/ redirected to 0\.0\.0\.0\./ redirected/g' "/tmp/hostsblock-history-new.log"
+		cat "/tmp/hostsblock-history-new.log" | tr '\n' '\t' | sed 's/\t$/\n/g' > "/tmp/hostsblock-history-new.txt"
+		mv "/tmp/hostsblock-history-new.txt" "/tmp/hostsblock-history-new.log"
+		chmod a+w "/tmp/hostsblock-history-new.log"
 		if [[ ! -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]]
 		then
-			sudo -Sp '' touch "/usr/share/indicator-hostsblock/hostsblock-history.log" <<<"${sudo_password}"
-			sudo -Sp '' chmod a+w "/usr/share/indicator-hostsblock/hostsblock-history.log" <<<"${sudo_password}"
-		fi
-		cat "/tmp/hostsblock-history.log" >> "/usr/share/indicator-hostsblock/hostsblock-history.log"
-		lines=$(wc -l "/usr/share/indicator-hostsblock/hostsblock-history.log" | awk '{print $1}')
-		if [ $lines -gt 30 ]
-		then
-			sudo -Sp '' sed -i -e "1,1d" "/usr/share/indicator-hostsblock/hostsblock-history.log" <<<"${sudo_password}"
+			sudo -Sp '' mv "/tmp/hostsblock-history-new.log" "/usr/share/indicator-hostsblock/hostsblock-history.log" <<<"${sudo_password}"
+		else
+			cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-history-new.log"
+			lines=$(wc -l "/tmp/hostsblock-history-new.log" | awk '{print $1}')
+			if [ $lines -gt 21 ]
+			then
+				sed -i '$d' "/tmp/hostsblock-history-new.log"
+			fi
+			sudo -Sp '' mv "/tmp/hostsblock-history-new.log" "/usr/share/indicator-hostsblock/hostsblock-history.log" <<<"${sudo_password}"
 		fi
 # option to view log
 		new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
@@ -139,7 +141,7 @@ else
 		if [ $? = 0 ]
 		then
 # display log
-			zenity --text-info --title="hostsblock.log (view only)" --filename="/tmp/hostsblock.log" --width 680 --height 580
+			zenity --text-info --title="hostsblock.log (view only)" --filename="/usr/share/indicator-hostsblock/hostsblock.log" --width=680 --height=580
 		fi
 	fi
 fi
@@ -147,17 +149,17 @@ fi
 
 scheduler_gui()
 {
-auto_update=$(cat "/tmp/hostsblock-auto-update.txt")
+auto_update=$(cat "/tmp/hostsblock-auto-update.txt" | sed -e "s/Auto\-Update\: //g")
 # options
 menu_scheduler()
 {
-im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock Auto-Update: <b><i>$auto_update</i></b>\n<b>Select one of the options below to change this:</b>\" --width 380 --height 230"
+im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock auto-update setting: <b><i>$auto_update</i></b>\nSelect one of the options below to change this:\" --width=400 --height=250"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Hourly\" \"HostsBlock will auto-update every hour\" "
 im=$im"FALSE \"Daily\" \"HostsBlock will auto-update every day\" "
 im=$im"FALSE \"Weekly\" \"HostsBlock will auto-update every week\" "
 im=$im"FALSE \"Monthly\" \"HostsBlock will auto-update every month\" "
-im=$im"FALSE \"None\" \"HostsBlock will not auto-update\" "
+im=$im"FALSE \"None\" \"HostsBlock will NOT auto-update\" "
 }
 option_scheduler()
 {
@@ -210,12 +212,14 @@ editor_gui()
 # options
 menu_editor()
 {
-im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 500 --height 195"
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width=560 --height=250"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
 im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
 im=$im"FALSE \"hostsblock.conf\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
-im=$im"FALSE \"hostsblock.deny.list\" \"/usr/share/indicator-hostsblock/hostsblock.deny.list\" "
 im=$im"FALSE \"hostsblock.allow.list\" \"/usr/share/indicator-hostsblock/hostsblock.allow.list\" "
+im=$im"FALSE \"hostsblock.deny.list\" \"/usr/share/indicator-hostsblock/hostsblock.deny.list\" "
+im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
+im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
 }
 option_editor()
 {
@@ -231,50 +235,13 @@ then
 	then
 		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.conf" <<<"${sudo_password}" &
 	fi
-	if echo $choice | grep "hostsblock.deny.list" > /dev/null
-	then
-		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}" &
-	fi
 	if echo $choice | grep "hostsblock.allow.list" > /dev/null
 	then
 		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}" &
 	fi
-fi
-}
-menu_editor
-option_editor
-}
-
-edit_user_gui()
-{
-# options
-menu_edit_user()
-{
-im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width 450 --height 150"
-im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
-im=$im"FALSE \"user.deny.list\" \"~/.local/share/indicator-hostsblock/user.deny.list\" "
-im=$im"FALSE \"user.allow.list\" \"~/.local/share/indicator-hostsblock/user.allow.list\" "
-}
-option_edit_user()
-{
-choice=`echo $im | sh -`
-if echo $choice | grep "user.deny.list" > /dev/null
-then
-	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+	if echo $choice | grep "hostsblock.deny.list" > /dev/null
 	then
-		gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
-	else
-		zenity --question --title="user.deny.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.deny.list\" now?"
-		if [ $? = 0 ]
-		then
-			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
-			then
-				mkdir "$HOME/.local/share/indicator-hostsblock/"
-			else
-				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
-				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
-			fi
-		fi
+		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}" &
 	fi
 fi
 if echo $choice | grep "user.allow.list" > /dev/null
@@ -296,44 +263,80 @@ then
 		fi
 	fi
 fi
-}
-menu_edit_user
-option_edit_user
-}
-
-merge_user_gui()
-{
-# confirmation
-zenity --question --title="Merge User Lists" --text="This will merge:\n\n• \"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.allow.list</i>\"\n\n• \"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n    (if exists)\n<b>    into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.deny.list</i>\".\n\nAnd then any merged file(s) will be displayed.\n\n<b>Would you like to proceed?</b>"
-if [ $? = 0 ]
+if echo $choice | grep "user.deny.list" > /dev/null
 then
-# merge files if exist and not empty
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
 	then
-		if [ -s "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+		gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+	else
+		zenity --question --title="user.deny.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.deny.list\" now?"
+		if [ $? = 0 ]
 		then
-			get_password
-			sudo -Sp '' cp -f "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list.old" <<<"${sudo_password}"
-			sudo -Sp '' cat "$HOME/.local/share/indicator-hostsblock/user.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" > "/tmp/hostsblock.deny.list" <<<"${sudo_password}"
-			sudo -Sp '' mv "/tmp/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
-			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
-			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list - merged (view only)" --width 450 --height 600 &
-			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
+			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
+			then
+				mkdir "$HOME/.local/share/indicator-hostsblock/"
+			else
+				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
+				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+			fi
 		fi
 	fi
-	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+fi
+}
+menu_editor
+option_editor
+}
+
+merge_allow_gui()
+{
+# merge files if user list exists and is not empty
+if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+then
+	if [ -s "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
 	then
-		if [ -s "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
+		zenity --question --title="Merge Allow Lists" --text="<b>This will merge:</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.allow.list</i>\"\nAnd then both files will be displayed.\n\nHowever, please note that these changes will take effect only when the <b>hosts.block</b> file is updated next -- unless it's edited manually and <b>dnsmasq</b> is restarted.\n\n<b>Would you like to proceed?</b>" --width=400
+		if [ $? = 0 ]
 		then
 			get_password
 			sudo -Sp '' cp -f "/usr/share/indicator-hostsblock/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list.old" <<<"${sudo_password}"
 			sudo -Sp '' cat "$HOME/.local/share/indicator-hostsblock/user.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" > "/tmp/hostsblock.allow.list" <<<"${sudo_password}"
 			sudo -Sp '' mv "/tmp/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
 			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
-			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list - merged (view only)" --width 450 --height 600 &
-			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
+			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list - merged (view only)" --width=450 --height=600 &
+			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width=300 --height=600 &
 		fi
+	else
+		zenity --info --title="Merge Allow Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>is empty.</b>\nNothing to do..."
 	fi
+else
+	zenity --info --title="Merge Allow Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>doesn\'t exist.</b>\nNothing to do..."
+fi
+
+}
+
+merge_deny_gui()
+{
+# merge files if user list exists and is not empty
+if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+then
+	if [ -s "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
+	then
+		zenity --question --title="Merge Deny Lists" --text="<b>This will merge:</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>into:</b> \"<i>/usr/share/indicator-hostsblock/hostsblock.deny.list</i>\"\nAnd then both files will be displayed.\n\nHowever, please note that these changes will take effect only when the <b>hosts.block</b> file is updated next -- unless it's edited manually and <b>dnsmasq</b> is restarted.\n\n<b>Would you like to proceed?</b>" --width=400
+		if [ $? = 0 ]
+		then
+			get_password
+			sudo -Sp '' cp -f "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list.old" <<<"${sudo_password}"
+			sudo -Sp '' cat "$HOME/.local/share/indicator-hostsblock/user.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" > "/tmp/hostsblock.deny.list" <<<"${sudo_password}"
+			sudo -Sp '' mv "/tmp/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list - merged (view only)" --width=450 --height=600 &
+			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width=300 --height=600 &
+		fi
+	else
+		zenity --info --title="Merge Deny Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>is empty.</b>\nNothing to do..."
+	fi
+else
+	zenity --info --title="Merge Deny Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>doesn\'t exist.</b>\nNothing to do..."
 fi
 }
 
@@ -342,7 +345,7 @@ viewer_gui()
 # options
 menu_viewer()
 {
-im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width 550 --height 230"
+im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width=560 --height=250"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
 im=$im"FALSE \"hostsblock.conf(full)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
 im=$im"FALSE \"hostsblock.conf(extract)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
@@ -356,7 +359,7 @@ option_viewer()
 choice=`echo $im | sh -`
 if echo $choice | grep "hostsblock.conf(full)" > /dev/null
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.conf" --title="hostsblock.conf - full (view only)" --width 980 --height 680 &
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.conf" --title="hostsblock.conf - full (view only)" --width=980 --height=680 &
 fi
 if echo $choice | grep "hostsblock.conf(extract)" > /dev/null
 then
@@ -365,21 +368,21 @@ then
 	sed -i "s/^### .*$//g" "/tmp/extract-hostsblock.conf"
 	sed -i "/^\s*$/d" "/tmp/extract-hostsblock.conf"
 	sed -i "s/^##/\n##/g" "/tmp/extract-hostsblock.conf"
-	zenity --text-info --filename="/tmp/extract-hostsblock.conf" --title="hostsblock.conf - extract (view only)" --width 980 --height 680 &
+	zenity --text-info --filename="/tmp/extract-hostsblock.conf" --title="hostsblock.conf - extract (view only)" --width=980 --height=680 &
 fi
 if echo $choice | grep "hostsblock.deny.list" > /dev/null
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list (view only)" --width 300 --height 600 &
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list (view only)" --width=300 --height=600 &
 fi
 if echo $choice | grep "hostsblock.allow.list" > /dev/null
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list (view only)" --width 300 --height 600 &
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list (view only)" --width=300 --height=600 &
 fi
 if echo $choice | grep "user.deny.list" > /dev/null
 then
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
 	then
-		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width 300 --height 600 &
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width=300 --height=600 &
 	else
 		notify-send "HostsBlock" "user.deny.list file does not exist" -i gtk-dialog-info &
 	fi
@@ -388,7 +391,7 @@ if echo $choice | grep "user.allow.list" > /dev/null
 then
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
 	then
-		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width 300 --height 600 &
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width=300 --height=600 &
 	else
 		notify-send "HostsBlock" "user.allow.list file does not exist" -i gtk-dialog-info &
 	fi
@@ -403,7 +406,7 @@ view_hostsblock_gui()
 # check if exists
 if [ -f "/etc/hosts.block" ]
 then
-	zenity --text-info --filename="/etc/hosts.block" --title="hosts.block (view only)" --width 600 --height 800
+	zenity --text-info --filename="/etc/hosts.block" --title="hosts.block (view only)" --width=600 --height=800
 else
 	notify-send "HostsBlock" "hosts.block file does not exist" -i gtk-dialog-info &
 fi
@@ -414,7 +417,7 @@ view_log_gui()
 # check if exists
 if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width 680 --height 580
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width=680 --height=580
 else
 	notify-send "HostsBlock" "hostsblock.log file does not exist" -i gtk-dialog-info &
 fi
@@ -425,7 +428,7 @@ view_history_log_gui()
 # check if exists
 if [ -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock-history.log" --title="hostsblock-history.log" --width 300 --height 500
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock-history.log" --title="hostsblock-history.log" --width=300 --height=500 &
 else
 	notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
 fi
@@ -433,7 +436,7 @@ fi
 
 query_hostsblock_gui()
 {
-DOMAIN=$(zenity --entry --title="Query /etc/hosts.block" --text="For:" --width 250)
+DOMAIN=$(zenity --entry --title="Query /etc/hosts.block" --text="For:" --width=250)
 if [ -z "$DOMAIN" ]
 then
 	notify-send "HostsBlock" "nothing entered; exiting..." -i gtk-dialog-info -t 500 -u normal &
@@ -442,9 +445,9 @@ else
 	RESULT=$(grep "$DOMAIN" "/etc/hosts.block" | sed -e "s/^0\.0\.0\.0\s\s*//g" -e "s/^127\.0\.0\.1\s\s*//g")
 	if [ -z "$RESULT" ]
 	then
-		zenity --info --title="Query results" --text="No match found!"
+		zenity --info --title="Query results" --text="No match found!" &
 	else
-		zenity --info --title="Query results" --text="$RESULT"
+		zenity --info --title="Query results" --text="$RESULT" &
 	fi
 fi
 }
@@ -493,7 +496,7 @@ if [ ! -f "/tmp/hostsblock-lists/adaway.org.hosts.txt" ]
 then
 	cp "/var/cache/hostsblock/adaway.org.hosts.txt" "/tmp/hostsblock-lists/"
 fi
-DOMAIN=$(zenity --entry --title="Query cached blocklists" --text="For:" --width 250)
+DOMAIN=$(zenity --entry --title="Query cached blocklists" --text="For:" --width=250)
 if [ -z "$DOMAIN" ]
 then
 	notify-send "HostsBlock" "nothing entered; exiting..." -i gtk-dialog-info -t 500 -u normal &
@@ -508,7 +511,7 @@ else
 	RESULT07=$(grep "$DOMAIN" "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT08=$(grep "$DOMAIN" "/tmp/hostsblock-lists/HOSTS" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT09=$(grep "$DOMAIN" "/tmp/hostsblock-lists/adaway.org.hosts.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	zenity --info --title="Search results" --text="• hosts-file.net.ad_servers: <b>$RESULT01</b>\n• pgl.yoyo.org.as.serverlist: <b>$RESULT02</b>\n• Sadi58.hostsblock: <b>$RESULT03</b>\n• someonewhocares.org.hosts: <b>$RESULT04</b>\n• sysctl.org.cameleon.hosts: <b>$RESULT05</b>\n• hostsfile.mine.nu.Hosts: <b>$RESULT06</b>\n• hostsfile.org.hosts.lnx: <b>$RESULT07</b>\n• winhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>\n• adaway.org.hosts: <b>$RESULT09</b>"
+	zenity --info --title="Search results" --text="• hosts-file.net.ad_servers: <b>$RESULT01</b>\n• pgl.yoyo.org.as.serverlist: <b>$RESULT02</b>\n• Sadi58.hostsblock: <b>$RESULT03</b>\n• someonewhocares.org.hosts: <b>$RESULT04</b>\n• sysctl.org.cameleon.hosts: <b>$RESULT05</b>\n• hostsfile.mine.nu.Hosts: <b>$RESULT06</b>\n• hostsfile.org.hosts.lnx: <b>$RESULT07</b>\n• winhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>\n• adaway.org.hosts: <b>$RESULT09</b>" --width=400 &
 fi
 }
 
@@ -517,7 +520,7 @@ change_icon_gui()
 # options
 menu_icon()
 {
-im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width 270 --height 170"
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=270 --height=170"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Light\" \"Icon for dark panels\" "
 im=$im"FALSE \"Dark\" \"Icon for light panels\" "

@@ -55,6 +55,7 @@ Installation
 Change log
 ----------------------
 
+- **0.999.3-15:** Re-organized some menu items, inc. "Edit Config Files" and "Merge User Lists", plus several small fixes
 - **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes
 - **0.999.3-13:** Most scripts merged into a single "backend" script (as functions)
 - **0.999.3-12:** Changed icons

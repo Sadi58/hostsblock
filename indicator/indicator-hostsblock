@@ -79,13 +79,13 @@ class HostsBlockIndicator:
         self.Edit_item.connect("activate", self.doEdit)
         self.Edit_item.show()
 
-	self.EditUser_item = gtk.MenuItem("Edit User Lists...")
-        self.EditUser_item.connect("activate", self.doEditUser)
-        self.EditUser_item.show()
+	self.MergeAllow_item = gtk.MenuItem("Merge Allow Lists...")
+        self.MergeAllow_item.connect("activate", self.doMergeAllow)
+        self.MergeAllow_item.show()
 
-	self.MergeUser_item = gtk.MenuItem("Merge User Lists...")
-        self.MergeUser_item.connect("activate", self.doMergeUser)
-        self.MergeUser_item.show()
+	self.MergeDeny_item = gtk.MenuItem("Merge Deny Lists...")
+        self.MergeDeny_item.connect("activate", self.doMergeDeny)
+        self.MergeDeny_item.show()
 
 	self.seperator5_item = gtk.SeparatorMenuItem()
 	self.seperator5_item.show()
@@ -112,10 +112,6 @@ class HostsBlockIndicator:
 	self.seperator7_item = gtk.SeparatorMenuItem()
 	self.seperator7_item.show()
 
-	self.Refresh_item = gtk.MenuItem("Refresh")
-        self.Refresh_item.connect("activate", self.doRefresh)
-        self.Refresh_item.show()
-
 	self.Quit_item = gtk.MenuItem("Quit")
         self.Quit_item.connect("activate", self.doQuit)
         self.Quit_item.show()
@@ -135,8 +131,8 @@ class HostsBlockIndicator:
 	self.menu.append(self.QueryCF_item)
 	self.menu.append(self.seperator4_item)
 	self.menu.append(self.Edit_item)
-	self.menu.append(self.EditUser_item)
-	self.menu.append(self.MergeUser_item)
+	self.menu.append(self.MergeAllow_item)
+	self.menu.append(self.MergeDeny_item)
 	self.menu.append(self.seperator5_item)
 	self.menu.append(self.Disable_item)
 	self.menu.append(self.Enable_item)
@@ -144,7 +140,6 @@ class HostsBlockIndicator:
 	self.menu.append(self.seperator6_item)
 	self.menu.append(self.Icon_item)
 	self.menu.append(self.seperator7_item)
-	self.menu.append(self.Refresh_item)
 	self.menu.append(self.Quit_item)
 
     def AutoRefresh(self):
@@ -187,11 +182,11 @@ class HostsBlockIndicator:
     def doEdit(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator editor_gui")
 
-    def doEditUser(self, dude):
-	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator edit_user_gui")
+    def doMergeAllow(self, dude):
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator merge_allow_gui")
 
-    def doMergeUser(self, dude):
-	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator merge_user_gui")
+    def doMergeDeny(self, dude):
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator merge_deny_gui")
 
     def doDisable(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator disable_hostsblock")
@@ -204,9 +199,6 @@ class HostsBlockIndicator:
 
     def setIcon(self, dude):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator change_icon_gui")
-
-    def doRefresh(self, dude):
-	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator restart_indicator")
 
     def doQuit(self, dude):
 	os.system("pkill -f 'inotifywait -qqre modify /usr/share/indicator-hostsblock/' & killall 'hostsblock-indicator' & pkill -f 'python /usr/share/indicator-hostsblock/indicator-hostsblock'")
