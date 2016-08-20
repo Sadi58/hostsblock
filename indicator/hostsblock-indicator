@@ -301,7 +301,7 @@ then
 			sudo -Sp '' cp -f "/usr/share/indicator-hostsblock/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list.old" <<<"${sudo_password}"
 			sudo -Sp '' cat "$HOME/.local/share/indicator-hostsblock/user.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" > "/tmp/hostsblock.allow.list" <<<"${sudo_password}"
 			sudo -Sp '' mv "/tmp/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
-			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
+			sudo -Sp '' sort -u -o "/usr/share/indicator-hostsblock/hostsblock.allow.list" "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}"
 			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list - merged (view only)" --width=450 --height=600 &
 			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width=300 --height=600 &
 		fi
@@ -328,7 +328,7 @@ then
 			sudo -Sp '' cp -f "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list.old" <<<"${sudo_password}"
 			sudo -Sp '' cat "$HOME/.local/share/indicator-hostsblock/user.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" > "/tmp/hostsblock.deny.list" <<<"${sudo_password}"
 			sudo -Sp '' mv "/tmp/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
-			sudo -Sp '' sort -u "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
+			sudo -Sp '' sort -u -o "/usr/share/indicator-hostsblock/hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}"
 			zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list - merged (view only)" --width=450 --height=600 &
 			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width=300 --height=600 &
 		fi
