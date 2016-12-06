@@ -129,7 +129,7 @@ else
 		else
 			cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-history-new.log"
 			lines=$(wc -l "/tmp/hostsblock-history-new.log" | awk '{print $1}')
-			if [ $lines -gt 21 ]
+			if [ $lines -gt 30 ]
 			then
 				sed -i '$d' "/tmp/hostsblock-history-new.log"
 			fi
@@ -428,7 +428,8 @@ view_history_log_gui()
 # check if exists
 if [ -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock-history.log" --title="hostsblock-history.log" --width=300 --height=500 &
+	HISTORY=$(cat "/usr/share/indicator-hostsblock/hostsblock-history.log")
+	zenity --info --text="$HISTORY" --title="hostsblock-history.log" &
 else
 	notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
 fi
@@ -447,7 +448,8 @@ else
 	then
 		zenity --info --title="Query results" --text="No match found!" &
 	else
-		zenity --info --title="Query results" --text="$RESULT" &
+		echo "$RESULT" > "/tmp/hosts.block-query-result.txt"
+		zenity --text-info --filename="/tmp/hosts.block-query-result.txt" --title="Query results" &
 	fi
 fi
 }
@@ -511,7 +513,16 @@ else
 	RESULT07=$(grep "$DOMAIN" "/tmp/hostsblock-lists/BadHosts.unx/hosts.lnx" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT08=$(grep "$DOMAIN" "/tmp/hostsblock-lists/HOSTS" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
 	RESULT09=$(grep "$DOMAIN" "/tmp/hostsblock-lists/adaway.org.hosts.txt" | sed -e "s/^#..*$//g" -e "s/^0\.0\.0\.0//g" -e "s/^127\.0\.0\.1//g" -e "s/\t//g" | tr '\n' ' ' | tr '\r' ' ')
-	zenity --info --title="Search results" --text="• hosts-file.net.ad_servers: <b>$RESULT01</b>\n• pgl.yoyo.org.as.serverlist: <b>$RESULT02</b>\n• Sadi58.hostsblock: <b>$RESULT03</b>\n• someonewhocares.org.hosts: <b>$RESULT04</b>\n• sysctl.org.cameleon.hosts: <b>$RESULT05</b>\n• hostsfile.mine.nu.Hosts: <b>$RESULT06</b>\n• hostsfile.org.hosts.lnx: <b>$RESULT07</b>\n• winhelp2002.mvps.org.HOSTS: <b>$RESULT08</b>\n• adaway.org.hosts: <b>$RESULT09</b>" --width=400 &
+	echo "• hosts-file.net.ad_servers: $RESULT01" > "/tmp/hostsblock-cache-query-result.txt"
+	echo "• pgl.yoyo.org.as.serverlist: $RESULT02" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• Sadi58.hostsblock: $RESULT03" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• someonewhocares.org.hosts: $RESULT04" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• sysctl.org.cameleon.hosts: $RESULT05" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• hostsfile.mine.nu.Hosts: $RESULT06" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• hostsfile.org.hosts.lnx: $RESULT07" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• winhelp2002.mvps.org.HOSTS: $RESULT08" >> "/tmp/hostsblock-cache-query-result.txt"
+	echo "• adaway.org.hosts: $RESULT09" >> "/tmp/hostsblock-cache-query-result.txt"
+	zenity --text-info --filename="/tmp/hostsblock-cache-query-result.txt" --title="Search results" &
 fi
 }
 
