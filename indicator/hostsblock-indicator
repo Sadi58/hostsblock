@@ -36,6 +36,17 @@ while inotifywait -qqre modify "/usr/share/indicator-hostsblock/"
 done
 }
 
+status_hostsblock()
+{
+# check if hosts.block exists
+if [ -f "/etc/hosts.block" ]
+then
+	echo "Hostsblock: Enabled"
+else
+	echo "Hostsblock: Disabled"
+fi
+}
+
 status_last_update()
 {
 log_file="/usr/share/indicator-hostsblock/hostsblock.log"
@@ -566,6 +577,7 @@ then
 # commands
 	sudo -Sp '' mv "/etc/hosts.block" "/etc/hosts.block.disabled" <<<"${sudo_password}"
 	sudo -Sp '' "/etc/init.d/dnsmasq" restart <<<"${sudo_password}"
+	"/usr/share/indicator-hostsblock/hostsblock-indicator" restart_indicator &
 # notify
 	"/usr/bin/canberra-gtk-play" --id="dialog-information" &
 	notify-send "HostsBlock" "hostsblock disabled, dnsmasq restarted" -i gtk-dialog-info
@@ -592,6 +604,7 @@ then
 # commands
 		sudo -Sp '' mv "/etc/hosts.block.disabled" "/etc/hosts.block" <<<"${sudo_password}"
 		sudo -Sp '' "/etc/init.d/dnsmasq" restart <<<"${sudo_password}"
+		"/usr/share/indicator-hostsblock/hostsblock-indicator" restart_indicator &
 # notify
 		"/usr/bin/canberra-gtk-play" --id="dialog-information" &
 		notify-send "HostsBlock" "hostsblock re-enabled, dnsmasq restarted" -i gtk-dialog-info

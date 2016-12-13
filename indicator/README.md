@@ -55,7 +55,7 @@ Installation
 Change log
 ----------------------
 
-- **0.999.3-16:** Work-In-Progress = fixed problem with very long query result lists; changed how log history is displayed; ...
+- **0.999.3-16:** Work-In-Progress = fixed problem with very long query result lists; changed how log history is displayed; added hostsblock status info to menu...
 - **0.999.3-15:** Re-organized some menu items, inc. "Edit Config Files" and "Merge User Lists", plus several small fixes
 - **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes
 - **0.999.3-13:** Most scripts merged into a single "backend" script (as functions)

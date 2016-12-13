@@ -23,6 +23,10 @@ class HostsBlockIndicator:
 	self.AutoRefresh_item = gtk.MenuItem(self.AutoRefresh())
 	self.AutoRefresh_item.set_sensitive(False)
 
+	self.infoHostsBlockStatus_item = gtk.MenuItem(self.infoHostsBlockStatus())
+	self.infoHostsBlockStatus_item.set_sensitive(False)
+	self.infoHostsBlockStatus_item.show()
+
 	self.infoHostsBlockAuto_item = gtk.MenuItem(self.infoHostsBlockAuto())
 	self.infoHostsBlockAuto_item.set_sensitive(False)
 	self.infoHostsBlockAuto_item.show()
@@ -94,7 +98,7 @@ class HostsBlockIndicator:
         self.Disable_item.connect("activate", self.doDisable)
         self.Disable_item.show()
 
-	self.Enable_item = gtk.MenuItem("Re-Enable HostsBlock")
+	self.Enable_item = gtk.MenuItem("Enable HostsBlock")
         self.Enable_item.connect("activate", self.doEnable)
         self.Enable_item.show()
 
@@ -116,6 +120,7 @@ class HostsBlockIndicator:
         self.Quit_item.connect("activate", self.doQuit)
         self.Quit_item.show()
 
+	self.menu.append(self.infoHostsBlockStatus_item)
 	self.menu.append(self.infoHostsBlockAuto_item)
 	self.menu.append(self.infoHostsBlockLast_item)
 	self.menu.append(self.seperator1_item)
@@ -144,6 +149,11 @@ class HostsBlockIndicator:
 
     def AutoRefresh(self):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator auto_refresh &")
+
+    def infoHostsBlockStatus(self):
+	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator status_hostsblock")
+	stat, out = commands.getstatusoutput("/usr/share/indicator-hostsblock/hostsblock-indicator status_hostsblock")
+	return out
 
     def infoHostsBlockAuto(self):
 	os.system("/usr/share/indicator-hostsblock/hostsblock-indicator status_auto_update")
