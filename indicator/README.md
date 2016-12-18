@@ -48,6 +48,8 @@ Installation
 	/usr/share/indicator-hostsblock/indicator-hostsblock
 	/usr/share/indicator-hostsblock/hostsblock.svg
 	/usr/share/indicator-hostsblock/hostsblock-color.svg
+	/usr/share/indicator-hostsblock/hostsblock-breeze-dark.svg
+	/usr/share/indicator-hostsblock/hostsblock-breeze-light.svg
 	/usr/share/indicator-hostsblock/hostsblock-dark.svg
 	/usr/share/indicator-hostsblock/hostsblock-light.svg
 ```
@@ -55,6 +57,7 @@ Installation
 Change log
 ----------------------
 
+- **0.999.3-16:** Work-In-Progress = Added 2 Breeze-style icons; minor fixes
 - **0.999.3-16:** Fixed problem with very long query result lists; Changed how log history is displayed; Added hostsblock status info to menu
 - **0.999.3-15:** Re-organized some menu items, inc. "Edit Config Files" and "Merge User Lists", plus several small fixes
 - **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes

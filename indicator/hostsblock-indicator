@@ -152,7 +152,7 @@ else
 		if [ $? = 0 ]
 		then
 # display log
-			zenity --text-info --title="hostsblock.log (view only)" --filename="/usr/share/indicator-hostsblock/hostsblock.log" --width=680 --height=580
+			zenity --text-info --title="hostsblock.log (view only)" --filename="/usr/share/indicator-hostsblock/hostsblock.log" --width=680 --height=680
 		fi
 	fi
 fi
@@ -428,7 +428,7 @@ view_log_gui()
 # check if exists
 if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width=680 --height=580
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width=680 --height=680
 else
 	notify-send "HostsBlock" "hostsblock.log file does not exist" -i gtk-dialog-info &
 fi
@@ -542,26 +542,36 @@ change_icon_gui()
 # options
 menu_icon()
 {
-im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=270 --height=170"
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=270 --height=230"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
-im=$im"FALSE \"Light\" \"Icon for dark panels\" "
-im=$im"FALSE \"Dark\" \"Icon for light panels\" "
+im=$im"FALSE \"Breeze-dark\" \"Icon for light panels\" "
+im=$im"FALSE \"Breeze-light\" \"Icon for dark panels\" "
 im=$im"FALSE \"Color\" \"Icon for all panels\" "
+im=$im"FALSE \"Dark\" \"Icon for light panels\" "
+im=$im"FALSE \"Light\" \"Icon for dark panels\" "
 }
 option_icon()
 {
 choice=`echo $im | sh -`
-if echo $choice | grep "Light" > /dev/null
+if echo $choice | grep "Breeze-dark" > /dev/null
 then
-	cp -f "/usr/share/indicator-hostsblock/hostsblock-dark.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-breeze-light.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+fi
+if echo $choice | grep "Breeze-light" > /dev/null
+then
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-breeze-dark.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+fi
+if echo $choice | grep "Color" > /dev/null
+then
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-color.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
 fi
 if echo $choice | grep "Dark" > /dev/null
 then
 	cp -f "/usr/share/indicator-hostsblock/hostsblock-light.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
 fi
-if echo $choice | grep "Color" > /dev/null
+if echo $choice | grep "Light" > /dev/null
 then
-	cp -f "/usr/share/indicator-hostsblock/hostsblock-color.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
+	cp -f "/usr/share/indicator-hostsblock/hostsblock-dark.svg" "/usr/share/indicator-hostsblock/hostsblock.svg"
 fi
 }
 menu_icon
