@@ -57,7 +57,7 @@ Installation
 Change log
 ----------------------
 
-- **0.999.3-16:** Work-In-Progress = Added 2 Breeze-style icons; minor fixes
+- **0.999.3-17:** Work-In-Progress = Added 2 Breeze-style icons; minor fixes
 - **0.999.3-16:** Fixed problem with very long query result lists; Changed how log history is displayed; Added hostsblock status info to menu
 - **0.999.3-15:** Re-organized some menu items, inc. "Edit Config Files" and "Merge User Lists", plus several small fixes
 - **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes
