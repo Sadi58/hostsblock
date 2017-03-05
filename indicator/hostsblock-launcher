@@ -23,7 +23,7 @@ then
 else
 	cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-history-new.log"
 	lines=$(wc -l "/tmp/hostsblock-history-new.log" | awk '{print $1}')
-	if [ $lines -gt 21 ]
+	if [ $lines -gt 30 ]
 	then
 		sed -i '$d' "/tmp/hostsblock-history-new.log"
 	fi
