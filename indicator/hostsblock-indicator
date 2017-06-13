@@ -412,38 +412,29 @@ menu_viewer
 option_viewer
 }
 
-view_hostsblock_gui()
+view_log_history_gui()
 {
-# check if exists
-if [ -f "/etc/hosts.block" ]
-then
-	zenity --text-info --filename="/etc/hosts.block" --title="hosts.block (view only)" --width=600 --height=800
-else
-	notify-send "HostsBlock" "hosts.block file does not exist" -i gtk-dialog-info &
-fi
-}
-
-view_log_gui()
-{
-# check if exists
+# check if log exists
 if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.log" --title="hostsblock.log (view only)" --width=680 --height=680
+	echo "=============================" > "/tmp/hostsblock-log-history.txt"
+	echo " LAST HOSTSBLOCK UPDATE LOG:" >> "/tmp/hostsblock-log-history.txt"
+	echo "=============================" >> "/tmp/hostsblock-log-history.txt"
+	cat "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-log-history.txt"
 else
 	notify-send "HostsBlock" "hostsblock.log file does not exist" -i gtk-dialog-info &
 fi
-}
-
-view_history_log_gui()
-{
-# check if exists
+# check if history exists
 if [ -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]
 then
-	HISTORY=$(cat "/usr/share/indicator-hostsblock/hostsblock-history.log")
-	zenity --info --text="$HISTORY" --title="hostsblock-history.log" --width=250 --height=500 &
+	echo "=============================" >> "/tmp/hostsblock-log-history.txt"
+	echo "   HOSTSBLOCK LOG HISTORY:" >> "/tmp/hostsblock-log-history.txt"
+	echo "=============================" >> "/tmp/hostsblock-log-history.txt"
+	cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-log-history.txt"
 else
 	notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
 fi
+	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --width=680 --height=680
 }
 
 query_hostsblock_gui()

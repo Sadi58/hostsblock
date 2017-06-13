@@ -10,54 +10,14 @@ Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 Installation
 ----------------------
 
-1. ***Use the appropriate deb package provided***: The files **indicator-hostsblock_[amd64|i386]_0.999.x-x.deb**  have been created using `dpkg-deb` to provide a proper installation method, and should install the **hostsblock** and **indicator** together with **dnsmasq** (as dependency) and **kwakd** (the only *amd64/i386-specific* file in the package). After copying all files, the deb file adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf` (if they don't exist already), and starts **dnsmasq** and **kwakd** services (if they are not running already), after which the user can either run **HostsBlock Indicator** application or choose to start using it after logging out and back in.
+1. ***Use the "installation script" provided***: Open a terminal window, change (`cd`) to the sub-directory `.../indicator` and enter `./install-hostsblock-indicator.sh` (after **customizing**, if necessary, for non-Debian/GNOME systems). This should install the **hostsblock** and **indicator** together with **dnsmasq** (if not installed already). After copying all files, the script adds the entries "*listen-address=127.0.0.1*" and "*addn-hosts=/etc/hosts.block*" to `/etc/dnsmasq.conf` (if they don't exist already), and starts **dnsmasq** service (if it is not running already), after which the user can either run **HostsBlock Indicator** application or choose to start using it via the indicator after logging out and back in. Also note that installation of **kwakd** has now been commented out because at least some of the latest web browsers seem to be intelligently handling the issue concerned.
 
-2. ***Use the "installation script" provided***: Open a terminal window, change (`cd`) to the sub-directory `.../indicator` and enter `./install-hostsblock-indicator.sh` (after **customizing**, if necessary, for non-Debian/GNOME systems).
-
-3. **Manual installation**:
-
-3.1. ***Install dependencies***: **gksu**, **inotify-tools**, **python-appindicator**, **python-gtk2** and **zenity** in addition to *hostsblock dependencies*; **coreutils**, **curl**, **file**, **grep**, **gzip**, **p7zip-full**, **sed** and **unzip**.
-
-3.2. ***Install "hostsblock" as required*** - using the tweaked source files under the `indicator` sub-directory here:
-```
-	/usr/share/indicator-hostsblock/hostsblock.allow.list
-	/usr/share/indicator-hostsblock/hostsblock-common.sh
-	/usr/share/indicator-hostsblock/hostsblock.conf
-	/usr/share/indicator-hostsblock/hostsblock.deny.list
-	/usr/share/indicator-hostsblock/hostsblock.sh
-	/usr/share/indicator-hostsblock/hostsblock-urlcheck.sh
-	/usr/share/man/man8/hostsblock.8
-	/usr/share/man/man8/hostsblock.conf.8
-	/usr/share/man/man8/hostsblock-urlcheck.8
-```
-3.3. ***Install "kwakd" as follows***:
-```
-	/etc/init.d/kwakd
-	/usr/bin/kwakd
-	/usr/bin/start-kwakd
-	/usr/share/man/man1/kwakd.1
-```
-3.4. ***Copy "indicator" files like this***:
-```
-	/etc/xdg/autostart/indicator-hostsblock.desktop
-	/usr/share/applications/indicator_hostsblock.desktop
-	/usr/share/icons/indicator-hostsblock.svg
-	/usr/share/indicator-hostsblock/hostsblock-indicator
-	/usr/share/indicator-hostsblock/hostsblock-check-updates
-	/usr/share/indicator-hostsblock/hostsblock-launcher
-	/usr/share/indicator-hostsblock/indicator-hostsblock
-	/usr/share/indicator-hostsblock/hostsblock.svg
-	/usr/share/indicator-hostsblock/hostsblock-color.svg
-	/usr/share/indicator-hostsblock/hostsblock-breeze-dark.svg
-	/usr/share/indicator-hostsblock/hostsblock-breeze-light.svg
-	/usr/share/indicator-hostsblock/hostsblock-dark.svg
-	/usr/share/indicator-hostsblock/hostsblock-light.svg
-```
+2. **Manual installation**: Follow the commands in the installation script, e.g. copying and pasting each into a terminal window opened in the sub-directory `indicator`.
 
 Change log
 ----------------------
 
-- **0.999.3-17:** Work-In-Progress = Added 2 Breeze-style icons; minor fixes
+- **0.999.3-17:** Added 2 Breeze-style icons; expanded allow.list; condensed indicator menu; removed deb package files; minor fixes
 - **0.999.3-16:** Fixed problem with very long query result lists; Changed how log history is displayed; Added hostsblock status info to menu
 - **0.999.3-15:** Re-organized some menu items, inc. "Edit Config Files" and "Merge User Lists", plus several small fixes
 - **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes
