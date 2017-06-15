@@ -434,7 +434,7 @@ then
 else
 	notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
 fi
-	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --width=680 --height=680
+	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --width=750 --height=675
 }
 
 query_hostsblock_gui()
