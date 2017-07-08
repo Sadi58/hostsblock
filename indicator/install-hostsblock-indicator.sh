@@ -30,8 +30,8 @@ if [[ $response =~ ^(yes|y)$ ]]; then
 	sudo cp -f "./hostsblock.sh" "/usr/share/indicator-hostsblock/hostsblock.sh"
 	sudo cp -f "./hostsblock-urlcheck.sh" "/usr/share/indicator-hostsblock/hostsblock-urlcheck.sh"
 	sudo cp -f "../man/hostsblock.8" "/usr/share/man/man8/hostsblock.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock.8"
-	sudo cp -f "../man/hostsblock.conf.8" "/usr/share/man/man8/hostsblock.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock.conf.8"
-	sudo cp -f "../man/hostsblock-urlcheck.8" "/usr/share/man/man8/hostsblock.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock-urlcheck.8"
+	sudo cp -f "../man/hostsblock.conf.8" "/usr/share/man/man8/hostsblock.conf.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock.conf.8"
+	sudo cp -f "../man/hostsblock-urlcheck.8" "/usr/share/man/man8/hostsblock-urlcheck.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock-urlcheck.8"
 
 #	copy kwakd files
 #	sudo cp -f "./kwakd/kwakd" "/etc/init.d/kwakd"
@@ -56,14 +56,14 @@ if [[ $response =~ ^(yes|y)$ ]]; then
 	sudo cp -f "./hostsblock-indicator" "/usr/share/indicator-hostsblock/hostsblock-indicator"
 	sudo cp -f "./hostsblock-launcher" "/usr/share/indicator-hostsblock/hostsblock-launcher"
 	sudo cp -f "./indicator-hostsblock" "/usr/share/indicator-hostsblock/indicator-hostsblock"
-	sudo cp -f "./indicator-hostsblock.svg" "/usr/share/icons/hicolor/48/apps/indicator-hostsblock.svg"
+	sudo cp -f "./indicator-hostsblock.svg" "/usr/share/icons/hicolor/48x48/apps/indicator-hostsblock.svg"
 
-#	make indicator icon writable by all 
+#	make indicator icon writable by all
 	sudo chmod a+w "/usr/share/indicator-hostsblock/hostsblock.svg"
 
 #	set default update interval as daily
 	sudo ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher"
- 
+
 #	make necessary configuration changes for dnsmaq
 	sudo sed -i "s/^#listen\-address=$/listen\-address=127\.0\.0\.1/g" "/etc/dnsmasq.conf"
 	sudo sed -i "s/^#addn\-hosts=\/etc\/banner_add_hosts$/addn\-hosts=\/etc\/hosts\.block/g" "/etc/dnsmasq.conf"
