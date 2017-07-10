@@ -267,6 +267,8 @@ then
 			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
 			then
 				mkdir "$HOME/.local/share/indicator-hostsblock/"
+				touch "$HOME/.local/share/indicator-hostsblock/user.allow.list"
+				gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
 			else
 				touch "$HOME/.local/share/indicator-hostsblock/user.allow.list"
 				gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
@@ -286,6 +288,8 @@ then
 			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
 			then
 				mkdir "$HOME/.local/share/indicator-hostsblock/"
+				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
+				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
 			else
 				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
 				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
