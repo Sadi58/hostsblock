@@ -418,27 +418,34 @@ option_viewer
 
 view_log_history_gui()
 {
+# check if log history file exits or not
+if [ ! -f "/tmp/hostsblock-log-history.txt" ]
+then
 # check if log exists
-if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
-then
-	echo "=============================" > "/tmp/hostsblock-log-history.txt"
-	echo " LAST HOSTSBLOCK UPDATE LOG:" >> "/tmp/hostsblock-log-history.txt"
-	echo "=============================" >> "/tmp/hostsblock-log-history.txt"
-	cat "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-log-history.txt"
-else
-	notify-send "HostsBlock" "hostsblock.log file does not exist" -i gtk-dialog-info &
-fi
+	if [ -f "/usr/share/indicator-hostsblock/hostsblock.log" ]
+	then
+		echo "=======================================" > "/tmp/hostsblock-log-history.txt"
+		echo " LAST HOSTSBLOCK UPDATE LOG:" >> "/tmp/hostsblock-log-history.txt"
+		echo "=======================================" >> "/tmp/hostsblock-log-history.txt"
+		cat "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-log-history.txt"
+		sed -i '/INFO/d' "/tmp/hostsblock-log-history.txt"
+		sed -i '/Cleaned up/d' "/tmp/hostsblock-log-history.txt"
+		sed -i -e 's/\[NOTE\] /☞/g' -e 's/CHANGES FOUND for blocklist/Changes found at/g' -e 's/Hostsblock completed on/☑Hostsblock completed on/g' "/tmp/hostsblock-log-history.txt"
+	else
+		notify-send "HostsBlock" "hostsblock.log file does not exist" -i gtk-dialog-info &
+	fi
 # check if history exists
-if [ -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]
-then
-	echo "=============================" >> "/tmp/hostsblock-log-history.txt"
-	echo "   HOSTSBLOCK LOG HISTORY:" >> "/tmp/hostsblock-log-history.txt"
-	echo "=============================" >> "/tmp/hostsblock-log-history.txt"
-	cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-log-history.txt"
-else
-	notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
+	if [ -f "/usr/share/indicator-hostsblock/hostsblock-history.log" ]
+	then
+		echo "=======================================" >> "/tmp/hostsblock-log-history.txt"
+		echo "   HOSTSBLOCK LOG HISTORY:" >> "/tmp/hostsblock-log-history.txt"
+		echo "=======================================" >> "/tmp/hostsblock-log-history.txt"
+		cat "/usr/share/indicator-hostsblock/hostsblock-history.log" >> "/tmp/hostsblock-log-history.txt"
+	else
+		notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
+	fi
 fi
-	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --width=750 --height=675
+	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --height 750 --width 425
 }
 
 query_hostsblock_gui()
