@@ -430,7 +430,7 @@ then
 		cat "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-log-history.txt"
 		sed -i '/INFO/d' "/tmp/hostsblock-log-history.txt"
 		sed -i '/Cleaned up/d' "/tmp/hostsblock-log-history.txt"
-		sed -i -e 's/\[NOTE\] /☞/g' -e 's/CHANGES FOUND for blocklist/Changes found at/g' -e 's/Hostsblock completed on/☑Hostsblock completed on/g' "/tmp/hostsblock-log-history.txt"
+		sed -i -e 's/\[NOTE\] /☑/g' -e 's/\[WARN\] /☒/g' -e 's/CHANGES FOUND for/Updated/g' -e 's/Hostsblock completed on/☑Hostsblock update completed on/g' "/tmp/hostsblock-log-history.txt"
 	else
 		notify-send "HostsBlock" "hostsblock.log file does not exist" -i gtk-dialog-info &
 	fi
