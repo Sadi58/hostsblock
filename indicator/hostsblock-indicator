@@ -240,26 +240,26 @@ then
 	get_password
 	if echo $choice | grep "hosts.block" > /dev/null
 	then
-		sudo -Sp '' gedit "/etc/hosts.block" <<<"${sudo_password}" &
+		sudo -Sp '' xdg-open "/etc/hosts.block" <<<"${sudo_password}" &
 	fi
 	if echo $choice | grep "hostsblock.conf" > /dev/null
 	then
-		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.conf" <<<"${sudo_password}" &
+		sudo -Sp '' xdg-open "/usr/share/indicator-hostsblock/hostsblock.conf" <<<"${sudo_password}" &
 	fi
 	if echo $choice | grep "hostsblock.allow.list" > /dev/null
 	then
-		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}" &
+		sudo -Sp '' xdg-open "/usr/share/indicator-hostsblock/hostsblock.allow.list" <<<"${sudo_password}" &
 	fi
 	if echo $choice | grep "hostsblock.deny.list" > /dev/null
 	then
-		sudo -Sp '' gedit "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}" &
+		sudo -Sp '' xdg-open "/usr/share/indicator-hostsblock/hostsblock.deny.list" <<<"${sudo_password}" &
 	fi
 fi
 if echo $choice | grep "user.allow.list" > /dev/null
 then
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
 	then
-		gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
+		xdg-open "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
 	else
 		zenity --question --title="user.allow.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.allow.list\" now?"
 		if [ $? = 0 ]
@@ -268,10 +268,10 @@ then
 			then
 				mkdir "$HOME/.local/share/indicator-hostsblock/"
 				touch "$HOME/.local/share/indicator-hostsblock/user.allow.list"
-				gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
+				xdg-open "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
 			else
 				touch "$HOME/.local/share/indicator-hostsblock/user.allow.list"
-				gedit "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
+				xdg-open "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
 			fi
 		fi
 	fi
@@ -280,7 +280,7 @@ if echo $choice | grep "user.deny.list" > /dev/null
 then
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
 	then
-		gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+		xdg-open "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
 	else
 		zenity --question --title="user.deny.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.deny.list\" now?"
 		if [ $? = 0 ]
@@ -289,10 +289,10 @@ then
 			then
 				mkdir "$HOME/.local/share/indicator-hostsblock/"
 				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
-				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+				xdg-open "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
 			else
 				touch "$HOME/.local/share/indicator-hostsblock/user.deny.list"
-				gedit "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
+				xdg-open "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
 			fi
 		fi
 	fi
@@ -429,6 +429,7 @@ then
 		echo "=======================================" >> "/tmp/hostsblock-log-history.txt"
 		cat "/usr/share/indicator-hostsblock/hostsblock.log" >> "/tmp/hostsblock-log-history.txt"
 		sed -i '/INFO/d' "/tmp/hostsblock-log-history.txt"
+		sed -i '/grep: write error: Broken pipe/d' "/tmp/hostsblock-log-history.txt"
 		sed -i '/Cleaned up/d' "/tmp/hostsblock-log-history.txt"
 		sed -i -e 's/\[NOTE\] /☑/g' -e 's/\[WARN\] /☒/g' -e 's/CHANGES FOUND for/Updated/g' -e 's/Hostsblock completed on/☑Hostsblock update completed on/g' "/tmp/hostsblock-log-history.txt"
 	else
@@ -445,7 +446,7 @@ then
 		notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
 	fi
 fi
-	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --height 750 --width 425
+	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --height 750 --width 300
 }
 
 query_hostsblock_gui()
