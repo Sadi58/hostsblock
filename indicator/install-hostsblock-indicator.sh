@@ -29,10 +29,9 @@ if [[ $response =~ ^(yes|y)$ ]]; then
 	sudo cp -f "./hostsblock.deny.list" "/usr/share/indicator-hostsblock/hostsblock.deny.list"
 	sudo cp -f "./hostsblock.sh" "/usr/share/indicator-hostsblock/hostsblock.sh"
 	sudo cp -f "./hostsblock-urlcheck.sh" "/usr/share/indicator-hostsblock/hostsblock-urlcheck.sh"
-	sudo cp -f "../man/hostsblock.8" "/usr/share/man/man8/hostsblock.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock.8"
-	sudo cp -f "../man/hostsblock.conf.8" "/usr/share/man/man8/hostsblock.conf.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock.conf.8"
-	sudo cp -f "../man/hostsblock-urlcheck.8" "/usr/share/man/man8/hostsblock-urlcheck.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock-urlcheck.8"
-	sudo chmod a+r "/usr/share/man/man8/hostsblock.8.gz" "/usr/share/man/man8/hostsblock.conf.8.gz" "/usr/share/man/man8/hostsblock-urlcheck.8.gz"
+	sudo cp -f "../man/ronn/hostsblock.8" "/usr/share/man/man8/hostsblock.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock.8"
+	sudo cp -f "../man/ronn/hostsblock-urlcheck.8" "/usr/share/man/man8/hostsblock-urlcheck.8" && sudo gzip -9 -n "/usr/share/man/man8/hostsblock-urlcheck.8"
+	sudo chmod a+r "/usr/share/man/man8/hostsblock.8.gz" "/usr/share/man/man8/hostsblock-urlcheck.8.gz"
 
 #	copy kwakd files
 #	sudo cp -f "./kwakd/kwakd" "/etc/init.d/kwakd"
@@ -59,6 +58,7 @@ if [[ $response =~ ^(yes|y)$ ]]; then
 	sudo cp -f "./indicator-hostsblock" "/usr/share/indicator-hostsblock/indicator-hostsblock"
 	sudo cp -f "./indicator-hostsblock.svg" "/usr/share/indicator-hostsblock/indicator-hostsblock.svg"
 	sudo chmod a+r -R "/usr/share/indicator-hostsblock/"
+	sudo chmod a+r "/usr/share/applications/indicator_hostsblock.desktop"
 	sudo chmod a+rx "/etc/xdg/autostart/indicator-hostsblock.desktop" "/usr/share/indicator-hostsblock/hostsblock-indicator" "/usr/share/indicator-hostsblock/hostsblock-launcher" "/usr/share/indicator-hostsblock/indicator-hostsblock" "/usr/share/indicator-hostsblock/hostsblock.sh" "/usr/share/indicator-hostsblock/hostsblock-check-updates" "/usr/share/indicator-hostsblock/hostsblock-common.sh" "/usr/share/indicator-hostsblock/hostsblock-urlcheck.sh"
 
 #	make indicator icon writable by all
