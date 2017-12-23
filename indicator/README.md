@@ -5,6 +5,8 @@ A very simple and lightweight indicator applet to manage hostsblock: https://git
 
 Based on the AMD indicator applet here: https://github.com/beidl/amd-indicator
 
+**NOTE:** The indicator here is based on the previous version **hostsblock**, which  runs only system-wide with admin privileges, because; (1) it needs considerable effort and time to overhaul the whole indicator script(s), (2) the use of this indicator makes it less essential to make this move allowing to run **hostsblock** without admin privileges, and (3) it may even be desirable to keep **hostsblock** the way it is, as a system tool requiring admin privileges.
+
 ![screenshot](indicator-hostsblock-screenshot.png)
 
 Installation
@@ -17,7 +19,7 @@ Installation
 Change log
 ----------------------
 
-- **0.999.3-17:** Added 2 Breeze-style icons; expanded allow.list; condensed indicator menu; removed deb package files; minor fixes
+- **0.999.3-17:** Added 2 Breeze-style icons; expanded allow.list; condensed indicator menu; removed deb package files; improved hostsblock.conf; minor fixes
 - **0.999.3-16:** Fixed problem with very long query result lists; Changed how log history is displayed; Added hostsblock status info to menu
 - **0.999.3-15:** Re-organized some menu items, inc. "Edit Config Files" and "Merge User Lists", plus several small fixes
 - **0.999.3-14:** New menu items "View History", "Query Hosts.Block File" and "Query Cache Files", plus several small fixes
