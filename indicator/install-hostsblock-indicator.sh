@@ -62,7 +62,7 @@ if [[ $response =~ ^(yes|y)$ ]]; then
 	sudo chmod a+rx "/etc/xdg/autostart/indicator-hostsblock.desktop" "/usr/share/indicator-hostsblock/hostsblock-indicator" "/usr/share/indicator-hostsblock/hostsblock-launcher" "/usr/share/indicator-hostsblock/indicator-hostsblock" "/usr/share/indicator-hostsblock/hostsblock.sh" "/usr/share/indicator-hostsblock/hostsblock-check-updates" "/usr/share/indicator-hostsblock/hostsblock-common.sh" "/usr/share/indicator-hostsblock/hostsblock-urlcheck.sh"
 
 #	make indicator icon writable by all
-	sudo chmod a+w "/usr/share/indicator-hostsblock/hostsblock.svg" "/usr/share/indicator-hostsblock/hostsblock-check-updates"
+	sudo chmod a+w "/usr/share/indicator-hostsblock/hostsblock.svg"
 
 #	set default update interval as daily
 	sudo ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher"
