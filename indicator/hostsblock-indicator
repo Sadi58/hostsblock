@@ -164,7 +164,7 @@ auto_update=$(cat "/tmp/hostsblock-auto-update.txt" | sed -e "s/Auto\-Update\: /
 # options
 menu_scheduler()
 {
-im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock auto-update setting: <b><i>$auto_update</i></b>\nSelect one of the options below to change this:\" --width=400 --height=250"
+im="zenity --list --radiolist --title=\"HostsBlock Scheduler\" --text=\"Current HostsBlock auto-update setting: <b><i>$auto_update</i></b>\nSelect one of the options below to change this:\" --width=500 --height=300"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Hourly\" \"HostsBlock will auto-update every hour\" "
 im=$im"FALSE \"Daily\" \"HostsBlock will auto-update every day\" "
@@ -223,7 +223,7 @@ editor_gui()
 # options
 menu_editor()
 {
-im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width=560 --height=250"
+im="zenity --list --checklist --title=\"HostsBlock Editor\" --text=\"<b>Select file(s) to edit:</b>\" --width=650 --height=300"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
 im=$im"FALSE \"hosts.block\" \"/etc/hosts.block\" "
 im=$im"FALSE \"hostsblock.conf\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
@@ -360,7 +360,7 @@ viewer_gui()
 # options
 menu_viewer()
 {
-im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width=560 --height=250"
+im="zenity --list --checklist --title=\"HostsBlock Viewer\" --text=\"<b>Select file(s) to view:</b>\" --width=675 --height=325"
 im=$im" --column=\"☑\" --column \"Filename\" --column \"Location\" "
 im=$im"FALSE \"hostsblock.conf(full)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
 im=$im"FALSE \"hostsblock.conf(extract)\" \"/usr/share/indicator-hostsblock/hostsblock.conf\" "
@@ -387,17 +387,17 @@ then
 fi
 if echo $choice | grep "hostsblock.deny.list" > /dev/null
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list (view only)" --width=300 --height=600 &
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.deny.list" --title="hostsblock.deny.list (view only)" --width=400 --height=600 &
 fi
 if echo $choice | grep "hostsblock.allow.list" > /dev/null
 then
-	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list (view only)" --width=300 --height=600 &
+	zenity --text-info --filename="/usr/share/indicator-hostsblock/hostsblock.allow.list" --title="hostsblock.allow.list (view only)" --width=400 --height=600 &
 fi
 if echo $choice | grep "user.deny.list" > /dev/null
 then
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.deny.list" ]
 	then
-		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width=300 --height=600 &
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width=400 --height=600 &
 	else
 		notify-send "HostsBlock" "user.deny.list file does not exist" -i gtk-dialog-info &
 	fi
@@ -406,7 +406,7 @@ if echo $choice | grep "user.allow.list" > /dev/null
 then
 	if [ -f "$HOME/.local/share/indicator-hostsblock/user.allow.list" ]
 	then
-		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width=300 --height=600 &
+		zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width=400 --height=600 &
 	else
 		notify-send "HostsBlock" "user.allow.list file does not exist" -i gtk-dialog-info &
 	fi
@@ -446,12 +446,12 @@ then
 		notify-send "HostsBlock" "history.log file does not exist" -i gtk-dialog-info &
 	fi
 fi
-	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --height 750 --width 300
+	zenity --text-info --filename="/tmp/hostsblock-log-history.txt" --title="HostsBlock Log & History (view only)" --height 750 --width 400
 }
 
 query_hostsblock_gui()
 {
-DOMAIN=$(zenity --entry --title="Query /etc/hosts.block" --text="For:" --width=250)
+DOMAIN=$(zenity --entry --title="Query /etc/hosts.block" --text="For:" --width=300)
 if [ -z "$DOMAIN" ]
 then
 	notify-send "HostsBlock" "nothing entered; exiting..." -i gtk-dialog-info -t 500 -u normal &
@@ -512,7 +512,7 @@ if [ ! -f "/tmp/hostsblock-lists/adaway.org.hosts.txt" ]
 then
 	cp "/var/cache/hostsblock/adaway.org.hosts.txt" "/tmp/hostsblock-lists/"
 fi
-DOMAIN=$(zenity --entry --title="Query cached blocklists" --text="For:" --width=250)
+DOMAIN=$(zenity --entry --title="Query cached blocklists" --text="For:" --width=300)
 if [ -z "$DOMAIN" ]
 then
 	notify-send "HostsBlock" "nothing entered; exiting..." -i gtk-dialog-info -t 500 -u normal &
@@ -545,7 +545,7 @@ change_icon_gui()
 # options
 menu_icon()
 {
-im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=270 --height=230"
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=350 --height=300"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Breeze-dark\" \"Icon for light panels\" "
 im=$im"FALSE \"Breeze-light\" \"Icon for dark panels\" "
