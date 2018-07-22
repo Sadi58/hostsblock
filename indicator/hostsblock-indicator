@@ -2,7 +2,7 @@
 
 get_password()
 {
-sudo_password=$(gksudo --print-pass --description="HostsBlock" --message="Provide permission to make system changes: Type your password or press Cancel." -- : 2>/dev/null)
+sudo_password=$(zenity --password --title="Admin Password Required" -- : 2>/dev/null)
 # check for null entry or cancellation
 if [[ ${?} != 0 || -z ${sudo_password} ]]
 then
@@ -148,7 +148,7 @@ else
 		fi
 # option to view log
 		new_update=$(grep "Hostsblock completed on " "/tmp/hostsblock.log" | awk -F " completed on " '{print $2}')
-		zenity --question --title="HostsBlock" --text="Last updated: <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"
+		zenity --question --title="HostsBlock" --text="Last updated: <b><i>$new_update</i></b>\n\nWould you like to view the log file now?"  --width=300
 		if [ $? = 0 ]
 		then
 # display log
@@ -261,7 +261,7 @@ then
 	then
 		xdg-open "$HOME/.local/share/indicator-hostsblock/user.allow.list" &
 	else
-		zenity --question --title="user.allow.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.allow.list\" now?"
+		zenity --question --title="user.allow.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.allow.list\" now?" --width=300
 		if [ $? = 0 ]
 		then
 			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
@@ -282,7 +282,7 @@ then
 	then
 		xdg-open "$HOME/.local/share/indicator-hostsblock/user.deny.list" &
 	else
-		zenity --question --title="user.deny.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.deny.list\" now?"
+		zenity --question --title="user.deny.list doesn't exist" --text="Would you like to create \"$HOME/.local/share/indicator-hostsblock/user.deny.list\" now?" --width=300
 		if [ $? = 0 ]
 		then
 			if [ ! -d "$HOME/.local/share/indicator-hostsblock/" ]
@@ -321,10 +321,10 @@ then
 			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.allow.list" --title="user.allow.list (view only)" --width=300 --height=600 &
 		fi
 	else
-		zenity --info --title="Merge Allow Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>is empty.</b>\nNothing to do..."
+		zenity --info --title="Merge Allow Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>is empty.</b>\nNothing to do..." --width=300
 	fi
 else
-	zenity --info --title="Merge Allow Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>doesn\'t exist.</b>\nNothing to do..."
+	zenity --info --title="Merge Allow Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.allow.list</i>\"\n<b>doesn\'t exist.</b>\nNothing to do..." --width=300
 fi
 
 }
@@ -348,10 +348,10 @@ then
 			zenity --text-info --filename="$HOME/.local/share/indicator-hostsblock/user.deny.list" --title="user.deny.list (view only)" --width=300 --height=600 &
 		fi
 	else
-		zenity --info --title="Merge Deny Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>is empty.</b>\nNothing to do..."
+		zenity --info --title="Merge Deny Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>is empty.</b>\nNothing to do..." --width=300
 	fi
 else
-	zenity --info --title="Merge Deny Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>doesn\'t exist.</b>\nNothing to do..."
+	zenity --info --title="Merge Deny Lists" --text="<b>The file</b>\n\"<i>$HOME/.local/share/indicator-hostsblock/user.deny.list</i>\"\n<b>doesn\'t exist.</b>\nNothing to do..." --width=300
 fi
 }
 
@@ -460,10 +460,10 @@ else
 	RESULT=$(grep "$DOMAIN" "/etc/hosts.block" | sed -e "s/^0\.0\.0\.0\s\s*//g" -e "s/^127\.0\.0\.1\s\s*//g")
 	if [ -z "$RESULT" ]
 	then
-		zenity --info --title="Query results" --text="No match found!" &
+		zenity --info --title="Query results" --text="No match found!" --width=300 &
 	else
 		echo "$RESULT" > "/tmp/hosts.block-query-result.txt"
-		zenity --text-info --filename="/tmp/hosts.block-query-result.txt" --title="Query results" &
+		zenity --text-info --filename="/tmp/hosts.block-query-result.txt" --title="Query results" --width=500 &
 	fi
 fi
 }
@@ -536,7 +536,7 @@ else
 	echo "• hostsfile.org.hosts.lnx: $RESULT07" >> "/tmp/hostsblock-cache-query-result.txt"
 	echo "• winhelp2002.mvps.org.HOSTS: $RESULT08" >> "/tmp/hostsblock-cache-query-result.txt"
 	echo "• adaway.org.hosts: $RESULT09" >> "/tmp/hostsblock-cache-query-result.txt"
-	zenity --text-info --filename="/tmp/hostsblock-cache-query-result.txt" --title="Search results" &
+	zenity --text-info --filename="/tmp/hostsblock-cache-query-result.txt" --title="Search results" --width=500 &
 fi
 }
 
@@ -545,7 +545,7 @@ change_icon_gui()
 # options
 menu_icon()
 {
-im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=350 --height=300"
+im="zenity --list --radiolist --title=\"Change Icon\" --text=\"<b>Select icon to use:</b>\" --width=400 --height=300"
 im=$im" --column=\"☑\" --column \"Options\" --column \"Description\" "
 im=$im"FALSE \"Breeze-dark\" \"Icon for light panels\" "
 im=$im"FALSE \"Breeze-light\" \"Icon for dark panels\" "
