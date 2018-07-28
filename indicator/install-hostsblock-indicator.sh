@@ -17,7 +17,7 @@ response=${response,,}
 if [[ $response =~ ^(yes|y)$ ]]; then
 
 #	install any missing dependencies
-	sudo apt-get install coreutils curl dnsmasq grep sed file unzip p7zip-full gzip gksu python-appindicator python-gtk2 zenity inotify-tools
+	sudo apt-get install coreutils curl dnsmasq grep sed file unzip p7zip-full gzip python-appindicator python-gtk2 zenity inotify-tools
 
 #	copy hostsblock files
 	if [ ! -d '/usr/share/indicator-hostsblock' ]; then
@@ -68,6 +68,7 @@ if [[ $response =~ ^(yes|y)$ ]]; then
 	sudo ln -sf "/usr/share/indicator-hostsblock/hostsblock-launcher" "/etc/cron.daily/hostsblock-launcher"
 
 #	make necessary configuration changes for dnsmaq
+	sudo sed -i "s/^#port=5353$/port=5353/g" "/etc/dnsmasq.conf"
 	sudo sed -i "s/^#listen\-address=$/listen\-address=127\.0\.0\.1/g" "/etc/dnsmasq.conf"
 	sudo sed -i "s/^#addn\-hosts=\/etc\/banner_add_hosts$/addn\-hosts=\/etc\/hosts\.block/g" "/etc/dnsmasq.conf"
 
