@@ -380,9 +380,12 @@ if echo $choice | grep "hostsblock.conf(extract)" > /dev/null
 then
 	cp "/usr/share/indicator-hostsblock/hostsblock.conf" "/tmp/extract-hostsblock.conf"
 	sed -i "s/^# .*$//g" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^#[a-z].*$//g" "/tmp/extract-hostsblock.conf"
 	sed -i "s/^### .*$//g" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^\s*#\s*.*$//g" "/tmp/extract-hostsblock.conf"
 	sed -i "/^\s*$/d" "/tmp/extract-hostsblock.conf"
 	sed -i "s/^##/\n##/g" "/tmp/extract-hostsblock.conf"
+	sed -i "s/^\s*//g" "/tmp/extract-hostsblock.conf"
 	zenity --text-info --filename="/tmp/extract-hostsblock.conf" --title="hostsblock.conf - extract (view only)" --width=980 --height=680 &
 fi
 if echo $choice | grep "hostsblock.deny.list" > /dev/null
