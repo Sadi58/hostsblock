@@ -97,6 +97,9 @@ cat "/tmp/hostsblock-auto-update.txt"
 
 launcher_gui()
 {
+CONNECTION="$(ping -W 2 -c 1 google.com | grep -c "statistics")"
+if [[ $CONNECTION -gt 0 ]]
+then
 # notify
 notify-send "HostsBlock" "checking if there are any updates..." -i gtk-dialog-info &
 # check updates
@@ -155,6 +158,9 @@ else
 			zenity --text-info --title="hostsblock.log (view only)" --filename="/usr/share/indicator-hostsblock/hostsblock.log" --width=680 --height=680
 		fi
 	fi
+fi
+else
+	notify-send "No Internet Connection" "Please try again later..." -i gtk-dialog-info
 fi
 }
 
